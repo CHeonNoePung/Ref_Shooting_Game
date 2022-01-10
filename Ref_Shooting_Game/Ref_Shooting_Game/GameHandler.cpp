@@ -43,7 +43,6 @@ void GameHandler::OnKeyDown(WPARAM wParam)
         break;
     case 0x48:
     {
-        cout << "attack" << endl;
         BulletBase* Bullet = player->Attack();
         Bullets.push_back(Bullet);
         CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
@@ -88,7 +87,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
             if (result == false) // ¸Ê ¹Û¿¡ ³ª°¬À»°æ¿ì
                 break;
-            cout << Bullet->GetLocation().y << endl;
             Sleep(10);
         }
         

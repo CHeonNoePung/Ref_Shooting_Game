@@ -11,12 +11,10 @@ BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
 {
 	Location = newLocation;
 	Velocity = newVelocity;
-	std::cout << "½ÃÀÛ"<<Velocity.y << std::endl;
 }
 
 bool BulletBase::MoveNext()
 {
-	std::cout << Velocity.y << std::endl;
 	Location = POINT{ Location.x + long(Velocity.x), Location.y + long(Velocity.y)};
 
 	if (Location.y < 0) return false;
