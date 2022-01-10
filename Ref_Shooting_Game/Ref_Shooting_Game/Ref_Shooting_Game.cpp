@@ -3,13 +3,20 @@
 
 #include "framework.h"
 #include "Ref_Shooting_Game.h"
+#include "GameHandler.h"
 
 #define MAX_LOADSTRING 100
 
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")     // 디버그용 콘솔 출력
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+GameHandler* GHnd = nullptr;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -144,15 +151,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            EndPaint(hWnd, &ps);
+        PAINTSTRUCT ps;
+
+        static HDC hdc, MemDC;
+        static HBITMAP BackBit, oldBackBit;
+        static RECT bufferRT;
+        MemDC = BeginPaint(hWnd, &ps);                                              // 더블버퍼링 == OnPaint가 불릴때마다 흰색 화면에다 새로 그리는것이 아닌 미리 다른데다가 그려놓고 옮기는것
+
+        GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
+        hdc = CreateCompatibleDC(MemDC);                                            // 화면에 출력하지 않는 DC를 가져옴
+        BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);   // MemDC와 호환되는 Bitmap을 만듬 == 메인 화면의 정보와 똑같은 그림판을 만듬
+        oldBackBit = (HBITMAP)SelectObject(hdc, BackBit);                           // 그림판과 hdc를 연결 == hdc로 그림을 그려도 출력되지 않고 BackBit에 그려짐
+        PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
+
+        GHnd->OnPaint(hdc);
+
+        // 더블버퍼링 끝
+        GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
+        BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hdc, 0, 0, SRCCOPY);   // hdc로 그렸던 그림들을 MemDC에다가 그림
+        SelectObject(hdc, oldBackBit);                                              // hdc가 이전 비트맵을 선택하도록 함
+        DeleteObject(BackBit);
+        DeleteDC(hdc);
+        EndPaint(hWnd, &ps);
         }
         break;
+    case WM_CREATE:
+    {
+        GHnd = GameHandler::GetInstance();
+        GHnd->SethWnd(hWnd);
+        break;
+    }
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_KEYDOWN:
+    {
+        GHnd->OnKeyDown(wParam);
+        InvalidateRect(hWnd, NULL, false);
+    }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
