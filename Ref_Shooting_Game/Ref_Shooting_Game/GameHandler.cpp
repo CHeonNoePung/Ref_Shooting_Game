@@ -23,8 +23,14 @@ void GameHandler::OnPaint(HDC hdc)
     }
 }
 
+
+
+
+
+
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
+    return;
     int player_x = player->GetLocation().x;
     int player_y = player->GetLocation().y;
     switch (wParam)
@@ -41,7 +47,6 @@ void GameHandler::OnKeyDown(WPARAM wParam)
     case 0x44:  // D
         player->SetLocation(POINT{ player_x+10,player_y});
         break;
-
     case 0x48:
     {
         BulletBase* Bullet = player->Attack();
@@ -74,6 +79,57 @@ void GameHandler::DestroyInstance()
 void GameHandler::SethWnd(HWND nhWnd)
 {
     hWnd = nhWnd;
+}
+
+
+
+
+
+
+DWORD __stdcall GameHandler::test(LPVOID param)
+{
+    GameHandler* play = GetInstance();
+    PlayerBase* player = play->player;
+
+    while (1)
+    {   
+        if (GetKeyState(0x57) & 0x8000) //w
+        {
+            if (player->GetLocation().y >= 3 )
+            {
+                player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 3 });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x41) & 0x8000) //a
+        {
+            if (player->GetLocation().x >= 3)
+            {
+                player->SetLocation(POINT{ player->GetLocation().x - 3, player->GetLocation().y });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x53) & 0x8000) //s
+        {
+            if (player->GetLocation().y <= 900) // 여기다가 하면 됨
+            {
+                player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 3 });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x44) & 0x8000) //d
+        {
+            if (player->GetLocation().x <= 1080) // 여기다가 하면 됨
+            {
+                player->SetLocation(POINT{ player->GetLocation().x + 3, player->GetLocation().y });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        Sleep(20);
+        //https://mlpworld.tistory.com/entry/키보드-상태-조사
+    }
+
+    return 0;
 }
 
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)

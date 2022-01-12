@@ -179,6 +179,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         GHnd = GameHandler::GetInstance();
         GHnd->SethWnd(hWnd);
+        CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);
         break;
     }
     case WM_DESTROY:
@@ -189,6 +190,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         GHnd->OnKeyDown(wParam);
         InvalidateRect(hWnd, NULL, false);
     }
+    break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

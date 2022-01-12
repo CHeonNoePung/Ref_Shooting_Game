@@ -13,7 +13,9 @@ public:
 	static void DestroyInstance();
 	static void SethWnd(HWND hWnd);
 	
-	
+	//
+	static DWORD WINAPI test(LPVOID param);
+	//
 
 	static DWORD WINAPI BulletTR(LPVOID param);
 	
