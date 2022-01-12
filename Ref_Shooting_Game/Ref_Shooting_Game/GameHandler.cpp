@@ -41,6 +41,7 @@ void GameHandler::OnKeyDown(WPARAM wParam)
     case 0x44:  // D
         player->SetLocation(POINT{ player_x+10,player_y});
         break;
+
     case 0x48:
     {
         BulletBase* Bullet = player->Attack();
