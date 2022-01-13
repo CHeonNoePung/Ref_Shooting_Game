@@ -180,6 +180,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         GHnd = GameHandler::GetInstance();
         GHnd->SethWnd(hWnd);
         CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);
+        CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);
         break;
     }
     case WM_DESTROY:
