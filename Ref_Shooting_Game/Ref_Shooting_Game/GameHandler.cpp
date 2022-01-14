@@ -88,8 +88,6 @@ void GameHandler::SethWnd(HWND nhWnd)
 
 
 
-
-
 DWORD __stdcall GameHandler::test(LPVOID param)
 {
     GameHandler* play = GetInstance();
@@ -161,19 +159,20 @@ void GameHandler::DeleteBullet(BulletBase* DelBullet)
 {
     
     if (DelBullet == nullptr) return; // null 포인터 들어오면 종료
-
+    
+    WaitForSingleObject(Bullet_SemaHnd, INFINITE);
     for (auto it = Bullets.begin(); it != Bullets.end(); it++)
     {
         if (*it == DelBullet)
         {
-            WaitForSingleObject(Bullet_SemaHnd, INFINITE);
             delete    DelBullet;
             it = Bullets.erase(it);
-            ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
+           
             break;
 
         }
     }
+    ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
 void GameHandler::CreateBullet(BulletBase* newBullet)
@@ -199,7 +198,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
             if (result == false) // 맵 밖에 나갔을경우
             {
                 GetInstance()->DeleteBullet(Bullet);
-               
+                break;
             }
             Sleep(10);
         }
