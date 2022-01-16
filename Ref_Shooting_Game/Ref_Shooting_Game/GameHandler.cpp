@@ -1,4 +1,4 @@
-#include "GameHandler.h"
+ï»¿#include "GameHandler.h"
 #include "PlayerBase.h"
 #include "Bullet_Normal.h"
 #include <iostream>
@@ -55,7 +55,7 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 	{
 		BulletBase* Bullet = player->Attack();
 		Bullets.push_back(Bullet);
-		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL); //Bullet ½º·¹µå »ý¼º
+		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL); //Bullet ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 		break;
 	case 0x4A:
@@ -85,51 +85,49 @@ void GameHandler::SethWnd(HWND nhWnd)
 	hWnd = nhWnd;
 }
 
-
-
-
-DWORD WINAPI GameHandler::test(LPVOID param)	
+// ì›€ì§ì´ëŠ”ê±° ì“°ë ˆë“œë¡œ êµ¬í˜„
+DWORD __stdcall GameHandler::test(LPVOID param)
 {
-	GameHandler* play = GetInstance();
-	PlayerBase* player = play->player;
-
-	while (1)
-	{   
-		if (GetKeyState(0x57) & 0x8000) //w			
-		{
-			if (player->GetLocation().y >= 3 )
-			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 3 });
-				InvalidateRect(hWnd, NULL, FALSE);
-			}
-		}
-		if (GetKeyState(0x41) & 0x8000) //a
-		{
-			if (player->GetLocation().x >= 3)
-			{
-				player->SetLocation(POINT{ player->GetLocation().x - 3, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
-			}
-		}
-		if (GetKeyState(0x53) & 0x8000) //s
-		{
-			if (player->GetLocation().y <= 900) // ¿©±â´Ù°¡ ÇÏ¸é µÊ
-			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 3 });
-				InvalidateRect(hWnd, NULL, FALSE);
-			}
-		}
-		if (GetKeyState(0x44) & 0x8000) //d
-		{
-			if (player->GetLocation().x <= 1080) // ¿©±â´Ù°¡ ÇÏ¸é µÊ
-			{
-				player->SetLocation(POINT{ player->GetLocation().x + 3, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
-			}
-		}
-		Sleep(20);
-		//https://mlpworld.tistory.com/entry/Å°º¸µå-»óÅÂ-Á¶»ç
-	}
+    GameHandler* play = GetInstance();
+    PlayerBase* player = play->player;
+    
+    while (1)
+    {   // í•´ë‹¹ í‚¤ê°€ ëˆŒë¦¬ë©´ 0x8000ì„ ë°˜í™˜í•¨ í•´ë‹¹ í‚¤ë“¤ì„ ê³„ì† í™•ì¸í•˜ë©´ì„œ í‚¤ê°€ ëˆŒë ¸ëŠ”ì§€ í™•ì¸í•¨
+        if (GetKeyState(0x57) & 0x8000) //w
+        {
+            if (player->GetLocation().y >= 10 )
+            {
+                player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 10 });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x41) & 0x8000) //a
+        {
+            if (player->GetLocation().x >= 10)
+            {
+                player->SetLocation(POINT{ player->GetLocation().x - 10, player->GetLocation().y });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x53) & 0x8000) //s
+        {
+            if (player->GetLocation().y <= 900) // ì—¬ê¸°ë‹¤ê°€ í•˜ë©´ ë¨
+            {
+                player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 10 });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        if (GetKeyState(0x44) & 0x8000) //d
+        {
+            if (player->GetLocation().x <= 1080) // ì—¬ê¸°ë‹¤ê°€ í•˜ë©´ ë¨
+            {
+                player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
+                InvalidateRect(hWnd, NULL, FALSE);
+            }
+        }
+        Sleep(30);
+        //https://mlpworld.tistory.com/entry/í‚¤ë³´ë“œ-ìƒíƒœ-ì¡°ì‚¬
+    }
 
 	return 0;
 }
@@ -141,7 +139,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 	while (1)
 	{   
-		//GetKeyState: ÀÎÀÚ °ªÀÌ ´­·ÁÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+		//GetKeyState: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
 			BulletBase* Bullet = player->Attack();
@@ -149,7 +147,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 			CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
 		}
 		Sleep(100);
-		//https://mlpworld.tistory.com/entry/Å°º¸µå-»óÅÂ-Á¶»ç
+		//https://mlpworld.tistory.com/entry/Å°ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½
 	}
 
 	return 0;
@@ -158,7 +156,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 void GameHandler::DeleteBullet(BulletBase* DelBullet)
 {
 	
-	if (DelBullet == nullptr) return; // null Æ÷ÀÎÅÍ µé¾î¿À¸é Á¾·á
+	if (DelBullet == nullptr) return; // null ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
@@ -195,7 +193,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			bool result = Bullet->MoveNext();
 			InvalidateRect(hWnd, NULL, false);
 
-			if (result == false) // ¸Ê ¹Û¿¡ ³ª°¬À»°æ¿ì
+			if (result == false) // ï¿½ï¿½ ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			{
 				GetInstance()->DeleteBullet(Bullet);
 				break;
