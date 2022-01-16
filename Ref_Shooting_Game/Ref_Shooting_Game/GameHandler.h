@@ -1,6 +1,7 @@
 #pragma once
 #include "framework.h"
 #include <vector>
+#include <list>
 
 using namespace std;
 class GameHandler
@@ -15,17 +16,21 @@ public:
 	
 	//
 	static DWORD WINAPI test(LPVOID param);
+	static DWORD WINAPI attack(LPVOID param);
+	void DeleteBullet(class BulletBase* DelBullet);
+	void CreateBullet(BulletBase* newBullet);
 	//
 
 	static DWORD WINAPI BulletTR(LPVOID param);
 	
 private:
 	GameHandler();
-	~GameHandler() {};
+	~GameHandler();
 	static GameHandler* Instance;
 	static HWND hWnd;
+	HANDLE Bullet_SemaHnd;
 
-	vector<class BulletBase*> Bullets;
+	list<class BulletBase*> Bullets;
 
 
 	class PlayerBase* player;

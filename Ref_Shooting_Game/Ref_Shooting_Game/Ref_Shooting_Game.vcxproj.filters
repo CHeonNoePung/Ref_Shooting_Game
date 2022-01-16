@@ -82,4 +82,8 @@
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\문서\ShootingGame_.xlsx" />
+    <None Include="..\..\..\문서\ShootingGame_Explanation.pptx" />
+  </ItemGroup>
 </Project>
