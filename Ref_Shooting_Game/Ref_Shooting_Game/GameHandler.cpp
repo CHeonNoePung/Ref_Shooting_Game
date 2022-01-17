@@ -139,7 +139,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 	while (1)
 	{   
-		//GetKeyState: ���� ���� �����ִ��� Ȯ���ϴ� �Լ�
+		
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
 			BulletBase* Bullet = player->Attack();
@@ -147,7 +147,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 			CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
 		}
 		Sleep(100);
-		//https://mlpworld.tistory.com/entry/Ű����-����-����
+		
 	}
 
 	return 0;
@@ -156,9 +156,9 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 void GameHandler::DeleteBullet(BulletBase* DelBullet)
 {
 	
-	if (DelBullet == nullptr) return; // null ������ ������ ����
+	if (DelBullet == nullptr) return; // null 값이면 리턴
 	
-	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
+	WaitForSingleObject(Bullet_SemaHnd, INFINITE);	
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
 	{
 		if (*it == DelBullet)
@@ -173,8 +173,9 @@ void GameHandler::DeleteBullet(BulletBase* DelBullet)
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
+//bullet 생성
 void GameHandler::CreateBullet(BulletBase* newBullet)
-{
+{		
 	
 			WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 			Bullets.push_back(newBullet);
@@ -193,7 +194,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			bool result = Bullet->MoveNext();
 			InvalidateRect(hWnd, NULL, false);
 
-			if (result == false) // �� �ۿ� ���������
+			if (result == false) 
 			{
 				GetInstance()->DeleteBullet(Bullet);
 				break;
