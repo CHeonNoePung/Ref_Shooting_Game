@@ -45,6 +45,9 @@
     <ClInclude Include="Bullet_Normal.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="EnomyBase.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ref_Shooting_Game.cpp">
@@ -68,6 +71,9 @@
     <ClCompile Include="Bullet_Normal.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="EnomyBase.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc">
@@ -81,9 +87,5 @@
     <Image Include="Ref_Shooting_Game.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\문서\ShootingGame_.xlsx" />
-    <None Include="..\..\..\문서\ShootingGame_Explanation.pptx" />
   </ItemGroup>
 </Project>

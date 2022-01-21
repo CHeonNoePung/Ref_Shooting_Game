@@ -2,10 +2,12 @@
 
 void Object::DrawObject(HDC hdc)
 {
+
 }
 
 POINT Object::GetLocation()
 {
+
     return Location;
 }
 

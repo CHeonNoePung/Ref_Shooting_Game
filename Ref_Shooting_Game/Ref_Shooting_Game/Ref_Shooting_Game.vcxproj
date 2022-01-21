@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="BulletBase.h" />
     <ClInclude Include="Bullet_Normal.h" />
+    <ClInclude Include="EnomyBase.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameHandler.h" />
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="BulletBase.cpp" />
     <ClCompile Include="Bullet_Normal.cpp" />
+    <ClCompile Include="EnomyBase.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Object.cpp" />

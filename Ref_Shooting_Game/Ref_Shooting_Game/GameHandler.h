@@ -17,6 +17,7 @@ public:
 	//
 	static DWORD WINAPI test(LPVOID param);
 	static DWORD WINAPI attack(LPVOID param);
+	static DWORD WINAPI enomy_attack(LPVOID param);
 	void DeleteBullet(class BulletBase* DelBullet);
 	void CreateBullet(BulletBase* newBullet);
 	//
@@ -34,5 +35,6 @@ private:
 
 
 	class PlayerBase* player;
+	class EnomyBase* enomy;
 };
 

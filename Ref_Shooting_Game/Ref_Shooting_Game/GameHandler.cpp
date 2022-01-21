@@ -1,5 +1,6 @@
 ﻿#include "GameHandler.h"
 #include "PlayerBase.h"
+#include "EnomyBase.h"
 #include "Bullet_Normal.h"
 #include <iostream>
 
@@ -10,6 +11,10 @@ GameHandler::GameHandler()
 {
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	player = new PlayerBase();
+	enomy = new EnomyBase();
+
+	CreateThread(NULL, 0, enomy_attack, (LPVOID)enomy, 0, NULL);
+
 }
 
 GameHandler::~GameHandler() 
@@ -20,7 +25,8 @@ GameHandler::~GameHandler()
 void GameHandler::OnPaint(HDC hdc)
 {
 	
-	player->DrawObject(hdc);                                                
+	player->DrawObject(hdc);    
+	enomy->DrawObject(hdc);
 
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
@@ -148,6 +154,22 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 		}
 		Sleep(100);
 		
+	}
+
+	return 0;
+}
+
+DWORD WINAPI GameHandler::enomy_attack(LPVOID param) // 적의 공격 스레드(1초마다 공격합니다)
+{
+	GameHandler* play = GetInstance();
+	EnomyBase* enomy = play->enomy;
+
+	while (1)
+	{
+		BulletBase* Bullet = enomy->Attack();
+		play->CreateBullet(Bullet);
+		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
+		Sleep(1000);	// 1초
 	}
 
 	return 0;
