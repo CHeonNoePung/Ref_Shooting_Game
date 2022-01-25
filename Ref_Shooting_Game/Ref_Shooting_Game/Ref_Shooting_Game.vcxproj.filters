@@ -87,5 +87,8 @@
     <Image Include="Ref_Shooting_Game.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="C:\Users\User\Desktop\main.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

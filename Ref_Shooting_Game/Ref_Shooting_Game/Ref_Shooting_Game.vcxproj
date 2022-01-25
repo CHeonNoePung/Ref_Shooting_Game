@@ -165,6 +165,7 @@
     <ResourceCompile Include="Ref_Shooting_Game.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\User\Desktop\main.bmp" />
     <Image Include="Ref_Shooting_Game.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
