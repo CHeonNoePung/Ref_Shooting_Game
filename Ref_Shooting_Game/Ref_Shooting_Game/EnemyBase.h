@@ -1,12 +1,13 @@
 #pragma once
 #include "Entity.h"
-class EnomyBase :
+class EnemyBase :
     public Entity
 
 {
 
 public:
-    EnomyBase();
+    EnemyBase();
     void DrawObject(HDC hdc);
     class BulletBase* Attack();
+    bool MoveNext();
 };

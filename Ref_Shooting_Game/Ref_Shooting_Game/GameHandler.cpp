@@ -1,6 +1,6 @@
 ﻿#include "GameHandler.h"
 #include "PlayerBase.h"
-#include "EnomyBase.h"
+#include "enemyBase.h"
 #include "Bullet_Normal.h"
 #include <iostream>
 
@@ -10,30 +10,38 @@ HWND GameHandler::hWnd = NULL;
 GameHandler::GameHandler()
 {
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
+	Enemy_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	player = new PlayerBase();
-	enomy = new EnomyBase();
+	EnemyBase* enemy = new EnemyBase();
+	CreateEnemy(enemy); //test
 
-	CreateThread(NULL, 0, enomy_attack, (LPVOID)enomy, 0, NULL);
+	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy, 0, NULL);
+	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
 
 }
 
 GameHandler::~GameHandler() 
 {
 	CloseHandle(Bullet_SemaHnd);
+	CloseHandle(Enemy_SemaHnd);
 }
 
 void GameHandler::OnPaint(HDC hdc)
-{
-	
-	player->DrawObject(hdc);    
-	enomy->DrawObject(hdc);
-
+{	
+	player->DrawObject(hdc);    	
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
 	{
 		(*it)->DrawObject(hdc);
 	}
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
+
+	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
+	for (auto it = Enemys.begin(); it != Enemys.end(); it++)
+	{
+		(*it)->DrawObject(hdc);
+	}
+	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 
 }
 
@@ -61,7 +69,7 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 	{
 		BulletBase* Bullet = player->Attack();
 		Bullets.push_back(Bullet);
-		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL); //Bullet ������ ����
+		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
 	}
 		break;
 	case 0x4A:
@@ -117,7 +125,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
         }
         if (GetKeyState(0x53) & 0x8000) //s
         {
-            if (player->GetLocation().y <= 900) // 여기다가 하면 됨
+            if (player->GetLocation().y <= 1020) // 여기다가 하면 됨
             {
                 player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 10 });
                 InvalidateRect(hWnd, NULL, FALSE);
@@ -125,7 +133,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
         }
         if (GetKeyState(0x44) & 0x8000) //d
         {
-            if (player->GetLocation().x <= 1080) // 여기다가 하면 됨
+            if (player->GetLocation().x <= 1020) // 여기다가 하면 됨
             {
                 player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
                 InvalidateRect(hWnd, NULL, FALSE);
@@ -159,17 +167,49 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 	return 0;
 }
 
-DWORD WINAPI GameHandler::enomy_attack(LPVOID param) // 적의 공격 스레드(1초마다 공격합니다)
+DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(1초마다 공격합니다)
 {
 	GameHandler* play = GetInstance();
-	EnomyBase* enomy = play->enomy;
+	EnemyBase * enemy = (EnemyBase*)param;;
+
 
 	while (1)
 	{
-		BulletBase* Bullet = enomy->Attack();
-		play->CreateBullet(Bullet);
-		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
+		WaitForSingleObject(play->Enemy_SemaHnd, INFINITE);		
+		if (enemy == nullptr) {
+			cout << "asdf" << endl;
+			ReleaseSemaphore(play->Enemy_SemaHnd, 1, NULL);
+			break;
+		}
+		//BulletBase* Bullet = enemy->Attack();
+		//play->CreateBullet(Bullet);
+		//CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
+		ReleaseSemaphore(play->Enemy_SemaHnd, 1, NULL);
 		Sleep(1000);	// 1초
+	}
+
+	return 0;
+}
+
+DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당하는 스레드입니다.
+{ 
+	EnemyBase* Enemy = (EnemyBase*)param;
+	if (Enemy != nullptr)
+	{
+		while (1)
+		{
+
+			bool result = Enemy->MoveNext();
+			InvalidateRect(hWnd, NULL, false);
+
+			if (result == false)
+			{
+				GetInstance()->DeleteEnemy(Enemy);
+				break;
+			}
+			Sleep(10);
+		}
+
 	}
 
 	return 0;
@@ -195,6 +235,25 @@ void GameHandler::DeleteBullet(BulletBase* DelBullet)
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
+void GameHandler::DeleteEnemy(EnemyBase* DelEnemy) 
+{
+	if (DelEnemy == nullptr) return; // null 값이면 리턴
+
+	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
+	for (auto it = Enemys.begin(); it != Enemys.end(); it++)
+	{
+		if (*it == DelEnemy)
+		{
+			delete    DelEnemy;
+			it = Enemys.erase(it);
+
+			break;
+
+		}
+	}
+	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
+}
+
 //bullet 생성
 void GameHandler::CreateBullet(BulletBase* newBullet)
 {		
@@ -203,6 +262,13 @@ void GameHandler::CreateBullet(BulletBase* newBullet)
 			Bullets.push_back(newBullet);
 			ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 
+}
+
+//Enemy 생성
+void GameHandler::CreateEnemy(EnemyBase* newEnemy) {
+	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
+	Enemys.push_back(newEnemy);
+	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 }
 
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)
@@ -226,5 +292,29 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 		
 	}
 	
+	return 0;
+}
+
+DWORD WINAPI GameHandler::EnemyTR(LPVOID param) 
+{
+	EnemyBase* Enemy = (EnemyBase*)param;
+	if (Enemy != nullptr)
+	{
+		while (1)
+		{
+
+			bool result = Enemy->MoveNext();
+			InvalidateRect(hWnd, NULL, false);
+
+			if (result == false)
+			{
+				GetInstance()->DeleteEnemy(Enemy);
+				break;
+			}
+			Sleep(10);
+		}
+
+	}
+
 	return 0;
 }

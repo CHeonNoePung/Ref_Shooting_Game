@@ -17,12 +17,16 @@ public:
 	//
 	static DWORD WINAPI test(LPVOID param);
 	static DWORD WINAPI attack(LPVOID param);
-	static DWORD WINAPI enomy_attack(LPVOID param);
+	static DWORD WINAPI enemy_attack(LPVOID param);
+	static DWORD WINAPI enemy_move(LPVOID param);
 	void DeleteBullet(class BulletBase* DelBullet);
 	void CreateBullet(BulletBase* newBullet);
+	void DeleteEnemy(class EnemyBase* DelEnemy);
+	void CreateEnemy(EnemyBase* newEnemy);
 	//
 
 	static DWORD WINAPI BulletTR(LPVOID param);
+	static DWORD WINAPI EnemyTR(LPVOID param);
 	
 private:
 	GameHandler();
@@ -30,11 +34,11 @@ private:
 	static GameHandler* Instance;
 	static HWND hWnd;
 	HANDLE Bullet_SemaHnd;
+	HANDLE Enemy_SemaHnd;
 
 	list<class BulletBase*> Bullets;
-
+	list<class EnemyBase*> Enemys;
 
 	class PlayerBase* player;
-	class EnomyBase* enomy;
 };
 
