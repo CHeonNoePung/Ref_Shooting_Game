@@ -7,5 +7,9 @@ public:
     PlayerBase();
     void DrawObject(HDC hdc);
     class BulletBase* Attack();
+    void GetDamages();
+private:
+    int Life;
+    int PowerCount;
 };
 

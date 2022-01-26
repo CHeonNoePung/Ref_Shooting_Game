@@ -4,7 +4,7 @@
 
 EnemyBase::EnemyBase()
 {
-	SetLocation(POINT{ 500, -10 });
+	SetLocation(POINT{ 500, 100 });
 	SetHealth(1);
 }
 
