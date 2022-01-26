@@ -32,14 +32,14 @@ void GameHandler::OnPaint(HDC hdc)
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
 	{
-		(*it)->DrawObject(hdc);
+		(*it).second->DrawObject(hdc);
 	}
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 
 	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
 	for (auto it = Enemys.begin(); it != Enemys.end(); it++)
 	{
-		(*it)->DrawObject(hdc);
+		(*it).second->DrawObject(hdc);
 	}
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 
@@ -49,31 +49,8 @@ void GameHandler::OnPaint(HDC hdc)
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
 	return;
-	int player_x = player->GetLocation().x;
-	int player_y = player->GetLocation().y;
 	switch (wParam)
 	{
-	case 0x57:  // W
-		player->SetLocation(POINT{ player_x,player_y - 10 });
-		break;
-	case 0x41:  // A
-		player->SetLocation(POINT{ player_x-10,player_y});
-		break;
-	case 0x53:  // S
-		player->SetLocation(POINT{ player_x,player_y + 10 });
-		break;
-	case 0x44:  // D
-		player->SetLocation(POINT{ player_x+10,player_y});
-		break;
-	case 0x48:  // H
-	{
-		BulletBase* Bullet = player->Attack();
-		Bullets.push_back(Bullet);
-		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
-	}
-		break;
-	case 0x4A:
-		break;
 	default:
 		break;
 	}
@@ -102,8 +79,9 @@ void GameHandler::SethWnd(HWND nhWnd)
 // 움직이는거 쓰레드로 구현
 DWORD __stdcall GameHandler::test(LPVOID param)
 {
-    GameHandler* play = GetInstance();
-    PlayerBase* player = play->player;
+
+    GameHandler* Instance = GetInstance();
+    PlayerBase* player = Instance->player;
     
     while (1)
     {   // 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
@@ -169,22 +147,24 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(1초마다 공격합니다)
 {
-	GameHandler* play = GetInstance();
+	GameHandler* Instance = GetInstance();
 	EnemyBase * enemy = (EnemyBase*)param;;
 
 
 	while (1)
 	{
-		WaitForSingleObject(play->Enemy_SemaHnd, INFINITE);		
-		if (enemy == nullptr) {
-			cout << "asdf" << endl;
-			ReleaseSemaphore(play->Enemy_SemaHnd, 1, NULL);
+		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);	
+
+		if (Instance->Enemys.count(enemy->GetKeyCode()) < 1) 
+		{
+			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 			break;
 		}
-		//BulletBase* Bullet = enemy->Attack();
-		//play->CreateBullet(Bullet);
-		//CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
-		ReleaseSemaphore(play->Enemy_SemaHnd, 1, NULL);
+		BulletBase* Bullet = enemy->Attack();
+		Instance->CreateBullet(Bullet);
+		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
+
+		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 		Sleep(1000);	// 1초
 	}
 
@@ -221,17 +201,8 @@ void GameHandler::DeleteBullet(BulletBase* DelBullet)
 	if (DelBullet == nullptr) return; // null 값이면 리턴
 	
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);	
-	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
-	{
-		if (*it == DelBullet)
-		{
-			delete    DelBullet;
-			it = Bullets.erase(it);
-		   
-			break;
-
-		}
-	}
+	Bullets.erase(DelBullet->GetKeyCode());
+	delete DelBullet;
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
@@ -240,34 +211,23 @@ void GameHandler::DeleteEnemy(EnemyBase* DelEnemy)
 	if (DelEnemy == nullptr) return; // null 값이면 리턴
 
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
-	for (auto it = Enemys.begin(); it != Enemys.end(); it++)
-	{
-		if (*it == DelEnemy)
-		{
-			delete    DelEnemy;
-			it = Enemys.erase(it);
-
-			break;
-
-		}
-	}
+	Enemys.erase(DelEnemy->GetKeyCode());
+	delete DelEnemy;
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
 //bullet 생성
 void GameHandler::CreateBullet(BulletBase* newBullet)
 {		
-	
-			WaitForSingleObject(Bullet_SemaHnd, INFINITE);
-			Bullets.push_back(newBullet);
-			ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
-
+	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
+	Bullets.insert(make_pair(newBullet->GetKeyCode(),newBullet));		// 생성된 Bullet을 배열로 관리하기 위해 map자료구조로 이뤄진 Bullets에 추가
+	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
 //Enemy 생성
 void GameHandler::CreateEnemy(EnemyBase* newEnemy) {
 	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
-	Enemys.push_back(newEnemy);
+	Enemys.insert(make_pair(newEnemy->GetKeyCode(), newEnemy));			// 위와같음
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 }
 

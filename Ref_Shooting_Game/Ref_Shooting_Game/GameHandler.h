@@ -1,7 +1,7 @@
 #pragma once
 #include "framework.h"
 #include <vector>
-#include <list>
+#include <map>
 
 using namespace std;
 class GameHandler
@@ -36,8 +36,8 @@ private:
 	HANDLE Bullet_SemaHnd;
 	HANDLE Enemy_SemaHnd;
 
-	list<class BulletBase*> Bullets;
-	list<class EnemyBase*> Enemys;
+	map<int,class BulletBase*> Bullets;			// 자료구조 map 검색
+	map<int,class EnemyBase*> Enemys;
 
 	class PlayerBase* player;
 };

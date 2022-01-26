@@ -5,6 +5,8 @@ class BulletBase :
 {
 private:
     POINTF Velocity;
+    static int g_KeyCode;
+    int KeyCode;
 public:
     BulletBase();
     BulletBase(POINT newLocation, POINTF newVelocity);
@@ -12,5 +14,6 @@ public:
     void SetVelocity(POINTF pointf);
     POINTF GetVelocity();
 
+    int GetKeyCode();
 };
 
