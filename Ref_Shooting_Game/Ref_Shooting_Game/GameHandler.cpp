@@ -194,6 +194,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 			if (result == false)
 			{
 				GetInstance()->DeleteEnemy(Enemy);
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 				break;
 			}
 
@@ -203,6 +204,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 			{
 				player->GetDamages(5);
 				GetInstance()->DeleteEnemy(Enemy);
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 				break;
 			}
 
@@ -258,7 +260,6 @@ bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
 	RECT HitBox;
 	RECT EnemyRect = ColEnemy->GetRect();
 	RECT PlayerRect = player->GetRect();
-	ColEnemy->GetLocation();
 	if (IntersectRect(&HitBox, &EnemyRect, &PlayerRect))
 		return true;
 	else
