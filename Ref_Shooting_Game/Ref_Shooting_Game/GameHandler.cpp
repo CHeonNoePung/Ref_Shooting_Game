@@ -14,6 +14,7 @@ GameHandler::GameHandler()
 	player = new PlayerBase();
 	EnemyBase* enemy = new EnemyBase();
 	CreateEnemy(enemy); //test
+	enemy->SetSize(40, 40);
 
 	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy, 0, NULL);
 	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
@@ -187,7 +188,17 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 				GetInstance()->DeleteEnemy(Enemy);
 				break;
 			}
+
+			bool hitresult = GetInstance() -> EnemyCollisionTest(Enemy);
+
+			if (hitresult == true)
+			{
+				GetInstance()->DeleteEnemy(Enemy);
+				break;
+			}
+			
 			Sleep(10);
+
 		}
 
 	}
@@ -231,6 +242,19 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy) {
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 }
 
+//충돌판정
+bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
+	RECT HitBox;
+	RECT EnemyRect = ColEnemy->GetRect();
+	RECT PlayerRect = player->GetRect();
+	ColEnemy->GetLocation();
+	if (IntersectRect(&HitBox, &EnemyRect, &PlayerRect))
+		return true;
+	else
+		return false;
+}
+
+//
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 {
 	BulletBase* Bullet = (BulletBase*)param;

@@ -7,6 +7,7 @@ class EnemyBase :
 private:
     static int g_KeyCode;
     int KeyCode;
+    int EnemyScore;
 public:
     EnemyBase();
     void DrawObject(HDC hdc);

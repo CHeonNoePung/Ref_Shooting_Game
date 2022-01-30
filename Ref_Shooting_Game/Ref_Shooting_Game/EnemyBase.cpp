@@ -7,14 +7,14 @@ EnemyBase::EnemyBase()
 {
 	SetLocation(POINT{ 500, 100 });
 	SetHealth(1);
+	EnemyScore = 500;
 	KeyCode = g_KeyCode++;
 }
 
 void EnemyBase::DrawObject(HDC hdc)
 {
-	int x = Location.x;
-	int y = Location.y;
-	Ellipse(hdc, x, y, x + 40, y + 40);
+	RECT temp = GetRect();
+	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
 BulletBase* EnemyBase::Attack()
@@ -32,6 +32,7 @@ bool EnemyBase::MoveNext()
 	else if (Location.x < 0) return false;
 	else return true;
 }
+
 
 int EnemyBase::GetKeyCode()
 {

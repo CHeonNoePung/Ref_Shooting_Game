@@ -8,13 +8,13 @@ PlayerBase::PlayerBase()
 	SetHealth(5);// Ã¼·Â 5
 	Life = 3;
 	PowerCount = 3;
+	SetSize(20, 20);
 }
 
 void PlayerBase::DrawObject(HDC hdc)
 {
-	int x = Location.x;
-	int y = Location.y;
-	Rectangle(hdc, x, y, x + 20, y + 20);
+	RECT temp = GetRect();
+	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
 BulletBase* PlayerBase::Attack()
