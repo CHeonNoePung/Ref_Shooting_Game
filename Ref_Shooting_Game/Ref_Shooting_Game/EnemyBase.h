@@ -14,4 +14,5 @@ public:
     class BulletBase* Attack();
     bool MoveNext();
     int GetKeyCode();
+    bool GetDamages();
 };

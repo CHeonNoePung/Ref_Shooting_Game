@@ -177,8 +177,16 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 	EnemyBase* Enemy = (EnemyBase*)param;
 	if (Enemy != nullptr)
 	{
+		PlayerBase* player = GetInstance()->player;
 		while (1)
 		{
+			WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
+			if (Instance->Enemys.count(Enemy->GetKeyCode()) < 1)
+			{
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+				break;
+			}
+
 
 			bool result = Enemy->MoveNext();
 			InvalidateRect(hWnd, NULL, false);
@@ -193,10 +201,13 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 
 			if (hitresult == true)
 			{
+				player->GetDamages(5);
 				GetInstance()->DeleteEnemy(Enemy);
 				break;
 			}
-			
+
+			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+
 			Sleep(10);
 
 		}
@@ -254,6 +265,33 @@ bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
 		return false;
 }
 
+EnemyBase* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
+	if (ColBullet->IsPlayer()) 
+	{
+		EnemyBase* enemytest = nullptr;
+		WaitForSingleObject(Enemy_SemaHnd, INFINITE);
+		for (auto it = Enemys.begin(); it != Enemys.end(); it++)
+		{
+			RECT HitBox;
+			RECT EnemyRect = (*it).second->GetRect();
+			RECT BulletRect = ColBullet->GetRect();
+			(*it).second->GetLocation();
+			if (IntersectRect(&HitBox, &EnemyRect, &BulletRect))
+			{
+				enemytest = (*it).second;
+				break;
+			}
+		}
+		ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
+		return enemytest;
+	}
+	else
+	{
+		return nullptr;
+	}
+	
+}
+
 //
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 {
@@ -268,12 +306,26 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 			if (result == false) 
 			{
-				GetInstance()->DeleteBullet(Bullet);
+				//GetInstance()->DeleteBullet(Bullet);
+				break;
+			}
+			EnemyBase* enemyBullet;
+			enemyBullet = GetInstance()->BulletCollisionTest(Bullet);
+			if (enemyBullet == nullptr) {
+
+			}
+			else
+			{
+				bool hit = enemyBullet->GetDamages();
+				if (hit == false) {
+					
+					GetInstance()->DeleteEnemy(enemyBullet);
+				}
 				break;
 			}
 			Sleep(10);
 		}
-		
+		GetInstance()->DeleteBullet(Bullet);
 	}
 	
 	return 0;

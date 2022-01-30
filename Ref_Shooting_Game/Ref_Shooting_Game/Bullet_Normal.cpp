@@ -2,9 +2,9 @@
 
 void Bullet_Normal::DrawObject(HDC hdc)
 {
-	int x = Location.x;
-	int y = Location.y;
-	Ellipse(hdc, x, y, x + 10, y + 10);
+
+	RECT temp = GetRect();
+	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
 Bullet_Normal::Bullet_Normal(POINT newLocation, POINTF newVelocity) : BulletBase(newLocation,newVelocity)

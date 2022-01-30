@@ -15,10 +15,12 @@ public:
 	void SetLocation(POINT point);
 	void SetSize(int width, int height);
 	RECT GetRect();
+	bool IsPlayer();
+	void SetPlayer();
 protected:
 	POINT Location;
 	int width;
 	int height;
-
+	bool bPlayer;
 };
 

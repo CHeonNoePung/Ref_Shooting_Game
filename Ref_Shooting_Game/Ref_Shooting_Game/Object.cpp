@@ -3,6 +3,7 @@
 Object::Object() 
 {
     SetSize(0, 0);
+    bPlayer = false;
 }
 
 void Object::SetSize(int width, int height) 
@@ -31,4 +32,15 @@ POINT Object::GetLocation()
 void Object::SetLocation(POINT point)
 {
     Location = point;
+}
+
+
+bool Object::IsPlayer()
+{
+    return bPlayer;
+}
+
+void Object::SetPlayer()
+{
+    bPlayer = true;
 }
