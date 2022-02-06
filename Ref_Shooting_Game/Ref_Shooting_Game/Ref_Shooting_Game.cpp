@@ -158,6 +158,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		static RECT bufferRT;
 		MemDC = BeginPaint(hWnd, &ps);                                              // 더블버퍼링 == OnPaint가 불릴때마다 흰색 화면에다 새로 그리는것이 아닌 미리 다른데다가 그려놓고 옮기는것
 
+
+		//UI 위치 선정용 Rect
+		Rectangle(hdc, 400, 10, 1000, 690);// 게임 배경
+		Rectangle(hdc, 150, 220, 200, 270);// 목숨1
+		Rectangle(hdc, 220, 220, 270, 270);// 목숨2
+		Rectangle(hdc, 290, 220, 340, 270);// 목숨3
+		Rectangle(hdc, 150, 300, 200, 350);// 아이템1
+		Rectangle(hdc, 220, 300, 270, 350);// 아이템2
+		Rectangle(hdc, 290, 300, 340, 350);// 아이템3
+
 		GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
 		hdc = CreateCompatibleDC(MemDC);                                            // 화면에 출력하지 않는 DC를 가져옴
 		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);   // MemDC와 호환되는 Bitmap을 만듬 == 메인 화면의 정보와 똑같은 그림판을 만듬
