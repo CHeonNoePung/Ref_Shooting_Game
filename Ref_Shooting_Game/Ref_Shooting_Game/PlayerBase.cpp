@@ -39,28 +39,27 @@ bool PlayerBase::GetDamages(int x)
 {
 	if (inv == true)
 	{
-		std::cout << "무적이라 데미지X" << std::endl;
+		//std::cout << "무적이라 데미지X" << std::endl;
 		return false;
 	}
-
 	bool bDead = false;
 	int GetLife;
 	GetLife = GetHealth() - x;
 	if (GetLife < 1) 
 	{
 		Life = Life - 1;
-		SetHealth(5);
-		SetLocation(POINT{ 800,400 });
 		bDead = true;
+		timer->TimerStart(*this, 5000, &PlayerBase::revive);
 	}
 	else 
 	{
+		// std::cout << "남은체력 : " << GetHealth() << std::endl;
+		inv = true;
+		// std::cout << "무적 시작" << std::endl;
+		timer->TimerStart(*this, 1000, &PlayerBase::inv_end);
 		SetHealth(GetLife);
 	}
-	std::cout << "남은체력 : " << GetHealth() << std::endl;
-	inv = true;
-	std::cout << "무적 시작" << std::endl;
-	timer->TimerStart(*this, 5000, &PlayerBase::inv_end);
+	
 
 	if (bDead == true) return true;		//죽으면 true
 	return false;
@@ -71,5 +70,14 @@ void PlayerBase::inv_end()
 {
 	std::cout << "무적 해제" << std::endl;
 	inv = false;
+}
+
+void PlayerBase::revive()
+{
+	inv = true;
+	SetHealth(5);
+	SetLocation(POINT{ 800,400 });
+	timer->TimerStart(*this, 3000, &PlayerBase::inv_end);
+	std::cout << "무적 해제 2" << std::endl;
 }
 
