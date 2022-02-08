@@ -14,6 +14,7 @@ public:
 	POINT GetLocation();
 	void SetLocation(POINT point);
 	void SetSize(int width, int height);
+	POINT GetSize();
 	RECT GetRect();
 	bool IsPlayer();
 	void SetPlayer();

@@ -12,6 +12,11 @@ void Object::SetSize(int width, int height)
     this->height = height;
 }
 
+POINT Object::GetSize()
+{
+    return POINT{width, height};
+}
+
 RECT Object::GetRect() 
 {
     RECT temp = { Location.x, Location.y, Location.x + width, Location.y + height };

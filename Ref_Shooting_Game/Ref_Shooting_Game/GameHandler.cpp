@@ -46,7 +46,6 @@ void GameHandler::OnPaint(HDC hdc)
 
 }
 
-
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
 	return;
@@ -279,6 +278,7 @@ EnemyBase* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
 			(*it).second->GetLocation();
 			if (IntersectRect(&HitBox, &EnemyRect, &BulletRect))
 			{
+				
 				enemytest = (*it).second;
 				break;
 			}

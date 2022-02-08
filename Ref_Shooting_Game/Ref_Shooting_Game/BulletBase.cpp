@@ -24,6 +24,8 @@ bool BulletBase::MoveNext()
 	Location = POINT{ Location.x + long(Velocity.x), Location.y + long(Velocity.y)};
 
 	if (Location.y < 0) return false;
+	// 화면 크기를 설정 안해서 임의로 비트맵에 설정된 좌표값으로 설정함
+	else if (Location.y > 690) return false;
 	else return true;
 }
 

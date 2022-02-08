@@ -19,7 +19,13 @@ void EnemyBase::DrawObject(HDC hdc)
 
 BulletBase* EnemyBase::Attack()
 {
-	BulletBase* Bullet = new Bullet_Normal(GetLocation(), POINTF{ 0, 3 });		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 지정														//newLocation, newVelocity
+	POINT location = GetLocation();
+
+	// 중앙에서 Bullet 발사
+	location.x += GetSize().x / 2 - 5 / 2;
+	location.y += GetSize().y / 2 - 5 / 2;
+
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 });		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 지정														//newLocation, newVelocity
 	Bullet->SetSize(5, 5);
 	return Bullet;
 }
@@ -33,6 +39,7 @@ bool EnemyBase::MoveNext()
 	else return true;
 }
 
+// 피격 시 체력 감소
 bool EnemyBase::GetDamages() 
 {
 	std::cout << GetHealth();
