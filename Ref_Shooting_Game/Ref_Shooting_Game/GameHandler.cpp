@@ -16,9 +16,20 @@ GameHandler::GameHandler()
 	CreateEnemy(enemy); //test
 	enemy->SetSize(40, 40);
 
+	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
+	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄
+
+	//EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
+	//CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
+
 	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy, 0, NULL);
 	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
 
+	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy2, 0, NULL);
+	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy2, 0, NULL);
+
+	//CreateThread(NULL, 0, enemy_move, (LPVOID)enemy3, 0, NULL);
+	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy3, 0, NULL);
 }
 
 GameHandler::~GameHandler() 
@@ -96,7 +107,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
         }
         if (GetKeyState(0x41) & 0x8000) //a
         {
-            if (player->GetLocation().x >= 10)
+            if (player->GetLocation().x >= 400)
             {
                 player->SetLocation(POINT{ player->GetLocation().x - 10, player->GetLocation().y });
                 InvalidateRect(hWnd, NULL, FALSE);
@@ -112,7 +123,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
         }
         if (GetKeyState(0x44) & 0x8000) //d
         {
-            if (player->GetLocation().x <= 1020) // 여기다가 하면 됨
+            if (player->GetLocation().x <= 1000) // 여기다가 하면 됨
             {
                 player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
                 InvalidateRect(hWnd, NULL, FALSE);

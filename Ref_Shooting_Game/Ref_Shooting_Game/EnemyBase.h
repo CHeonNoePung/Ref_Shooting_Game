@@ -10,6 +10,7 @@ private:
     int EnemyScore;
 public:
     EnemyBase();
+    EnemyBase(int type, POINT location);
     void DrawObject(HDC hdc);
     class BulletBase* Attack();
     bool MoveNext();
