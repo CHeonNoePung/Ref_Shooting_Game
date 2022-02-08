@@ -13,6 +13,6 @@ public:
     void DrawObject(HDC hdc);
     class BulletBase* Attack();
     bool MoveNext();
+    bool GetDamages(int x);
     int GetKeyCode();
-    bool GetDamages();
 };

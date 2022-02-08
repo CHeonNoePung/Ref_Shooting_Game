@@ -8,7 +8,7 @@ private :
 public:
     int GetHealth();
     void SetHealth(int newHealth);
-
+    virtual bool GetDamages(int x);
     virtual class BulletBase* Attack();
 
 };

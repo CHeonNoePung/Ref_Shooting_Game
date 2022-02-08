@@ -265,7 +265,7 @@ bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
 		return false;
 }
 
-EnemyBase* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
+Entity* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
 	if (ColBullet->IsPlayer()) 
 	{
 		EnemyBase* enemytest = nullptr;
@@ -288,9 +288,16 @@ EnemyBase* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
 	}
 	else
 	{
-		return nullptr;
+		RECT HitBox;
+		RECT PlayerRect = player->GetRect();
+		RECT BulletRect = ColBullet->GetRect();
+		if (IntersectRect(&HitBox, &PlayerRect, &BulletRect))
+		{
+			return player;
+		}
 	}
 	
+	return nullptr;
 }
 
 //
@@ -310,17 +317,22 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 				//GetInstance()->DeleteBullet(Bullet);
 				break;
 			}
-			EnemyBase* enemyBullet;
-			enemyBullet = GetInstance()->BulletCollisionTest(Bullet);
-			if (enemyBullet == nullptr) {
-
+			Entity* entity;
+			entity = GetInstance()->BulletCollisionTest(Bullet);
+			if (entity == nullptr) {
+				
+			}
+			else if (entity->IsPlayer())
+			{
+				entity->GetDamages(1);
+				break;
 			}
 			else
 			{
-				bool hit = enemyBullet->GetDamages();
-				if (hit == false) {
+				bool bDead = entity->GetDamages(1);
+				if (bDead == true) {
 					
-					GetInstance()->DeleteEnemy(enemyBullet);
+					GetInstance()->DeleteEnemy((EnemyBase*)entity);
 				}
 				break;
 			}

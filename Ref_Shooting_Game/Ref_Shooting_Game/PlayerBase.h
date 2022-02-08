@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
-#include "Timer.h"
 
+class Timer;
 class PlayerBase :
     public Entity
 {
@@ -10,9 +10,11 @@ public:
     PlayerBase();
     void DrawObject(HDC hdc);
     class BulletBase* Attack();
-    void GetDamages(int x);
+
+    bool GetDamages(int x);
+    
 private:
-    Timer timer; // Timer 按眉 父店
+    Timer *timer; // Timer 按眉 父店
     bool inv; //invincibility : 公利
     int Life;
     int PowerCount;

@@ -1,6 +1,7 @@
 #include "PlayerBase.h"
 #include "Bullet_Normal.h"
-
+#include "Timer.h"
+#include <iostream>
 
 PlayerBase::PlayerBase()
 {
@@ -11,6 +12,7 @@ PlayerBase::PlayerBase()
 	SetSize(21, 21);
 	SetPlayer();
 	inv = false;
+	timer = new Timer();
 }
 
 void PlayerBase::DrawObject(HDC hdc)
@@ -33,13 +35,15 @@ BulletBase* PlayerBase::Attack()
 	return Bullet;
 }
 
-void PlayerBase::GetDamages(int x)
+bool PlayerBase::GetDamages(int x)
 {
 	if (inv == true)
 	{
-		return;
+		std::cout << "무적이라 데미지X" << std::endl;
+		return false;
 	}
 
+	bool bDead = false;
 	int GetLife;
 	GetLife = GetHealth() - x;
 	if (GetLife < 1) 
@@ -47,21 +51,25 @@ void PlayerBase::GetDamages(int x)
 		Life = Life - 1;
 		SetHealth(5);
 		SetLocation(POINT{ 800,400 });
-	
+		bDead = true;
 	}
 	else 
 	{
 		SetHealth(GetLife);
 	}
-	
+	std::cout << "남은체력 : " << GetHealth() << std::endl;
 	inv = true;
+	std::cout << "무적 시작" << std::endl;
+	timer->TimerStart(*this, 5000, &PlayerBase::inv_end);
 
-	timer.TimerStart(*this, 1000, &PlayerBase::inv_end);
+	if (bDead == true) return true;		//죽으면 true
+	return false;
 	
 }
 
 void PlayerBase::inv_end()
 {
+	std::cout << "무적 해제" << std::endl;
 	inv = false;
 }
 

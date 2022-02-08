@@ -40,17 +40,17 @@ bool EnemyBase::MoveNext()
 }
 
 // 피격 시 체력 감소
-bool EnemyBase::GetDamages() 
+bool EnemyBase::GetDamages(int x) 
 {
 	std::cout << GetHealth();
 	int GetLife;
-	GetLife = GetHealth() - 1;
-	if (GetLife < 0)
-		return false;
+	GetLife = GetHealth() - x;
+	if (GetLife <= 0)
+		return true;
 	else
 	{
 		SetHealth(GetLife);
-		return true;
+		return false;
 	}
 }
 

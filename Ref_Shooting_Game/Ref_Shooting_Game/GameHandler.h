@@ -20,7 +20,7 @@ public:
 	static DWORD WINAPI enemy_attack(LPVOID param);
 	static DWORD WINAPI enemy_move(LPVOID param);
 	bool EnemyCollisionTest(class EnemyBase* ColEnemy);
-	EnemyBase* BulletCollisionTest(class BulletBase* ColBullet);
+	class Entity* BulletCollisionTest(class BulletBase* ColBullet);
 	void DeleteBullet(class BulletBase* DelBullet);
 	void CreateBullet(BulletBase* newBullet);
 	void DeleteEnemy(class EnemyBase* DelEnemy);
