@@ -9,7 +9,7 @@ void Bullet_Normal::DrawObject(HDC hdc)
 
 Bullet_Normal::Bullet_Normal(POINT newLocation, POINTF newVelocity) : BulletBase(newLocation,newVelocity)
 {
-
+	//¸Ó¾³ÇØ¿ä....
 }
 
 
