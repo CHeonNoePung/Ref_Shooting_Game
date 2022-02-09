@@ -149,6 +149,7 @@
     <ClInclude Include="PlayerBase.h" />
     <ClInclude Include="Ref_Shooting_Game.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClCompile Include="PlayerBase.cpp" />
     <ClCompile Include="Ref_Shooting_Game.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc" />
