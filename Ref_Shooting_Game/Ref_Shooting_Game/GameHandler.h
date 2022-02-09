@@ -19,22 +19,25 @@ public:
 	static DWORD WINAPI attack(LPVOID param);
 	static DWORD WINAPI enemy_attack(LPVOID param);
 	static DWORD WINAPI enemy_move(LPVOID param);
+
+	void GameStart();
 	bool EnemyCollisionTest(class EnemyBase* ColEnemy);
 	EnemyBase* BulletCollisionTest(class BulletBase* ColBullet);
-	void DeleteBullet(class BulletBase* DelBullet);
+	void DeleteBullet(int KeyCode);
+	void DeleteEnemy(int KeyCode);
 	void CreateBullet(BulletBase* newBullet);
-	void DeleteEnemy(class EnemyBase* DelEnemy);
 	void CreateEnemy(EnemyBase* newEnemy);
 	//
 
 	static DWORD WINAPI BulletTR(LPVOID param);
-	static DWORD WINAPI EnemyTR(LPVOID param);
+
 	
 private:
 	GameHandler();
 	~GameHandler();
 	static GameHandler* Instance;
 	static HWND hWnd;
+	static HANDLE Instance_SemaHnd;
 	HANDLE Bullet_SemaHnd;
 	HANDLE Enemy_SemaHnd;
 

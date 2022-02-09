@@ -6,30 +6,31 @@
 
 GameHandler* GameHandler::Instance = nullptr;
 HWND GameHandler::hWnd = NULL;
+HANDLE GameHandler::Instance_SemaHnd = NULL;
 
 GameHandler::GameHandler()
 {
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	Enemy_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
+	player = nullptr;
+}
+
+void GameHandler::GameStart()
+{
 	player = new PlayerBase();
+
+
 	EnemyBase* enemy = new EnemyBase();
-	CreateEnemy(enemy); //test
 	enemy->SetSize(40, 40);
+	CreateEnemy(enemy); //test
+	
 
-	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 550,100 });
-	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄
+	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
+	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄 / 스레드도 생성함
+	
 
-	EnemyBase* enemy3 = new EnemyBase(1, POINT{ 500,400 });
+	EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
 	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
-
-	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy, 0, NULL);
-	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
-
-	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy2, 0, NULL);
-	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy2, 0, NULL);
-
-	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy3, 0, NULL);
-	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy3, 0, NULL);
 }
 
 GameHandler::~GameHandler() 
@@ -60,17 +61,15 @@ void GameHandler::OnPaint(HDC hdc)
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
 	return;
-	switch (wParam)
-	{
-	default:
-		break;
-	}
+
 }
 
 GameHandler* GameHandler::GetInstance()
 {
 	if (Instance == nullptr)
+	{
 		Instance = new GameHandler();
+	}
 	
 	return Instance;
 }
@@ -148,7 +147,6 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 		{
 			BulletBase* Bullet = player->Attack();
 			play->CreateBullet(Bullet);
-			CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
 		}
 		Sleep(100);
 		
@@ -160,113 +158,158 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(1초마다 공격합니다)
 {
 	GameHandler* Instance = GetInstance();
-	EnemyBase * enemy = (EnemyBase*)param;;
+
+
+	// Enemy가 가진 고유한 킷값을 매개변수로 받음
+	int KeyCode = (int)(__int64)param;
+
+	// 킷값을 이용하여 Enemy를 얻음
+	EnemyBase* Enemy = Instance->Enemys.at(KeyCode);
+
+
 
 	while (1)
 	{
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);	
 
-		if (Instance->Enemys.count(enemy->GetKeyCode()) < 1) 
+		// 먼저 받았던 킷값을 가진 Enemy가 배열에 없으면 나감
+		if (Instance->Enemys.count(KeyCode) < 1) 
 		{
 			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 			break;
 		}
-		BulletBase* Bullet = enemy->Attack();
+
+		// Enemy가 가진 Bullet을 반환함
+		BulletBase* Bullet = Enemy->Attack();
 		Instance->CreateBullet(Bullet);
-		CreateThread(NULL, 0, BulletTR, (LPVOID)Bullet, 0, NULL);
 
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 		Sleep(1000);	// 1초
 	}
-
 	return 0;
 }
 
-DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당하는 스레드입니다.
+
+//적의 움직임을 담당하는 스레드
+DWORD WINAPI GameHandler::enemy_move(LPVOID param)					 
 { 
-	EnemyBase* Enemy = (EnemyBase*)param;
-	if (Enemy != nullptr)
+	GameHandler* Instance = GetInstance();
+
+	
+	// Enemy가 가진 고유한 킷값을 매개변수로 받음
+	int KeyCode = (int)(__int64)param;					
+
+	// 킷값을 이용하여 Enemy를 얻음
+	EnemyBase* Enemy = Instance->Enemys.at(KeyCode);				
+
+	// 플레이어 받아옴
+	PlayerBase* player = GetInstance()->player;						
+
+	while (1)
 	{
-		PlayerBase* player = GetInstance()->player;
-		while (1)
+		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);	
+
+
+		// 먼저 받았던 킷값을 가진 Enemy가 배열에 없으면 나감
+		if (Instance->Enemys.count(KeyCode) < 1)					
 		{
-			WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
-			if (Instance->Enemys.count(Enemy->GetKeyCode()) < 1)
-			{
-				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-				break;
-			}
-
-			// 맵 밖에 나갔을 떄
-			bool result = Enemy->MoveNext();
-			InvalidateRect(hWnd, NULL, false);
-
-			if (result == false)
-			{
-				GetInstance()->DeleteEnemy(Enemy);
-				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-				break;
-			}
-
-			bool hitresult = GetInstance() -> EnemyCollisionTest(Enemy);
-
-			// 플레이어와 몹의 충돌 판정
-			if (hitresult == true)
-			{
-				player->GetDamages(5);
-				if(Enemy->type != 2)
-				{
-					GetInstance()->DeleteEnemy(Enemy);
-				}
-				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-			}
-
 			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+			break;
+		}
+
+
+		// Enemy를 다음 방향으로 이동시킴 / 맵밖에 나가면 false 반환
+		bool result = Enemy->MoveNext();							
+		InvalidateRect(hWnd, NULL, false);
+
+		// false(맵밖 나가면) 스레드 종료
+		if (result == false)										
+		{
+			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+			break;
+		}
+
+
+		// 플레이어와 부딪혔는지 검사 / 부딪히면 true 반환
+		bool hitresult = GetInstance()->EnemyCollisionTest(Enemy);	
+
+		// true(부딪히면) 플레이어 5데미지 입히고 스레드 종료
+		if (hitresult == true)
+		{
+			player->GetDamages(5);									
+			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+			break;
+		}
+		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 
 			Sleep(80);
 
-		}
-
 	}
+	
+	Instance->DeleteEnemy(KeyCode);
+
 
 	return 0;
 }
 
-void GameHandler::DeleteBullet(BulletBase* DelBullet)
+void GameHandler::DeleteBullet(int KeyCode)
 {
-	
-	if (DelBullet == nullptr) return; // null 값이면 리턴
-	
-	WaitForSingleObject(Bullet_SemaHnd, INFINITE);	
-	Bullets.erase(DelBullet->GetKeyCode());
-	delete DelBullet;
+	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
+
+	// 해당 키코드가 존재할 경우에만 제거
+	if (Instance->Bullets.count(KeyCode) > 0)
+	{
+		delete Bullets.at(KeyCode);
+		Bullets.erase(KeyCode);
+	}
+
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
 }
 
-void GameHandler::DeleteEnemy(EnemyBase* DelEnemy) 
+void GameHandler::DeleteEnemy(int KeyCode) 
 {
-	if (DelEnemy == nullptr) return; // null 값이면 리턴
+	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
 
-	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
-	Enemys.erase(DelEnemy->GetKeyCode());
-	delete DelEnemy;
-	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
+	// 해당 키코드가 존재할 경우에만 제거
+	if (Instance->Enemys.count(KeyCode) > 0)
+	{
+		delete Enemys.at(KeyCode);
+		Enemys.erase(KeyCode);
+	}
+	
+	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 }
 
 //bullet 생성
 void GameHandler::CreateBullet(BulletBase* newBullet)
 {		
+	int KeyCode = newBullet->GetKeyCode();
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
-	Bullets.insert(make_pair(newBullet->GetKeyCode(),newBullet));		// 생성된 Bullet을 배열로 관리하기 위해 map자료구조로 이뤄진 Bullets에 추가
+
+	// 생성된 Bullet을 배열로 관리하기 위해 map자료구조로 이뤄진 Bullets에 추가
+	Bullets.insert(make_pair(newBullet->GetKeyCode(),newBullet));		
+
 	ReleaseSemaphore(Bullet_SemaHnd, 1, NULL);
+
+	CreateThread(NULL, 0, BulletTR, &KeyCode, 0, NULL);
 }
 
 //Enemy 생성
-void GameHandler::CreateEnemy(EnemyBase* newEnemy) {
+void GameHandler::CreateEnemy(EnemyBase* newEnemy) 
+{
+	int KeyCode = newEnemy->GetKeyCode();
 	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
-	Enemys.insert(make_pair(newEnemy->GetKeyCode(), newEnemy));			// 위와같음
+
+	// 생성된 Enemy를 배열로 관리하기 위해 map자료구조로 이뤄진 Enemys에 추가
+	Enemys.insert(make_pair(KeyCode, newEnemy));			
+
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
+
+	CreateThread(NULL, 0, enemy_move, (LPVOID)(__int64)KeyCode, 0, NULL);
+	CreateThread(NULL, 0, enemy_attack, (LPVOID)(__int64)KeyCode, 0, NULL);
 }
+
+
 
 //충돌판정
 bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
@@ -309,62 +352,44 @@ EnemyBase* GameHandler::BulletCollisionTest(BulletBase* ColBullet) {
 //
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 {
-	BulletBase* Bullet = (BulletBase*)param;
-	if (Bullet != nullptr)
-	{
-		while (1)
-		{
-
-			bool result = Bullet->MoveNext();
-			InvalidateRect(hWnd, NULL, false);
-
-			if (result == false) 
-			{
-				//GetInstance()->DeleteBullet(Bullet);
-				break;
-			}
-			EnemyBase* enemyBullet;
-			enemyBullet = GetInstance()->BulletCollisionTest(Bullet);
-			if (enemyBullet == nullptr) {
-
-			}
-			else
-			{
-				bool hit = enemyBullet->GetDamages();
-				if (hit == false) {
-					
-					GetInstance()->DeleteEnemy(enemyBullet);
-				}
-				break;
-			}
-			Sleep(10);
-		}
-		GetInstance()->DeleteBullet(Bullet);
-	}
-	
 	return 0;
-}
+	GameHandler* Instance = GetInstance();
 
-DWORD WINAPI GameHandler::EnemyTR(LPVOID param) 
-{
-	EnemyBase* Enemy = (EnemyBase*)param;
-	if (Enemy != nullptr)
+
+	// Bullet 가진 고유한 킷값을 매개변수로 받음
+	int KeyCode = (int)(__int64)param;
+
+	// 킷값을 이용하여 Bullet를 얻음
+	BulletBase* Bullet = Instance->Bullets.at(KeyCode);
+
+	while (1)
 	{
-		while (1)
+
+		bool result = Bullet->MoveNext();
+		InvalidateRect(hWnd, NULL, false);
+
+		if (result == false) 
 		{
-
-			bool result = Enemy->MoveNext();
-			InvalidateRect(hWnd, NULL, false);
-
-			if (result == false)
-			{
-				GetInstance()->DeleteEnemy(Enemy);
-				break;
-			}
-			Sleep(10);
+			break;
 		}
+		EnemyBase* enemy;
+		enemy = GetInstance()->BulletCollisionTest(Bullet);
+		if (enemy == nullptr) {
 
+		}
+		else
+		{
+			bool hit = enemy->GetDamages();
+			if (hit == false) {
+					
+				GetInstance()->DeleteEnemy();
+			}
+			break;
+		}
+		Sleep(10);
 	}
-
+	GetInstance()->DeleteBullet(KeyCode);
+	
+	
 	return 0;
 }
