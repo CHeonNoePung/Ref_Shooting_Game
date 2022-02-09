@@ -16,19 +16,19 @@ GameHandler::GameHandler()
 	CreateEnemy(enemy); //test
 	enemy->SetSize(40, 40);
 
-	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
+	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 550,100 });
 	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄
 
-	//EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
-	//CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
+	EnemyBase* enemy3 = new EnemyBase(1, POINT{ 500,400 });
+	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
 
 	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy, 0, NULL);
-	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
+	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy, 0, NULL);
 
 	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy2, 0, NULL);
-	CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy2, 0, NULL);
+	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy2, 0, NULL);
 
-	//CreateThread(NULL, 0, enemy_move, (LPVOID)enemy3, 0, NULL);
+	CreateThread(NULL, 0, enemy_move, (LPVOID)enemy3, 0, NULL);
 	//CreateThread(NULL, 0, enemy_attack, (LPVOID)enemy3, 0, NULL);
 }
 
@@ -57,7 +57,6 @@ void GameHandler::OnPaint(HDC hdc)
 
 }
 
-
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
 	return;
@@ -75,6 +74,7 @@ GameHandler* GameHandler::GetInstance()
 	
 	return Instance;
 }
+
 void GameHandler::DestroyInstance()
 {
 	if (Instance)
@@ -162,7 +162,6 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 	GameHandler* Instance = GetInstance();
 	EnemyBase * enemy = (EnemyBase*)param;;
 
-
 	while (1)
 	{
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);	
@@ -198,7 +197,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 				break;
 			}
 
-
+			// 맵 밖에 나갔을 떄
 			bool result = Enemy->MoveNext();
 			InvalidateRect(hWnd, NULL, false);
 
@@ -211,17 +210,20 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param) //적의 움직임을 담당�
 
 			bool hitresult = GetInstance() -> EnemyCollisionTest(Enemy);
 
+			// 플레이어와 몹의 충돌 판정
 			if (hitresult == true)
 			{
 				player->GetDamages(5);
-				GetInstance()->DeleteEnemy(Enemy);
+				if(Enemy->type != 2)
+				{
+					GetInstance()->DeleteEnemy(Enemy);
+				}
 				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-				break;
 			}
 
 			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 
-			Sleep(10);
+			Sleep(80);
 
 		}
 

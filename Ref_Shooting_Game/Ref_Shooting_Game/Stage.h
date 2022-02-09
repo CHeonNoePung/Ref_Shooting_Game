@@ -10,8 +10,6 @@ public:
 	GameHandler* GWnd;
 	Stage(GameHandler* GHwnd);
 	~Stage();
-
 private:
-
 };
 

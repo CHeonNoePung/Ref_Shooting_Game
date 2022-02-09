@@ -1,6 +1,7 @@
 #include "EnemyBase.h"
 #include "Bullet_Normal.h"
 
+// 스태틱 변수라서 여기에 함
 int EnemyBase::g_KeyCode = 0;
 
 EnemyBase::EnemyBase()
@@ -18,6 +19,8 @@ EnemyBase::EnemyBase(int type, POINT location)
 	1 == 중간보스
 	2 == 보스
 	*/
+	test_sin = 0;
+	this->type = type;
 	if (type == 0) 
 	{
 		SetLocation(POINT{ location.x, location.y });
@@ -46,6 +49,7 @@ EnemyBase::EnemyBase(int type, POINT location)
 	{
 		printf(" EnemyBase에서 생성자의 인자를 잘못 부여함 확인할 것");
 	}
+	printf("%d 개 생성됨\n", KeyCode);
 }
 
 
@@ -64,11 +68,26 @@ BulletBase* EnemyBase::Attack()
 
 bool EnemyBase::MoveNext()
 {
+	
+
+	//Rectangle(hdc, 400, 10, 1000, 690)// 게임 배경
 	Location = POINT{ Location.x , Location.y };
 
-	if (Location.y < 0) return false;
-	else if (Location.x < 0) return false;
+	Location.x = 500 + sin(test_sin) * 150;
+	Location.y += 5;
+	test_sin += 0.1;
+	
+
+
+
+
+
+	
+	// 맵 벗어나면 사라지게 false면 몹 삭제
+	if (10 > Location.y || Location.y > 690) return false;
+	else if ( 400 > Location.x || Location.x > 1000 ) return false;
 	else return true;
+	
 }
 
 bool EnemyBase::GetDamages() 

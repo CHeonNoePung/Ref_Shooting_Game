@@ -4,7 +4,12 @@
 #include "framework.h"
 #include "Ref_Shooting_Game.h"
 #include "GameHandler.h"
-#include "Stage.h"
+
+
+
+
+//POINT pline[6] = { POINT{50,100},POINT{150,100},POINT{250,150},POINT{247,212},POINT{58,216},POINT{50,133} };
+POINT pline[6] = { 50,100,150,100,250,150,247,212,58,216,50,133 };
 
 #define MAX_LOADSTRING 100
 
@@ -18,7 +23,6 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 GameHandler* GHnd = nullptr;
-Stage* SHnd = nullptr;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -169,14 +173,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		Rectangle(hdc, 150, 300, 200, 350);// 아이템1
 		Rectangle(hdc, 220, 300, 270, 350);// 아이템2
 		Rectangle(hdc, 290, 300, 340, 350);// 아이템3
+		
+
 
 		GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
 		hdc = CreateCompatibleDC(MemDC);                                            // 화면에 출력하지 않는 DC를 가져옴
 		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);   // MemDC와 호환되는 Bitmap을 만듬 == 메인 화면의 정보와 똑같은 그림판을 만듬
 		oldBackBit = (HBITMAP)SelectObject(hdc, BackBit);                           // 그림판과 hdc를 연결 == hdc로 그림을 그려도 출력되지 않고 BackBit에 그려짐
 		PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
+		
 
+
+		
 		GHnd->OnPaint(hdc);
+
+		PolyBezier(hdc, pline , 4);
+
 
 		// 더블버퍼링 끝
 		GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
@@ -186,21 +198,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		DeleteDC(hdc);
 		EndPaint(hWnd, &ps);
 		}
+
+		
 		break;
 	case WM_CREATE:
 	{
-
-		
-		
 		GHnd = GameHandler::GetInstance();                                          //GHnd : GameHandler를 객체를 받아옴
 		GHnd->SethWnd(hWnd);
-		SHnd = new Stage(GHnd);
 		                                                        //GameHandler 도 hWnd를 사용할 수 있게 hWnd를 전달
 		CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            //Test, attack 스레드 생성
 		CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);
 		break;
 	}
 	case WM_DESTROY:
+		GameHandler::DestroyInstance();
 		PostQuitMessage(0);
 		break;
 	case WM_KEYDOWN:
