@@ -23,7 +23,6 @@ EnemyBase::EnemyBase(int type, POINT location)
 		SetLocation(POINT{ location.x, location.y });
 		SetHealth(5);
 		EnemyScore = 500;
-		KeyCode = g_KeyCode++;
 		SetSize(40, 40);
 	}
 	else if(type == 1)
@@ -31,7 +30,6 @@ EnemyBase::EnemyBase(int type, POINT location)
 		SetLocation(POINT{ location.x, location.y });
 		SetHealth(10);
 		EnemyScore = 1000;
-		KeyCode = g_KeyCode++;
 		SetSize(100, 100);
 	}
 	else if (type == 2)
@@ -39,13 +37,13 @@ EnemyBase::EnemyBase(int type, POINT location)
 		SetLocation(POINT{ location.x, location.y });
 		SetHealth(50);
 		EnemyScore = 2000;
-		KeyCode = g_KeyCode++;
 		SetSize(200, 200);
 	}
 	else
 	{
 		printf(" EnemyBase에서 생성자의 인자를 잘못 부여함 확인할 것");
 	}
+	KeyCode = g_KeyCode++;
 }
 
 
