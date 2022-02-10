@@ -19,7 +19,6 @@ void GameHandler::GameStart()
 {
 	player = new PlayerBase();
 
-
 	EnemyBase* enemy = new EnemyBase();
 	enemy->SetSize(40, 40);
 	CreateEnemy(enemy); //test
