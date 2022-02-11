@@ -3,22 +3,22 @@
 
 class Timer;
 class PlayerBase :
-    public Entity
+	public Entity
 {
 public:
 
-    void inv_end(); // ¹«Àû Á¾·á
-    void revive(); // ¶óÀÌÇÁ ¼Ò¸ğ ÈÄ ºÎÈ° ½Ã È£Ãâ
-    PlayerBase();
-    void DrawObject(HDC hdc);
-    class BulletBase* Attack();
-    bool GetDamages(int x);
+	void inv_end(); // ë¬´ì  ì¢…ë£Œ
+	void revive(); // ë¼ì´í”„ ì†Œëª¨ í›„ ë¶€í™œ ì‹œ í˜¸ì¶œ
+	PlayerBase();
+	void DrawObject(HDC hdc);
+	class BulletBase* Attack();
+	bool GetDamages(int x);
 
-    
+	
 private:
-    Timer *timer; // Timer °´Ã¼ ¸¸µê
-    bool inv; //invincibility : ¹«Àû
-    int Life;
-    int PowerCount;
+	Timer *timer; // Timer ê°ì²´ ë§Œë“¦
+	bool inv; //invincibility : ë¬´ì 
+	int Life;
+	int PowerCount;
 };
 

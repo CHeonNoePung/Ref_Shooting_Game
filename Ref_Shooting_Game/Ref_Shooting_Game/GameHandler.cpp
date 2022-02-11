@@ -1,7 +1,8 @@
-﻿#include "GameHandler.h"
+#include "GameHandler.h"
 #include "PlayerBase.h"
 #include "enemyBase.h"
 #include "Bullet_Normal.h"
+#include "Enemy_bird.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
@@ -30,6 +31,11 @@ void GameHandler::GameStart()
 
 	EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
 	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
+
+	EnemyBase* enemy_bird = new Enemy_bird();
+	CreateEnemy(enemy_bird);
+
+
 }
 
 GameHandler::~GameHandler()

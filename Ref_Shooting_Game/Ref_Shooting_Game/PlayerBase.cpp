@@ -60,7 +60,6 @@ bool PlayerBase::GetDamages(int x)
 		SetHealth(GetLife);
 	}
 	
-
 	if (bDead == true) return true;		//Á×À¸¸é true
 	return false;
 	
