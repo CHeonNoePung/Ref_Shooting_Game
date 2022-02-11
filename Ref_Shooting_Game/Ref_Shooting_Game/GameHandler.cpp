@@ -2,6 +2,8 @@
 #include "PlayerBase.h"
 #include "enemyBase.h"
 #include "Bullet_Normal.h"
+#include "Enemy_turret.h"
+#include "Enemy_MiddleBoss.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
@@ -19,6 +21,11 @@ void GameHandler::GameStart()
 {
 	player = new PlayerBase();
 
+	EnemyBase* enemy0 = new Enemy_turret();
+	CreateEnemy(enemy0);
+
+	EnemyBase* MiddleBoss = new Enemy_MiddleBoss();
+	CreateEnemy(MiddleBoss);
 
 	EnemyBase* enemy = new EnemyBase();
 	enemy->SetSize(40, 40);

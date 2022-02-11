@@ -13,9 +13,9 @@ private:
 public:
     EnemyBase();
     EnemyBase(int type, POINT location);
-    void DrawObject(HDC hdc);
+    virtual void DrawObject(HDC hdc);
     class BulletBase* Attack();
-    bool MoveNext();
+    virtual bool MoveNext();
     bool GetDamages(int x);
     int GetKeyCode();
     bool GetDamages();

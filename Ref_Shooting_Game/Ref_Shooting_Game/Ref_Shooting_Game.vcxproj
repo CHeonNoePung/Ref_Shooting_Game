@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="BulletBase.h" />
     <ClInclude Include="Bullet_Normal.h" />
+    <ClInclude Include="Enemy_MiddleBoss.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="framework.h" />
@@ -152,10 +153,12 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Enemy_turret.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletBase.cpp" />
     <ClCompile Include="Bullet_Normal.cpp" />
+    <ClCompile Include="Enemy_MiddleBoss.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameHandler.cpp" />
@@ -164,6 +167,7 @@
     <ClCompile Include="Ref_Shooting_Game.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Enemy_turret.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc" />
