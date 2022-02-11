@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include <iostream>
+#include "PatternBase.h"
 class EnemyBase :
     public Entity
 {
@@ -8,17 +9,15 @@ private:
     static int g_KeyCode;
     int KeyCode;
     int EnemyScore;
-    POINT monster_move[5] = { {450,15},{550,20},{600,25},{650,30},{700,35} };
-
+    PatternBase* Pattern;
 public:
     EnemyBase();
-    EnemyBase(int type, POINT location);
+    ~EnemyBase();
+
     void DrawObject(HDC hdc);
-    class BulletBase* Attack();
+    virtual PatternResult Attack();
     bool MoveNext();
     bool GetDamages(int x);
     int GetKeyCode();
-    bool GetDamages();
-    int type;
     float test_sin;
 };

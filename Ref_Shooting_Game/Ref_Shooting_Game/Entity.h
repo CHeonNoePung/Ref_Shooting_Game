@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "PatternBase.h"
 class Entity :
     public Object
 {
@@ -9,7 +10,7 @@ public:
     int GetHealth();
     void SetHealth(int newHealth);
     virtual bool GetDamages(int x);
-    virtual class BulletBase* Attack();
+    virtual PatternResult Attack() = 0;
 
 };
 

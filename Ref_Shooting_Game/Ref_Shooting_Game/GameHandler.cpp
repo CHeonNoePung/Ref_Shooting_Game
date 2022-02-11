@@ -23,13 +23,6 @@ void GameHandler::GameStart()
 	enemy->SetSize(40, 40);
 	CreateEnemy(enemy); //test
 
-
-	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
-	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄 / 스레드도 생성함
-
-
-	EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
-	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
 }
 
 GameHandler::~GameHandler()
@@ -144,7 +137,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
-			BulletBase* Bullet = player->Attack();
+			BulletBase* Bullet = player->Attack().Bullet;
 			play->CreateBullet(Bullet);
 		}
 		Sleep(100);
@@ -178,12 +171,15 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 			break;
 		}
 
-		// Enemy가 가진 Bullet을 반환함
-		BulletBase* Bullet = Enemy->Attack();
+		// Enemy가 가진 패턴을 반환함
+		PatternResult result = Enemy->Attack();
+
+		BulletBase* Bullet = result.Bullet;
+		int Interval = result.Interval;
 		Instance->CreateBullet(Bullet);
 
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-		Sleep(1000);	// 1초
+		Sleep(Interval);	
 	}
 	return 0;
 }

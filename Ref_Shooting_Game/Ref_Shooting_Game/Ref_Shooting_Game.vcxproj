@@ -150,6 +150,9 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="PatternBase.h" />
+    <ClInclude Include="PatternHurricane.h" />
+    <ClInclude Include="PatternNormal.h" />
     <ClInclude Include="PlayerBase.h" />
     <ClInclude Include="Ref_Shooting_Game.h" />
     <ClInclude Include="Resource.h" />
@@ -164,6 +167,9 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PatternBase.cpp" />
+    <ClCompile Include="PatternHurricane.cpp" />
+    <ClCompile Include="PatternNormal.cpp" />
     <ClCompile Include="PlayerBase.cpp" />
     <ClCompile Include="Ref_Shooting_Game.cpp" />
     <ClCompile Include="Timer.cpp" />

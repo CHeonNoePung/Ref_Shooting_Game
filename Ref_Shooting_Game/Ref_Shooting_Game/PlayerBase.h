@@ -11,7 +11,7 @@ public:
     void revive(); // 라이프 소모 후 부활 시 호출
     PlayerBase();
     void DrawObject(HDC hdc);
-    class BulletBase* Attack();
+    PatternResult Attack();
     bool GetDamages(int x);
 
     

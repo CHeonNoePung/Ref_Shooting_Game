@@ -5,6 +5,7 @@ class BulletBase :
 {
 private:
     POINTF Velocity;
+    POINTF LocationF;
     static int g_KeyCode;
     int KeyCode;
     
