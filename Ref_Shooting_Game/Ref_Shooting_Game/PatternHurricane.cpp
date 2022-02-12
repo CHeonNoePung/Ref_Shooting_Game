@@ -19,7 +19,7 @@ PatternResult PatternHurricane::Next(RECT rect)
 	if (flag == true)
 	{
 		RealDegree += 180;
-		degree += 30;
+		degree += 15;
 		flag = false;
 		result.Interval = BulletInterval;
 	}
@@ -28,7 +28,6 @@ PatternResult PatternHurricane::Next(RECT rect)
 		flag = true;
 		result.Interval = 0;
 	}
-
 	// ¡ﬂæ” ¿ßƒ°
 	POINT location;
 	location.x = rect.left + (rect.right - rect.left) / 2 - BulletSize/2;
@@ -36,14 +35,14 @@ PatternResult PatternHurricane::Next(RECT rect)
 
 	// √—æÀ ¿ßƒ°
 	POINT BulletLoc = location;
-	BulletLoc.y -= sin(RealDegree * (3.14 / 180)) * Distance ;
-	BulletLoc.x -= cos(RealDegree * (3.14 / 180)) * Distance;
+	BulletLoc.y -= (int)(sin(RealDegree * (3.14 / 180)) * Distance) ;
+	BulletLoc.x -= (int)(cos(RealDegree * (3.14 / 180)) * Distance);
 
 
 	// ∞≈∏Æ∫§≈Õ
 	POINT Dist_vec = { BulletLoc.x - location.x, BulletLoc.y - location.y };
 
-	// ¥‹¿ß∫§≈Õ
+	// ¥‹¿ß∫§≈Õ ( πÊ«‚ )
 	POINTF Unit_vec = { (float)Dist_vec.x / Distance, (float)Dist_vec.y / Distance };
 
 	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec);
@@ -51,7 +50,7 @@ PatternResult PatternHurricane::Next(RECT rect)
 	result.Bullet = Bullet;
 
 
-	if (RealDegree == 330) degree = 0;
+	if (RealDegree == 345) degree = 0;
 
 
 	
