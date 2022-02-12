@@ -10,7 +10,6 @@ public:
     int GetHealth();
     void SetHealth(int newHealth);
     virtual bool GetDamages(int x);
-    virtual PatternResult Attack() = 0;
 
 };
 

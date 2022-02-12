@@ -6,6 +6,7 @@ class BulletBase :
 private:
     POINTF Velocity;
     POINTF LocationF;
+    float Speed;
     static int g_KeyCode;
     int KeyCode;
     
@@ -16,6 +17,8 @@ public:
     void SetVelocity(POINTF pointf);
     POINTF GetVelocity();
     int GetKeyCode();
+    void SetSpeed(int newSpeed);
+    
 
 };
 

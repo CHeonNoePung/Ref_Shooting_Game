@@ -1,6 +1,9 @@
 ﻿// Ref_Shooting_Game.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+// 인코딩 에러 표시 없앰
+#pragma warning(disable: 4828)
+
 #include "framework.h"
 #include "Ref_Shooting_Game.h"
 #include "GameHandler.h"

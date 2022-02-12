@@ -172,7 +172,11 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 		}
 
 		// Enemy가 가진 패턴을 반환함
-		PatternResult result = Enemy->Attack();
+		PatternParam Param;
+		Param.EntityRect = Enemy->GetRect();
+		Param.PlayerRect = Instance->player->GetRect();
+
+		PatternResult result = Enemy->Attack(Param);
 
 		BulletBase* Bullet = result.Bullet;
 		int Interval = result.Interval;

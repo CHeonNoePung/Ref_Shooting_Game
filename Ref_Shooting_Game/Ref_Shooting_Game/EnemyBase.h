@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
 #include <iostream>
-#include "PatternBase.h"
 class EnemyBase :
     public Entity
 {
@@ -9,13 +8,13 @@ private:
     static int g_KeyCode;
     int KeyCode;
     int EnemyScore;
-    PatternBase* Pattern;
+    class PatternBase* Pattern;
 public:
     EnemyBase();
     ~EnemyBase();
 
     void DrawObject(HDC hdc);
-    virtual PatternResult Attack();
+    virtual PatternResult Attack(PatternParam Param);
     bool MoveNext();
     bool GetDamages(int x);
     int GetKeyCode();

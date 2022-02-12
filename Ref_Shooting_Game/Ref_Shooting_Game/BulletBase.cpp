@@ -9,6 +9,7 @@ BulletBase::BulletBase()
 	Location = POINT{ 0,0 };
 	LocationF = POINTF{ 0,0 };
 	KeyCode = g_KeyCode++;
+	Speed = 1;
 
 }
 
@@ -18,13 +19,14 @@ BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
 	LocationF = { (float)newLocation.x,(float)newLocation.y };
 	Velocity = newVelocity;
 	KeyCode = g_KeyCode++;
+	Speed = 1;
 
 }
 
 bool BulletBase::MoveNext()
 {
-	LocationF = { LocationF.x + Velocity.x, LocationF.y + Velocity.y };
-	Location = {(LONG)LocationF.x, (LONG)LocationF.y};
+	LocationF = { LocationF.x + Velocity.x * Speed, LocationF.y + Velocity.y * Speed };
+	Location = {(LONG)LocationF.x , (LONG)LocationF.y };
 
 	if (Location.y < 0) return false;
 	// 화면 크기를 설정 안해서 임의로 비트맵에 설정된 좌표값으로 설정함
@@ -45,4 +47,9 @@ POINTF BulletBase::GetVelocity()
 int BulletBase::GetKeyCode()
 {
 	return KeyCode;
+}
+
+void BulletBase::SetSpeed(int newSpeed)
+{
+	Speed = newSpeed;
 }

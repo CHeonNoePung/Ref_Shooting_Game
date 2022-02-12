@@ -9,10 +9,11 @@ PatternHurricane::PatternHurricane(int Interval, int size) : PatternBase(Interva
 	degree = 0;
 }
 
-PatternResult PatternHurricane::Next(RECT rect)
+PatternResult PatternHurricane::Next(PatternParam Param)
 {
 	PatternResult result = { nullptr,0 };
 	
+	RECT rect = Param.EntityRect;
 	int Distance = 50;
 
 	int RealDegree = degree;
@@ -59,19 +60,3 @@ PatternResult PatternHurricane::Next(RECT rect)
 	return result;
 }
 
-/*
-
-POINT TargetLoc = Target->GetLocation();
-
-	POINT Dist_vec = { TargetLoc.x + 32 - Location.x, TargetLoc.y + 32 - Location.y };	// Target과 ProjectileBase의 사이 벡터
-	int Distance = (int)sqrt(pow(Dist_vec.x, 2) + pow(Dist_vec.y, 2));	// Target과 Projectie의 거리를 구함
-
-	POINTF Unit_vec;
-	Unit_vec.x = (float)Dist_vec.x / Distance;									// 단위벡터로 변환
-	Unit_vec.y = (float)Dist_vec.y / Distance;
-
-	Location.x += (LONG)(Unit_vec.x * Speed * 10);
-	Location.y += (LONG)(Unit_vec.y * Speed * 10);
-
-
-*/

@@ -6,6 +6,10 @@ class PatternNormal :
     
 public:
     PatternNormal(int Interval, int size);
-    PatternResult Next(RECT rect);
+    PatternResult Next(PatternParam Param);
+
+    void SetHomming(bool bHomming);
+private:
+    bool bHomming;
 };
 

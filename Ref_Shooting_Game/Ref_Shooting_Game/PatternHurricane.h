@@ -5,7 +5,7 @@ class PatternHurricane :
 {
 public:
     PatternHurricane(int Interval, int size);
-    PatternResult Next(RECT rect);
+    PatternResult Next(PatternParam Param);
 private:
     int degree;          // °¢µµ
     int flag;
