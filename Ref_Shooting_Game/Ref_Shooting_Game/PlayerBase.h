@@ -1,7 +1,10 @@
 #pragma once
 #include "Entity.h"
 
+
+template <typename T> 
 class Timer;
+
 class PlayerBase :
     public Entity
 {
@@ -16,7 +19,7 @@ public:
 
     
 private:
-    Timer *timer; // Timer 按眉 父店
+    Timer<PlayerBase> *timer; // Timer 按眉 父店
     bool inv; //invincibility : 公利
     int Life;
     int PowerCount;

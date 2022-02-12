@@ -9,6 +9,12 @@ struct PatternResult
 	int Interval;
 };
 
+struct PatternParam
+{
+	RECT EntityRect;
+	RECT PlayerRect;
+};
+
 
 class PatternBase
 {

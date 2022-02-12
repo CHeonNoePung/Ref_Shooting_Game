@@ -12,7 +12,7 @@ PlayerBase::PlayerBase()
 	SetSize(21, 21);
 	SetPlayer();
 	inv = false;
-	timer = new Timer();
+	timer = new Timer<PlayerBase>();
 }
 
 void PlayerBase::DrawObject(HDC hdc)
