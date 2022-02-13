@@ -54,6 +54,12 @@
     <ClInclude Include="Stage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_turret.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_MiddleBoss.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="Type0.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -90,6 +96,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_turret.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_MiddleBoss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Type0.cpp">

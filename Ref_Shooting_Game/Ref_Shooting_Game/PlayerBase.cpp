@@ -49,7 +49,7 @@ bool PlayerBase::GetDamages(int x)
 	{
 		Life = Life - 1;
 		bDead = true;
-		timer->TimerStart(*this, 5000, &PlayerBase::revive);
+		timer->TimerStart(*this, 500, &PlayerBase::revive);
 	}
 	else 
 	{
