@@ -176,8 +176,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\User\Desktop\main.bmp" />
+    <Image Include="ewq.png" />
+    <Image Include="LA_IMAGE.jpg" />
     <Image Include="Ref_Shooting_Game.ico" />
     <Image Include="small.ico" />
+    <Image Include="test.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
