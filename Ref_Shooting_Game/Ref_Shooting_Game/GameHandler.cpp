@@ -89,6 +89,8 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	GameHandler* Instance = GetInstance();
 	PlayerBase* player = Instance->player;
 
+	if (player->IsDead()) return 0;
+
 	while (1)
 	{   // 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
 		if (GetKeyState(0x57) & 0x8000) //w
@@ -310,6 +312,7 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 
 //충돌판정
 bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
+	if (player->IsDead()) return false;
 	RECT HitBox;
 	RECT EnemyRect = ColEnemy->GetRect();
 	RECT PlayerRect = player->GetRect();
@@ -342,6 +345,7 @@ int GameHandler::BulletCollisionTestToEnemy(BulletBase* ColBullet) {
 }
 bool GameHandler::BulletCollisionTestToPlayer(BulletBase* ColBullet)
 {
+	if (player->IsDead()) return false;
 	RECT HitBox;
 	RECT PlayerRect = player->GetRect();
 	RECT BulletRect = ColBullet->GetRect();

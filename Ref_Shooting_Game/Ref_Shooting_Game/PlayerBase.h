@@ -11,7 +11,11 @@ class PlayerBase :
 public:
 
     void inv_end(); // 무적 종료
+    void inv_start(int time);
+    bool IsDead();
+    // 무적 시작
     void revive(); // 라이프 소모 후 부활 시 호출
+    void flicker(); // 무적중 깜박임
     PlayerBase();
     void DrawObject(HDC hdc);
     PatternResult Attack();
@@ -23,5 +27,8 @@ private:
     bool inv; //invincibility : 무적
     int Life;
     int PowerCount;
+    bool inv_Invisible;
+    
+    bool bDead;
 };
 

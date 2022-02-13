@@ -12,11 +12,14 @@ PlayerBase::PlayerBase()
 	SetSize(21, 21);
 	SetPlayer();
 	inv = false;
+	inv_Invisible = false;
+	bDead = false;
 	timer = new Timer<PlayerBase>();
 }
 
 void PlayerBase::DrawObject(HDC hdc)
 {
+	if (inv_Invisible == true || bDead == true) return;
 	RECT temp = GetRect();
 	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
@@ -42,27 +45,24 @@ PatternResult PlayerBase::Attack()
 
 bool PlayerBase::GetDamages(int x)
 {
-	if (inv == true)
+	if (inv == true || bDead == true)
 	{
-		//std::cout << "무적이라 데미지X" << std::endl;
 		return false;
 	}
-	bool bDead = false;
 	int GetLife;
 	GetLife = GetHealth() - x;
 	if (GetLife < 1) 
 	{
 		Life = Life - 1;
 		bDead = true;
-		timer->TimerStart(*this, 5000, &PlayerBase::revive);
+		cout << "죽음   남은 목숨 : " << Life << endl;
+		timer->TimerStart(*this, 3000, &PlayerBase::revive);
 	}
 	else 
 	{
-		// std::cout << "남은체력 : " << GetHealth() << std::endl;
-		inv = true;
-		// std::cout << "무적 시작" << std::endl;
-		timer->TimerStart(*this, 1000, &PlayerBase::inv_end);
+		inv_start(1000);
 		SetHealth(GetLife);
+		cout << "남은 체력 : " << GetHealth() << endl;
 	}
 	
 
@@ -71,18 +71,48 @@ bool PlayerBase::GetDamages(int x)
 	
 }
 
-void PlayerBase::inv_end()
-{
-	std::cout << "무적 해제" << std::endl;
-	inv = false;
-}
 
 void PlayerBase::revive()
 {
-	inv = true;
+	inv_start(3000);
 	SetHealth(5);
+	bDead = false;
 	SetLocation(POINT{ 800,400 });
-	timer->TimerStart(*this, 3000, &PlayerBase::inv_end);
-	std::cout << "무적 해제 2" << std::endl;
+	
 }
 
+
+// 무정동안 깜박이게 함
+void PlayerBase::flicker()
+{
+	if (inv == false)
+	{
+		inv_Invisible = false;
+		return;
+	}
+
+	if (inv_Invisible == true)
+		inv_Invisible = false;
+	else
+		inv_Invisible = true;
+
+	timer->TimerStart(*this, 50, &PlayerBase::flicker);
+}
+
+
+void PlayerBase::inv_end()
+{
+	inv = false;
+}
+
+void PlayerBase::inv_start(int time)
+{
+	inv = true;
+	timer->TimerStart(*this, time, &PlayerBase::inv_end);
+	flicker();
+}
+
+bool PlayerBase::IsDead()
+{
+	return bDead;
+}
