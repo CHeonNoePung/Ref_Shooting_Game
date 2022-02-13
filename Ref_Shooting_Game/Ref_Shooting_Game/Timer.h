@@ -18,11 +18,9 @@ struct TimerStruct
 template <typename T>
 class Timer
 {
-private:
-    HANDLE TimerHandle;
 public:
     static DWORD WINAPI TimerTR(LPVOID Param);
-    void TimerStart(T& Object, int sec, function<void(T&)> func);
+    HANDLE TimerStart(T& Object, int sec, function<void(T&)> func);
 
 };
 
@@ -39,11 +37,8 @@ DWORD WINAPI Timer<T>::TimerTR(LPVOID Param)
 }
 
 template <typename T>
-void Timer<T>::TimerStart(T& object, int sec, function<void(T&)> func)
+HANDLE Timer<T>::TimerStart(T& object, int sec, function<void(T&)> func)
 {
-
     TimerStruct<T>* ts = new TimerStruct<T>{ object,sec,func };
-    TimerHandle = CreateThread(NULL, 0, Timer::TimerTR, ts, 0, NULL);
-
-
+    return CreateThread(NULL, 0, Timer::TimerTR, ts, 0, NULL);
 }

@@ -8,6 +8,6 @@ public:
     PatternResult Next(PatternParam Param);
 private:
     int degree;          // °¢µµ
-    int flag;
+    bool flag;
 };
 

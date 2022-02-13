@@ -23,6 +23,9 @@ void GameHandler::GameStart()
 	enemy->SetSize(40, 40);
 	CreateEnemy(enemy); //test
 
+	CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            // 플레이어 이동 스레드
+	CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);			// 플레이어 공격 스레드
+
 }
 
 GameHandler::~GameHandler()
@@ -93,7 +96,6 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 			if (player->GetLocation().y >= 10)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 10 });
-				InvalidateRect(hWnd, NULL, FALSE);
 			}
 		}
 		if (GetKeyState(0x41) & 0x8000) //a
@@ -101,7 +103,6 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 			if (player->GetLocation().x >= 400)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x - 10, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
 			}
 		}
 		if (GetKeyState(0x53) & 0x8000) //s
@@ -109,7 +110,6 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 			if (player->GetLocation().y <= 1020) // 여기다가 하면 됨
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 10 });
-				InvalidateRect(hWnd, NULL, FALSE);
 			}
 		}
 		if (GetKeyState(0x44) & 0x8000) //d
@@ -117,7 +117,6 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 			if (player->GetLocation().x <= 1000) // 여기다가 하면 됨
 			{
 				player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
 			}
 		}
 		Sleep(30);
@@ -219,7 +218,6 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 
 		// Enemy를 다음 방향으로 이동시킴 / 맵밖에 나가면 false 반환
 		bool result = Enemy->MoveNext();
-		InvalidateRect(hWnd, NULL, false);
 
 		// false(맵밖 나가면) 스레드 종료
 		if (result == false)
@@ -372,7 +370,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	{
 
 		bool result = Bullet->MoveNext();
-		InvalidateRect(hWnd, NULL, false);
 
 		if (result == false) break;
 

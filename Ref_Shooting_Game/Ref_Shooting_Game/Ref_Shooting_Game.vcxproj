@@ -151,6 +151,7 @@
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PatternBase.h" />
+    <ClInclude Include="PatternFlower.h" />
     <ClInclude Include="PatternHurricane.h" />
     <ClInclude Include="PatternNormal.h" />
     <ClInclude Include="PatternRandom.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PatternBase.cpp" />
+    <ClCompile Include="PatternFlower.cpp" />
     <ClCompile Include="PatternHurricane.cpp" />
     <ClCompile Include="PatternNormal.cpp" />
     <ClCompile Include="PatternRandom.cpp" />

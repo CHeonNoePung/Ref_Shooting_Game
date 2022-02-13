@@ -11,7 +11,7 @@ PatternHurricane::PatternHurricane(int Interval, int size) : PatternBase(Interva
 
 PatternResult PatternHurricane::Next(PatternParam Param)
 {
-	PatternResult result = { nullptr,0 };
+	PatternResult result;
 	
 	RECT rect = Param.EntityRect;
 	int Distance = 50;
@@ -20,7 +20,7 @@ PatternResult PatternHurricane::Next(PatternParam Param)
 	if (flag == true)
 	{
 		RealDegree += 180;
-		degree += 15;
+		degree += 17;
 		flag = false;
 		result.Interval = BulletInterval;
 	}
@@ -50,8 +50,6 @@ PatternResult PatternHurricane::Next(PatternParam Param)
 	Bullet->SetSize(BulletSize, BulletSize);
 	result.Bullet = Bullet;
 
-
-	if (RealDegree == 345) degree = 0;
 
 
 	
