@@ -43,26 +43,32 @@ EnemyBase* Stage::getMonsterBase()
 	{
 	case 0:
 	{
+		//new 슬라임;
 		Enemy = new Enemy_bird();
+		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
 	}
 	break;
 	case 1:
 	{
-		Sleep(1000);
+		Sleep(500);
+		//new 초록버섯;
 		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
 	}
 	break;
 	case 2: 
 	{
 		Sleep(500);
+		//new 주니어발록 
 		Enemy = new Type0(); // 생성
 		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
 	}
 	break;
-	case 3:
-	{
-		Sleep(5000);
-		Enemy = new Enemy_MiddleBoss();
+	case 3: {
+		Sleep(500);
+		Enemy = new Enemy_MiddleBoss(); // 생성
+		//Enemy->SetLocation(POINT{ 700,70 }); // 좌표 설정
+	
 	}
 	break;
 	default:
