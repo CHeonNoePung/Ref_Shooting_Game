@@ -156,6 +156,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Type0.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletBase.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Ref_Shooting_Game.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Type0.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc" />

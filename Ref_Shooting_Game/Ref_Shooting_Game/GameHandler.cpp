@@ -2,6 +2,7 @@
 #include "PlayerBase.h"
 #include "enemyBase.h"
 #include "Bullet_Normal.h"
+#include "Stage.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
@@ -19,17 +20,8 @@ void GameHandler::GameStart()
 {
 	player = new PlayerBase();
 
-	EnemyBase* enemy = new EnemyBase();
-	enemy->SetSize(40, 40);
-	CreateEnemy(enemy); //test
+	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)NULL, 0, NULL);
 
-
-	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
-	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄 / 스레드도 생성함
-
-
-	EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
-	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
 }
 
 GameHandler::~GameHandler()
@@ -427,3 +419,22 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	return 0;
 }
 
+DWORD WINAPI GameHandler::StageTR(LPVOID param)
+{
+	Stage* stage = new Stage();
+	
+	while (1)
+	{
+		EnemyBase* Enemy  = stage->getMonsterBase();
+		if (Enemy != nullptr)
+		{
+			GameHandler::GetInstance()->CreateEnemy(Enemy);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return 0;
+}
