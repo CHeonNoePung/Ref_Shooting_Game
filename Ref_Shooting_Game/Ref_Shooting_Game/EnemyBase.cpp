@@ -12,44 +12,6 @@ EnemyBase::EnemyBase()
 	KeyCode = g_KeyCode++;
 }
 
-EnemyBase::EnemyBase(int type, POINT location)
-{
-	/*
-	0 == 잡몹
-	1 == 중간보스
-	2 == 보스
-	*/
-
-	test_sin = 0;
-	this->type = type;
-	if (type == 0) 
-	{
-		SetLocation(POINT{ location.x, location.y });
-		SetHealth(5);
-		EnemyScore = 500;
-		SetSize(40, 40);
-	}
-	else if(type == 1)
-	{
-		SetLocation(POINT{ location.x, location.y });
-		SetHealth(10);
-		EnemyScore = 1000;
-		SetSize(100, 100);
-	}
-	else if (type == 2)
-	{
-		SetLocation(POINT{ location.x, location.y });
-		SetHealth(50);
-		EnemyScore = 2000;
-		SetSize(200, 200);
-	}
-	else
-	{
-		printf(" EnemyBase에서 생성자를 잘 못 지정했음");
-	}
-	KeyCode = g_KeyCode++;
-}
-
 
 void EnemyBase::DrawObject(HDC hdc)
 {
@@ -72,7 +34,6 @@ BulletBase* EnemyBase::Attack()
 
 bool EnemyBase::MoveNext()
 {
-	
 	//Rectangle(hdc, 400, 10, 1000, 690) 화면 사이즈
 	Location = POINT{ Location.x , Location.y };
 
@@ -81,7 +42,12 @@ bool EnemyBase::MoveNext()
 	test_sin += 0.1;
 	
 	
-	// 화면 범위로 나가면 false 아니면 true
+	// 화면 범위 나가면 false 아니면 true
+
+
+
+	
+	// �� ����� ������� false�� �� ����
 	if (10 > Location.y || Location.y > 690) return false;
 	else if ( 400 > Location.x || Location.x > 1000 ) return false;
 	else return true;

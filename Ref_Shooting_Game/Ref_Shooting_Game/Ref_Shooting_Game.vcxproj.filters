@@ -54,6 +54,9 @@
     <ClInclude Include="Stage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Type0.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="Enemy_bird.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -89,6 +92,9 @@
     <ClCompile Include="Stage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Type0.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="Enemy_bird.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -106,6 +112,15 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="C:\Users\User\Desktop\main.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="LA_IMAGE.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="test.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="ewq.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

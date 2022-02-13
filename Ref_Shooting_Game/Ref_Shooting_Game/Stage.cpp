@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "Type0.h"
 
 /*
  Rectangle(hdc, 400, 10, 1000, 690)// 게임 배경
@@ -18,12 +19,51 @@
 
 */
 
-Stage::Stage(GameHandler* GHwnd)
+Stage::Stage()
 {
-	GWnd = GHwnd->GetInstance();
+	Monster_Number = 0;
 }
 
 Stage::~Stage()
 {
+	
+}
 
+
+EnemyBase* Stage::getMonsterBase()
+{
+	EnemyBase* Enemy = nullptr;
+	// case 뒤에 숫자가 순서임 만약 슬라임 슬라임 소환하고 싶으면 case 0,1을 슬라임으로 두면 됨
+	// 소환할 몹을 쭈르륵 나열하면 됨
+	switch(Monster_Number)
+	{
+	case 0:
+	{
+	//new 슬라임;
+	Enemy = new EnemyBase();
+	Sleep(1000);
+	}
+	break;
+	case 1:
+	{
+	//new 초록버섯;
+	Enemy = new EnemyBase();
+	Sleep(500);
+	}
+	break;
+	case 2: 
+	{
+	//new 주니어발록 
+	Enemy = new Type0(); // 생성
+	Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
+	Sleep(100);
+	}
+	break;
+	default:
+		printf("Stage 클래스의 getMonsterBase 함수에서 비정상적인 작동 감지");
+		break;
+	}
+	Monster_Number++;
+
+	return Enemy;
 }

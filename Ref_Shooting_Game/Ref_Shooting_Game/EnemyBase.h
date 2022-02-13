@@ -8,7 +8,8 @@ private:
     static int g_KeyCode;
     int KeyCode;
     int EnemyScore;
-  
+    
+
 public:
     EnemyBase();
     EnemyBase(int type, POINT location);

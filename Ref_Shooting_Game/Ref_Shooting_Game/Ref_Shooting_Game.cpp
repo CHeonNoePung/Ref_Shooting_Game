@@ -5,6 +5,9 @@
 #include "Ref_Shooting_Game.h"
 #include "GameHandler.h"
 #include "Stage.h"
+#include <windows.h>
+
+#include <tchar.h>
 
 #define MAX_LOADSTRING 100
 
@@ -106,7 +109,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPED | WS_SYSMENU, CW_USEDEFAULT, 0, 1280, 720, nullptr, nullptr, hInstance, nullptr);
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPED | WS_SYSMENU, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
 	if (!hWnd)
 	{
@@ -118,6 +121,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	return TRUE;
 }
+
+HDC g_hBackBuffer;
+HDC g_hMemDC;
+HBITMAP g_hBackBitmap, g_hBGA;
+HBITMAP oldbitmap;
+
 
 //
 //  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
@@ -175,6 +184,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		oldBackBit = (HBITMAP)SelectObject(hdc, BackBit);                           // 그림판과 hdc를 연결 == hdc로 그림을 그려도 출력되지 않고 BackBit에 그려짐
 		PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
 
+		//
+		
+		HBITMAP MyBitmap, OldBitmap;
+
+		MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
+		OldBitmap = (HBITMAP)SelectObject(hdc, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
+		BitBlt(MemDC, 0, 0, 740, 416, MemDC, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+		SelectObject(MemDC, OldBitmap);
+		DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
+
+
+		//
+
 		GHnd->OnPaint(hdc);
 
 		// 더블버퍼링 끝
@@ -188,13 +210,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_CREATE:
 	{
+		/*
+		//
+		HDC hdc = GetDC(hWnd);
+		g_hBackBuffer = CreateCompatibleDC(hdc);
+		g_hBackBitmap = CreateCompatibleBitmap(hdc, 1440, 600);
+		SelectObject(g_hBackBuffer, g_hBackBitmap);
 
+		g_hMemDC = CreateCompatibleDC(hdc);
+		ReleaseDC(hWnd, hdc);
+		
+		//HINSTANCE ins = (HINSTANCE)GetWindowLongW(hWnd, GWL_HINSTANCE);
+		g_hBGA = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP2));
+		SelectObject(g_hMemDC, g_hBGA);
+		BitBlt(g_hBackBuffer, 650, 50, 600, 600, g_hMemDC, 0, 0, SRCCOPY);
+		//
+		*/
 
-
+		//
+		
+		//
 		GHnd = GameHandler::GetInstance();                                          //GHnd : GameHandler를 객체를 받아옴
 		GHnd->SethWnd(hWnd);
 		GHnd->GameStart();
-		SHnd = new Stage(GHnd);
 		//GameHandler 도 hWnd를 사용할 수 있게 hWnd를 전달
 		CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            //Test, attack 스레드 생성
 		CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);

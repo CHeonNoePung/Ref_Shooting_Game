@@ -2,7 +2,7 @@
 #include "PlayerBase.h"
 #include "enemyBase.h"
 #include "Bullet_Normal.h"
-#include "Enemy_bird.h"
+#include "Stage.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
@@ -20,21 +20,7 @@ void GameHandler::GameStart()
 {
 	player = new PlayerBase();
 
-	EnemyBase* enemy = new EnemyBase();
-	enemy->SetSize(40, 40);
-	CreateEnemy(enemy); //test
-
-
-	EnemyBase* enemy2 = new EnemyBase(0, POINT{ 1000,100 });
-	CreateEnemy(enemy2); // 윤석이가 테스트하려고 만져봄 / 스레드도 생성함
-
-
-	EnemyBase* enemy3 = new EnemyBase(2, POINT{ 500,400 });
-	CreateEnemy(enemy3); // 윤석이가 테스트하려고 만져봄
-
-	EnemyBase* enemy_bird = new Enemy_bird();
-	CreateEnemy(enemy_bird);
-
+	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)NULL, 0, NULL);
 
 }
 
@@ -103,7 +89,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	{   // 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
 		if (GetKeyState(0x57) & 0x8000) //w
 		{
-			if (player->GetLocation().y >= 10)
+			if (player->GetLocation().y >= 16)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 10 });
 				InvalidateRect(hWnd, NULL, FALSE);
@@ -111,7 +97,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 		}
 		if (GetKeyState(0x41) & 0x8000) //a
 		{
-			if (player->GetLocation().x >= 400)
+			if (player->GetLocation().x >= 406)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x - 10, player->GetLocation().y });
 				InvalidateRect(hWnd, NULL, FALSE);
@@ -119,7 +105,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 		}
 		if (GetKeyState(0x53) & 0x8000) //s
 		{
-			if (player->GetLocation().y <= 1020) // 여기다가 하면 됨
+			if (player->GetLocation().y <= 660) // 여기다가 하면 됨
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 10 });
 				InvalidateRect(hWnd, NULL, FALSE);
@@ -127,7 +113,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 		}
 		if (GetKeyState(0x44) & 0x8000) //d
 		{
-			if (player->GetLocation().x <= 1000) // 여기다가 하면 됨
+			if (player->GetLocation().x <= 970) // 여기다가 하면 됨
 			{
 				player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
 				InvalidateRect(hWnd, NULL, FALSE);
@@ -433,3 +419,22 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	return 0;
 }
 
+DWORD WINAPI GameHandler::StageTR(LPVOID param)
+{
+	Stage* stage = new Stage();
+	
+	while (1)
+	{
+		EnemyBase* Enemy  = stage->getMonsterBase();
+		if (Enemy != nullptr)
+		{
+			GameHandler::GetInstance()->CreateEnemy(Enemy);
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return 0;
+}

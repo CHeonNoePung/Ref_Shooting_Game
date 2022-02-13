@@ -1,15 +1,17 @@
 #pragma once
-
+#include "EnemyBase.h"
 #include "GameHandler.h"
-//#include "PlayerBase.h"
-//#include "EnemyBase.h"
+
 
 class Stage
 {
 public:
-	GameHandler* GWnd;
-	Stage(GameHandler* GHwnd);
+	EnemyBase* getMonsterBase();
+	
+	Stage();
 	~Stage();
 private:
+	int Monster_Number;
 };
+
 
