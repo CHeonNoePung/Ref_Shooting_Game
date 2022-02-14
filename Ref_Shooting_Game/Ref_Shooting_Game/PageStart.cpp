@@ -45,7 +45,7 @@ int PageStart::start_choose(WPARAM wParam)
 		break;
 	case 0x0D:// Enter
 		if(num==1)
-		num = 3;
+			num = 3;
 		if (num == 2)
 			num = 4;
 		break;

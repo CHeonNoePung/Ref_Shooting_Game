@@ -42,12 +42,7 @@ bool EnemyBase::MoveNext()
 	test_sin += 0.1;
 	
 	
-	// 화면 범위 나가면 false 아니면 true
-
-
-
-	
-	// �� ����� ������� false�� �� ����
+	// 화면 범위 나가면 false 아니면 true 
 	if (10 > Location.y || Location.y > 690) return false;
 	else if ( 400 > Location.x || Location.x > 1000 ) return false;
 	else return true;

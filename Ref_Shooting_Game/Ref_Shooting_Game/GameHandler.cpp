@@ -4,6 +4,7 @@
 #include "Bullet_Normal.h"
 #include "PlayerChoose.h"
 #include "PageStart.h"
+#include "PageEnd.h"
 #include "Stage.h"
 #include <iostream>
 
@@ -17,8 +18,11 @@ GameHandler::GameHandler()
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	Enemy_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	//player = nullptr;
-
+	
+	bGameover = false;
+		
 	start = new PageStart();
+	end = new PageEnd();
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 	
@@ -42,7 +46,6 @@ GameHandler::~GameHandler()
 
 void GameHandler::OnPaint(HDC hdc)
 {
-	
 
 	if (start_num != 3) {
 		start->DrawStart(hdc);
@@ -52,6 +55,12 @@ void GameHandler::OnPaint(HDC hdc)
 		return;
 	}
 	
+	if (bGameover == true)
+	{
+		end->DrawEnd(hdc);
+		return;
+	}
+
 	player->DrawObject(hdc);
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
@@ -80,6 +89,26 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 	else if (choose_num == 0) {
 		choose_num = player_c->player_choose(wParam);
 		if (choose_num != 0) GameStart();
+	}
+
+	if (bGameover == true)
+	{
+		int x;
+		x = end->end_choose(wParam);
+
+		// 1이 게임 재시작, 2: 시작 화면 이동, 3: 게임 종료
+		if (x == 1) 
+		{
+			
+		}
+		else if (x == 2)
+		{
+			
+		}
+		else if (x == 3)
+		{
+			ExitProcess(0);
+		}
 	}
 	return;
 
@@ -452,8 +481,14 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			// 플레이어와 충돌검사를 한 뒤, 충돌시 true 아니면 false 반환
 			bool colResult = Instance->BulletCollisionTestToPlayer(Bullet);
 			if (colResult == true)
-			{
-				Instance->player->GetDamages(1);
+			{	
+				bool ck;
+				ck = Instance->player->GetDamages(15);
+				
+				if (ck == true)
+				{
+					Instance->bGameover = true;
+				}
 				break;
 			}
 		}
@@ -486,6 +521,10 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 
 int GameHandler::S_Bit()
 {
-	
 	return start_num;
+}
+
+int GameHandler::End_Bit()
+{
+	return end_num;
 }

@@ -38,7 +38,7 @@ public:
 
 
 	int S_Bit();
-
+	int End_Bit();
 
 private:
 	GameHandler();
@@ -52,8 +52,11 @@ private:
 	map<int, class BulletBase*> Bullets;			// 자료구조 map 검색
 	map<int, class EnemyBase*> Enemys;
 
+	bool bGameover;
+
 	class PlayerBase* player;
-	class PageStart* start;
+	class PageStart* start;		//게임 시작
+	class PageEnd* end;			// 게임 종료
 	class PlayerChoose* player_c;
 };
 

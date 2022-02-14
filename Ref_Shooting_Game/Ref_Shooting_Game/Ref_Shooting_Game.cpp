@@ -211,6 +211,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 	}
 	break;
+
+	case WM_RBUTTONDOWN:
+	{
+		int y = HIWORD(lParam);
+		int x = LOWORD(lParam);
+		cout << "Y : " << y << "    X : " << x << endl;
+	}
+	break;
 	case WM_CREATE:
 	{
 		/*

@@ -72,7 +72,11 @@ bool PlayerBase::GetDamages(int x)
 		SetHealth(GetLife);
 	}
 	
-	if (bDead == true) return true;		//죽으면 true
+	if (Life == 0)
+	{
+		return true;
+
+	}
 	return false;
 	
 }

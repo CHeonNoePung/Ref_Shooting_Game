@@ -152,6 +152,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameHandler.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="PageEnd.h" />
     <ClInclude Include="PageStart.h" />
     <ClInclude Include="PlayerBase.h" />
     <ClInclude Include="PlayerChoose.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PageEnd.cpp" />
     <ClCompile Include="PageStart.cpp" />
     <ClCompile Include="PlayerBase.cpp" />
     <ClCompile Include="PlayerChoose.cpp" />

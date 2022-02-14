@@ -9,6 +9,7 @@ struct POINTF
 
 static int choose_num;
 static int start_num;
+static int end_num;
 
 
 class Object
