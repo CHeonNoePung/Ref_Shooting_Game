@@ -1,6 +1,10 @@
 // Ref_Shooting_Game.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+// 인코딩 에러 표시 없앰
+// Ref_Shooting_Game에서 빌드해야 에러 안보임
+#pragma warning(disable: 4828)
+
 #include "framework.h"
 #include "Ref_Shooting_Game.h"
 #include "GameHandler.h"
@@ -28,6 +32,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+DWORD WINAPI DrawGame(LPVOID param);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -213,32 +218,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_CREATE:
 	{
-		/*
-		//
-		HDC hdc = GetDC(hWnd);
-		g_hBackBuffer = CreateCompatibleDC(hdc);
-		g_hBackBitmap = CreateCompatibleBitmap(hdc, 1440, 600);
-		SelectObject(g_hBackBuffer, g_hBackBitmap);
-
-		g_hMemDC = CreateCompatibleDC(hdc);
-		ReleaseDC(hWnd, hdc);
-		
-		//HINSTANCE ins = (HINSTANCE)GetWindowLongW(hWnd, GWL_HINSTANCE);
-		g_hBGA = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP2));
-		SelectObject(g_hMemDC, g_hBGA);
-		BitBlt(g_hBackBuffer, 650, 50, 600, 600, g_hMemDC, 0, 0, SRCCOPY);
-		//
-		*/
-
-		//
-		
-		//
 		GHnd = GameHandler::GetInstance();                                          //GHnd : GameHandler를 객체를 받아옴
 		GHnd->SethWnd(hWnd);
 		GHnd->GameStart();
 		//GameHandler 도 hWnd를 사용할 수 있게 hWnd를 전달
 		CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            //Test, attack 스레드 생성
 		CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);
+		
+		CreateThread(NULL, 0, DrawGame, (LPVOID)hWnd, 0, NULL);
+		
 		break;
 	}
 	case WM_DESTROY:
@@ -247,7 +235,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	{
 		GHnd->OnKeyDown(wParam);
-		InvalidateRect(hWnd, NULL, false);
 	}
 	break;
 	default:
@@ -274,4 +261,15 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+
+DWORD WINAPI DrawGame(LPVOID param)
+{
+	while (1)
+	{
+		InvalidateRect((HWND)param, NULL, false);
+		Sleep(10);
+	}
+	return 0;
 }

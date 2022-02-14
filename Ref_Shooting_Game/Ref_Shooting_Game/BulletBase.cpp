@@ -1,5 +1,6 @@
 #include "BulletBase.h"
 #include <iostream>
+#include "Timer.h"
 
 int BulletBase::g_KeyCode = 0;
 
@@ -7,21 +8,35 @@ BulletBase::BulletBase()
 {
 	Velocity = POINTF{0.0f, 0.0f};
 	Location = POINT{ 0,0 };
+	LocationF = POINTF{ 0,0 };
 	KeyCode = g_KeyCode++;
+	Speed = 1;
+	bMoveStop = false;
+	timer = nullptr;
 
+}
+
+BulletBase::~BulletBase()
+{
+	if (timer != nullptr) delete timer;
 }
 
 BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
 {
 	Location = newLocation;
+	LocationF = { (float)newLocation.x,(float)newLocation.y };
 	Velocity = newVelocity;
 	KeyCode = g_KeyCode++;
-
+	Speed = 1;
+	bMoveStop = false;
+	timer = nullptr;
 }
 
 bool BulletBase::MoveNext()
 {
-	Location = POINT{ Location.x + long(Velocity.x), Location.y + long(Velocity.y)};
+	if (bMoveStop) return true;
+	LocationF = { LocationF.x + Velocity.x * Speed, LocationF.y + Velocity.y * Speed };
+	Location = {(LONG)LocationF.x , (LONG)LocationF.y };
 
 	if (Location.y < 0) return false;
 	// 화면 크기를 설정 안해서 임의로 비트맵에 설정된 좌표값으로 설정함
@@ -42,4 +57,22 @@ POINTF BulletBase::GetVelocity()
 int BulletBase::GetKeyCode()
 {
 	return KeyCode;
+}
+
+void BulletBase::SetSpeed(int newSpeed)
+{
+	Speed = newSpeed;
+}
+
+void BulletBase::StopMoving(int second)
+{
+	bMoveStop = true;
+	if (timer == nullptr) timer = new Timer<BulletBase>();
+	timer->TimerStart(*this, second, &BulletBase::WakeUp);
+}
+
+void BulletBase::WakeUp()
+{
+	bMoveStop = false;
+	
 }

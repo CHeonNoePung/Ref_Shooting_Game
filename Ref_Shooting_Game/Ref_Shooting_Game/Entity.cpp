@@ -13,9 +13,3 @@ bool Entity::GetDamages(int x)
 {
 	return false;
 }
-
-BulletBase* Entity::Attack()
-{
-	return nullptr;
-}
-	
