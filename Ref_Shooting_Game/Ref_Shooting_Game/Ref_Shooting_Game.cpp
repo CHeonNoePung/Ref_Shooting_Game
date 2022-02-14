@@ -1,4 +1,4 @@
-﻿// Ref_Shooting_Game.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+// Ref_Shooting_Game.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "framework.h"
@@ -169,6 +169,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		MemDC = BeginPaint(hWnd, &ps);                                              // 더블버퍼링 == OnPaint가 불릴때마다 흰색 화면에다 새로 그리는것이 아닌 미리 다른데다가 그려놓고 옮기는것
 
 
+		
+																					
 		//UI 위치 선정용 Rect
 		Rectangle(hdc, 400, 10, 1000, 690);// 게임 배경
 		Rectangle(hdc, 150, 220, 200, 270);// 목숨1
@@ -184,16 +186,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		oldBackBit = (HBITMAP)SelectObject(hdc, BackBit);                           // 그림판과 hdc를 연결 == hdc로 그림을 그려도 출력되지 않고 BackBit에 그려짐
 		PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
 
-		//
-		
-		HBITMAP MyBitmap, OldBitmap;
+		/////////
+		if ((GHnd->S_Bit()) == 3)
+		{
+			HBITMAP MyBitmap, OldBitmap;
 
-		MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
-		OldBitmap = (HBITMAP)SelectObject(hdc, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
-		BitBlt(MemDC, 0, 0, 740, 416, MemDC, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
-		SelectObject(MemDC, OldBitmap);
-		DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
-
+			MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
+			OldBitmap = (HBITMAP)SelectObject(hdc, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
+			BitBlt(MemDC, 0, 0, 740, 416, MemDC, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+			SelectObject(MemDC, OldBitmap);
+			DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
+		}
 
 		//
 

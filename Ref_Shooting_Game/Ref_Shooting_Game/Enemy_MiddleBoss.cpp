@@ -1,7 +1,7 @@
 #include "Enemy_MiddleBoss.h"
 #include "Bullet_Normal.h"
 #include <iostream>
-//¿òÁ÷ÀÌ´Â°Å, Ã¼·Â, µ¥¹ÌÁö
+//ì›€ì§ì´ëŠ”ê±°, ì²´ë ¥, ë°ë¯¸ì§€
 Enemy_MiddleBoss::Enemy_MiddleBoss()
 {
 	SetHealth(100);
@@ -27,7 +27,7 @@ bool Enemy_MiddleBoss::MoveNext()
 		if (Location.x < 500)
 			flag = true;
 	}
-	// ¸Ê¹ÛÀ¸·Î ³ª°¡¸é false ¾Æ´Ò°æ¿ì true ¹İÈ¯
+	// ë§µë°–ìœ¼ë¡œ ë‚˜ê°€ë©´ false ì•„ë‹ê²½ìš° true ë°˜í™˜
 	if (10 > Location.y || Location.y > 690) return false;
 	else if (400 > Location.x || Location.x > 1000) return false;
 	else return true;
@@ -37,11 +37,11 @@ BulletBase* Enemy_MiddleBoss::Attack()
 {
 	POINT location = GetLocation();
 
-	// Áß¾Ó¿¡¼­ Bullet ¹ß»ç
+	// ì¤‘ì•™ì—ì„œ Bullet ë°œì‚¬
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 5 });		//GetLocation() Àº ÇöÀç À§Ä¡ x,y ÁÂÇ¥°ª, POINTF ´Â ÃÑ¾Ë ¼Óµµ ÁöÁ¤														//newLocation, newVelocity
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 5 },1);		//GetLocation() ì€ í˜„ì¬ ìœ„ì¹˜ x,y ì¢Œí‘œê°’, POINTF ëŠ” ì´ì•Œ ì†ë„ ì§€ì •														//newLocation, newVelocity
 	Bullet->SetSize(10, 10);
 	return Bullet;
 }

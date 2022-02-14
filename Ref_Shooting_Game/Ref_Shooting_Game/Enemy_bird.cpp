@@ -42,7 +42,7 @@ BulletBase* Enemy_bird::Attack()
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 });														
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 }, 1);
 	Bullet->SetSize(5, 5);
 	return Bullet;
 }

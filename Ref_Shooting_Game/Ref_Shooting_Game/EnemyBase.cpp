@@ -27,7 +27,7 @@ BulletBase* EnemyBase::Attack()
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 });		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 지정														//newLocation, newVelocity
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 },1);		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 지정														//newLocation, newVelocity
 	Bullet->SetSize(5, 5);
 	return Bullet;
 }

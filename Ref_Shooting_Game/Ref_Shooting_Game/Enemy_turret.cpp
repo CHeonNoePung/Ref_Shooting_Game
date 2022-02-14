@@ -1,7 +1,7 @@
 #include "Enemy_turret.h"
 #include "Bullet_Normal.h"
 
-//¿òÁ÷ÀÌ´Â°Å, Ã¼·Â, µ¥¹ÌÁö
+//ì›€ì§ì´ëŠ”ê±°, ì²´ë ¥, ë°ë¯¸ì§€
 Enemy_turret::Enemy_turret()
 {
 	SetHealth(10);
@@ -13,7 +13,7 @@ bool Enemy_turret::MoveNext()
 {
 	Location = POINT{ Location.x , Location.y };
 	Location.y += 1;
-	// ¸Ê¹ÛÀ¸·Î ³ª°¡¸é false ¾Æ´Ò°æ¿ì true ¹ÝÈ¯
+	// ë§µë°–ìœ¼ë¡œ ë‚˜ê°€ë©´ false ì•„ë‹ê²½ìš° true ë°˜í™˜
 	if (10 > Location.y || Location.y > 690) return false;
 	else if (400 > Location.x || Location.x > 1000) return false;
 	else return true;
@@ -23,11 +23,11 @@ BulletBase* Enemy_turret::Attack()
 {
 	POINT location = GetLocation();
 
-	// Áß¾Ó¿¡¼­ Bullet ¹ß»ç
+	// ì¤‘ì•™ì—ì„œ Bullet ë°œì‚¬
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 5 });		//GetLocation() Àº ÇöÀç À§Ä¡ x,y ÁÂÇ¥°ª, POINTF ´Â ÃÑ¾Ë ¼Óµµ ÁöÁ¤														//newLocation, newVelocity
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 5 },1);		//GetLocation() ì€ í˜„ìž¬ ìœ„ì¹˜ x,y ì¢Œí‘œê°’, POINTF ëŠ” ì´ì•Œ ì†ë„ ì§€ì •														//newLocation, newVelocity
 	Bullet->SetSize(5, 5);
 	return Bullet;
 }

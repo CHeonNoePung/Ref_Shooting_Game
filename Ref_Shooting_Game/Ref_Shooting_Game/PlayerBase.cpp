@@ -6,13 +6,14 @@
 PlayerBase::PlayerBase()
 {
 	SetLocation(POINT{ 800,400 });
-	SetHealth(5);// Ã¼·Â 5
+	SetHealth(5);// ì²´ë ¥ 5
 	Life = 3;
 	PowerCount = 3;
 	SetSize(21, 21);
 	SetPlayer();
 	inv = false;
 	timer = new Timer();
+	choose_num = 0;
 }
 
 void PlayerBase::DrawObject(HDC hdc)
@@ -21,15 +22,26 @@ void PlayerBase::DrawObject(HDC hdc)
 	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
-BulletBase* PlayerBase::Attack()
+BulletBase* PlayerBase::Attack(int choose_num__)
 {
+	
+	choose_num = choose_num__;
+	
 	POINT location = GetLocation();		
-	// Áß¾Ó¿¡¼­ Bullet ¹ß»ç
+	// ì¤‘ì•™ì—ì„œ Bullet ë°œì‚¬
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 });		//GetLocation() Àº ÇöÀç À§Ä¡ x,y ÁÂÇ¥°ª, POINTF ´Â ÃÑ¾Ë ¼Óµµ 
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//GetLocation() ì€ í˜„ìž¬ ìœ„ì¹˜ x,y ì¢Œí‘œê°’, POINTF ëŠ” ì´ì•Œ ì†ë„ 
 																				//newLocation, newVelocity
+	
+	if (choose_num == 1)Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//ì¼ë°˜í˜•
+	else if (choose_num == 2) {
+		//printf("%d------\n", Location.y);
+		Bullet = new Bullet_Normal(location, POINTF{ 0,-10 }, 2);//ê´€í†µí˜•
+	}
+	
+
 	Bullet->SetSize(5, 5);
 	Bullet->SetPlayer();
 	return Bullet;
@@ -39,7 +51,7 @@ bool PlayerBase::GetDamages(int x)
 {
 	if (inv == true)
 	{
-		//std::cout << "¹«ÀûÀÌ¶ó µ¥¹ÌÁöX" << std::endl;
+		//std::cout << "ë¬´ì ì´ë¼ ë°ë¯¸ì§€X" << std::endl;
 		return false;
 	}
 	bool bDead = false;
@@ -53,21 +65,21 @@ bool PlayerBase::GetDamages(int x)
 	}
 	else 
 	{
-		// std::cout << "³²ÀºÃ¼·Â : " << GetHealth() << std::endl;
+		// std::cout << "ë‚¨ì€ì²´ë ¥ : " << GetHealth() << std::endl;
 		inv = true;
-		// std::cout << "¹«Àû ½ÃÀÛ" << std::endl;
+		// std::cout << "ë¬´ì  ì‹œìž‘" << std::endl;
 		timer->TimerStart(*this, 1000, &PlayerBase::inv_end);
 		SetHealth(GetLife);
 	}
 	
-	if (bDead == true) return true;		//Á×À¸¸é true
+	if (bDead == true) return true;		//ì£½ìœ¼ë©´ true
 	return false;
 	
 }
 
 void PlayerBase::inv_end()
 {
-	std::cout << "¹«Àû ÇØÁ¦" << std::endl;
+	std::cout << "ë¬´ì  í•´ì œ" << std::endl;
 	inv = false;
 }
 
@@ -77,6 +89,6 @@ void PlayerBase::revive()
 	SetHealth(5);
 	SetLocation(POINT{ 800,400 });
 	timer->TimerStart(*this, 3000, &PlayerBase::inv_end);
-	std::cout << "¹«Àû ÇØÁ¦ 2" << std::endl;
+	std::cout << "ë¬´ì  í•´ì œ 2" << std::endl;
 }
 

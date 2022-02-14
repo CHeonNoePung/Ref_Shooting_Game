@@ -3,16 +3,21 @@
 void Bullet_Normal::DrawObject(HDC hdc)
 {
 
-	RECT temp = GetRect();
-	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
+	RECT temp;
+	if (choose_num == 1) {
+		temp = GetRect();
+		Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
+	}
+	else {
+		temp = GetRect_a();
+		Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
+	}
+
 }
 
-Bullet_Normal::Bullet_Normal(POINT newLocation, POINTF newVelocity) : BulletBase(newLocation,newVelocity)
+Bullet_Normal::Bullet_Normal(POINT newLocation, POINTF newVelocity, int aa) : BulletBase(newLocation, newVelocity)
 {
-	//¸Ó¾³ÇØ¿ä....
+	choose_num = aa;
 }
-
-
-
 
 

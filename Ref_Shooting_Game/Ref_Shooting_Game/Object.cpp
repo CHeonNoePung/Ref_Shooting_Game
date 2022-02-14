@@ -22,7 +22,17 @@ RECT Object::GetRect()
     RECT temp = { Location.x, Location.y, Location.x + width, Location.y + height };
     return temp;
 }
+RECT Object::GetRect_a()
+{
+    RECT temp;
+    static int abc = 0;
 
+    if (abc == 0) abc = Location.y;
+    temp = { Location.x, Location.y, Location.x + width, abc };
+    if (Location.y <= 10) abc = 0;
+
+    return temp;
+}
 void Object::DrawObject(HDC hdc)
 {
 
