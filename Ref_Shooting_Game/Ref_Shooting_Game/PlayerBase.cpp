@@ -12,17 +12,20 @@ PlayerBase::PlayerBase()
 	SetSize(21, 21);
 	SetPlayer();
 	inv = false;
-	timer = new Timer();
+	inv_Invisible = false;
+	bDead = false;
+	timer = new Timer<PlayerBase>();
 	choose_num = 0;
 }
 
 void PlayerBase::DrawObject(HDC hdc)
 {
+	if (inv_Invisible == true || bDead == true) return;
 	RECT temp = GetRect();
 	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
-BulletBase* PlayerBase::Attack(int choose_num__)
+PatternResult PlayerBase::Attack(int choose_num__)
 {
 	
 	choose_num = choose_num__;
@@ -35,7 +38,7 @@ BulletBase* PlayerBase::Attack(int choose_num__)
 	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 
 																				//newLocation, newVelocity
 	
-	if (choose_num == 1)Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//일반형
+	if (choose_num == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//일반형
 	else if (choose_num == 2) {
 		//printf("%d------\n", Location.y);
 		Bullet = new Bullet_Normal(location, POINTF{ 0,-10 }, 2);//관통형
@@ -43,33 +46,35 @@ BulletBase* PlayerBase::Attack(int choose_num__)
 	
 
 	Bullet->SetSize(5, 5);
-	Bullet->SetPlayer();
-	return Bullet;
+	Bullet->SetPlayer();		// 플레이어 소유로 변경
+
+	PatternResult result;
+	result.Bullet = Bullet;
+	result.Interval = 0;
+
+	return result;
 }
 
 bool PlayerBase::GetDamages(int x)
 {
-	if (inv == true)
+	if (inv == true || bDead == true)
 	{
-		//std::cout << "무적이라 데미지X" << std::endl;
 		return false;
 	}
-	bool bDead = false;
 	int GetLife;
 	GetLife = GetHealth() - x;
 	if (GetLife < 1) 
 	{
 		Life = Life - 1;
 		bDead = true;
-		timer->TimerStart(*this, 500, &PlayerBase::revive);
+		cout << "죽음   남은 목숨 : " << Life << endl;
+		timer->TimerStart(*this, 2000, &PlayerBase::revive);
 	}
 	else 
 	{
-		// std::cout << "남은체력 : " << GetHealth() << std::endl;
-		inv = true;
-		// std::cout << "무적 시작" << std::endl;
-		timer->TimerStart(*this, 1000, &PlayerBase::inv_end);
+		inv_start(1000);
 		SetHealth(GetLife);
+		cout << "남은 체력 : " << GetHealth() << endl;
 	}
 	
 	if (Life == 0)
@@ -81,18 +86,48 @@ bool PlayerBase::GetDamages(int x)
 	
 }
 
-void PlayerBase::inv_end()
-{
-	std::cout << "무적 해제" << std::endl;
-	inv = false;
-}
 
 void PlayerBase::revive()
 {
-	inv = true;
+	inv_start(3000);
 	SetHealth(5);
+	bDead = false;
 	SetLocation(POINT{ 800,400 });
-	timer->TimerStart(*this, 3000, &PlayerBase::inv_end);
-	std::cout << "무적 해제 2" << std::endl;
+	
 }
 
+
+// 무정동안 깜박이게 함
+void PlayerBase::flicker()
+{
+	if (inv == false)
+	{
+		inv_Invisible = false;
+		return;
+	}
+
+	if (inv_Invisible == true)
+		inv_Invisible = false;
+	else
+		inv_Invisible = true;
+
+	timer->TimerStart(*this, 50, &PlayerBase::flicker);
+}
+
+
+void PlayerBase::inv_end()
+{
+	inv = false;
+}
+
+void PlayerBase::inv_start(int time)
+{
+	inv = true;
+	timer->TimerStart(*this, time, &PlayerBase::inv_end);
+	flicker();
+}
+
+bool PlayerBase::IsDead()
+{
+	return bDead;
+}

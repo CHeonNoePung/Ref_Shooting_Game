@@ -35,6 +35,9 @@ void GameHandler::GameStart()
 
 	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)NULL, 0, NULL);
 
+	//CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            // 플레이어 이동 스레드
+	//CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);			// 플레이어 공격 스레드
+
 }
 
 GameHandler::~GameHandler()
@@ -143,44 +146,42 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	GameHandler* Instance = GetInstance();
 	PlayerBase* player = Instance->player;
 
+	
+
 	while (1)
 	{   
-		
+		if (player->IsDead()) continue;
 		if (TF == true && choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
 		if (GetKeyState(0x57) & 0x8000) //w
 		{
-			if (player->GetLocation().y >= 16)
+			if (player->GetLocation().y >= 14)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 10 });
-				InvalidateRect(hWnd, NULL, FALSE);
+				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 5 });
 			}
 		}
 		if (GetKeyState(0x41) & 0x8000) //a
 		{
-			if (player->GetLocation().x >= 406)
+			if (player->GetLocation().x >= 401)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x - 10, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
+				player->SetLocation(POINT{ player->GetLocation().x - 5, player->GetLocation().y });
 			}
 		}
 		if (GetKeyState(0x53) & 0x8000) //s
 		{
-			if (player->GetLocation().y <= 660) // 여기다가 하면 됨
+			if (player->GetLocation().y <= 665) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 10 });
-				InvalidateRect(hWnd, NULL, FALSE);
+				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 5 });
 			}
 		}
 		if (GetKeyState(0x44) & 0x8000) //d
 		{
 			if (player->GetLocation().x <= 970) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x + 10, player->GetLocation().y });
-				InvalidateRect(hWnd, NULL, FALSE);
+				player->SetLocation(POINT{ player->GetLocation().x + 5, player->GetLocation().y });
 			}
 		}
-		Sleep(30);
+		Sleep(15);
 		//https://mlpworld.tistory.com/entry/키보드-상태-조사
 	}
 
@@ -194,11 +195,11 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 	while (1)
 	{
-		
+		if (player->IsDead()) continue;
 		if (TF == true && choose_num == 2) { continue; }
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
-			BulletBase* Bullet = player->Attack(choose_num);
+			BulletBase* Bullet = player->Attack(choose_num).Bullet;
 			play->CreateBullet(Bullet);
 		}
 		Sleep(100);
@@ -232,12 +233,19 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 			break;
 		}
 
-		// Enemy가 가진 Bullet을 반환함
-		BulletBase* Bullet = Enemy->Attack();
+		// Enemy가 가진 패턴을 반환함
+		PatternParam Param;
+		Param.EntityRect = Enemy->GetRect();
+		Param.PlayerRect = Instance->player->GetRect();
+
+		PatternResult result = Enemy->Attack(Param);
+
+		BulletBase* Bullet = result.Bullet;
+		int Interval = result.Interval;
 		Instance->CreateBullet(Bullet);
 
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-		Sleep(1000);	// 1초
+		Sleep(Interval);	
 	}
 	return 0;
 }
@@ -273,7 +281,6 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 
 		// Enemy를 다음 방향으로 이동시킴 / 맵밖에 나가면 false 반환
 		bool result = Enemy->MoveNext();
-		InvalidateRect(hWnd, NULL, false);
 
 		// false(맵밖 나가면) 스레드 종료
 		if (result == false)
@@ -366,6 +373,7 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 
 //충돌판정
 bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
+	if (player->IsDead()) return false;
 	RECT HitBox;
 	RECT EnemyRect = ColEnemy->GetRect();
 	RECT PlayerRect = player->GetRect();
@@ -400,6 +408,7 @@ int GameHandler::BulletCollisionTestToEnemy(BulletBase* ColBullet) {
 }
 bool GameHandler::BulletCollisionTestToPlayer(BulletBase* ColBullet)
 {
+	if (player->IsDead()) return false;
 	RECT HitBox;
 	RECT PlayerRect = player->GetRect();
 	RECT BulletRect = ColBullet->GetRect();
@@ -432,7 +441,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 		if (Bullet->IsPlayer())
 			TF = result;
 
-		InvalidateRect(hWnd, NULL, false);
 
 		if (result == false) break;
 

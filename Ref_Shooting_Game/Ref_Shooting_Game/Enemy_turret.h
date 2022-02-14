@@ -5,7 +5,10 @@ class Enemy_turret :
 {
 public:
     Enemy_turret();
+    ~Enemy_turret();
     bool MoveNext();
-    BulletBase* Attack();
+    PatternResult Attack(PatternParam Param);
     void DrawObject(HDC hdc);
+private:
+    class PatternNormal* patternNormal;
 };

@@ -5,10 +5,12 @@ class Enemy_MiddleBoss :
 {
 public:
     Enemy_MiddleBoss();
+    ~Enemy_MiddleBoss();
     bool MoveNext();
-    BulletBase* Attack();
+    PatternResult Attack(PatternParam Param);
     void DrawObject(HDC hdc);
 private:
     bool flag;
+    class PatternHurricane* patternHurricane;
 };
 

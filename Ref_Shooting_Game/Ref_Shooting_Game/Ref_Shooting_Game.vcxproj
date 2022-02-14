@@ -154,6 +154,12 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="PageEnd.h" />
     <ClInclude Include="PageStart.h" />
+    <ClInclude Include="PatternBase.h" />
+    <ClInclude Include="PatternFlower.h" />
+    <ClInclude Include="PatternHurricane.h" />
+    <ClInclude Include="PatternRain.h" />
+    <ClInclude Include="PatternNormal.h" />
+    <ClInclude Include="PatternRandom.h" />
     <ClInclude Include="PlayerBase.h" />
     <ClInclude Include="PlayerChoose.h" />
     <ClInclude Include="Ref_Shooting_Game.h" />
@@ -175,6 +181,12 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PageEnd.cpp" />
     <ClCompile Include="PageStart.cpp" />
+    <ClCompile Include="PatternBase.cpp" />
+    <ClCompile Include="PatternFlower.cpp" />
+    <ClCompile Include="PatternHurricane.cpp" />
+    <ClCompile Include="PatternRain.cpp" />
+    <ClCompile Include="PatternNormal.cpp" />
+    <ClCompile Include="PatternRandom.cpp" />
     <ClCompile Include="PlayerBase.cpp" />
     <ClCompile Include="PlayerChoose.cpp" />
     <ClCompile Include="Ref_Shooting_Game.cpp" />

@@ -9,5 +9,8 @@ public:
 	
 private:
 	bool MoveNext();
+	PatternResult Attack(PatternParam Param);
+
+	class PatternNormal* patternNormal;
 };
 
