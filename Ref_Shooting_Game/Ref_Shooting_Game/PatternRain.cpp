@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #include "PatternRain.h"
 #include "Bullet_Normal.h"
 #include <math.h>
@@ -13,7 +14,7 @@ PatternResult PatternRain::Next(PatternParam Param)
 
 	RECT rect = Param.EntityRect;
 	RECT playerRect = Param.PlayerRect;
-	// Á¤Áß¾Ó À§Ä¡ °è»ê
+	// ì •ì¤‘ì•™ ìœ„ì¹˜ ê³„ì‚°
 	POINT location;
 
 	location.x = 700;
@@ -39,14 +40,14 @@ PatternResult PatternRain::Next(PatternParam Param)
 
 	BulletBase* Bullet;
 
-	POINT Dist_vec = { playerRect.left - location.x, playerRect.top - location.y };	// °Å¸®º¤ÅÍ ±¸ÇÔ
-	int Distance = (int)sqrt(pow(Dist_vec.x, 2) + pow(Dist_vec.y, 2));				// °Å¸®±¸ÇÔ
+	POINT Dist_vec = { playerRect.left - location.x, playerRect.top - location.y };	// ê±°ë¦¬ë²¡í„° êµ¬í•¨
+	int Distance = (int)sqrt(pow(Dist_vec.x, 2) + pow(Dist_vec.y, 2));				// ê±°ë¦¬êµ¬í•¨
 
 	POINTF Unit_vec;
-	Unit_vec.x = (float)Dist_vec.x / Distance;									// ´ÜÀ§º¤ÅÍ·Î º¯È¯
+	Unit_vec.x = (float)Dist_vec.x / Distance;									// ë‹¨ìœ„ë²¡í„°ë¡œ ë³€í™˜
 	Unit_vec.y = (float)Dist_vec.y / Distance;
 
-	Bullet = new Bullet_Normal(location, Unit_vec);
+	Bullet = new Bullet_Normal(location, Unit_vec, 1);
 
 
 	Bullet->SetSize(BulletSize, BulletSize);

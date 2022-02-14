@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #include "PatternFlower.h"
 #include "Bullet_Normal.h"
 #include <iostream>
@@ -25,24 +26,24 @@ PatternResult PatternFlower::Next(PatternParam Param)
 		RealDegree = 18 + 72 * (step - 5) + degree2;
 
 	
-	// Áß¾Ó À§Ä¡
+	// ì¤‘ì•™ ìœ„ì¹˜
 	POINT location;
 	location.x = rect.left + (rect.right - rect.left) / 2 - BulletSize / 2;
 	location.y = rect.top + (rect.bottom - rect.top) / 2 - BulletSize / 2;
 
-	// ÃÑ¾Ë À§Ä¡
+	// ì´ì•Œ ìœ„ì¹˜
 	POINT BulletLoc = location;
 	BulletLoc.y -= (int)(sin(RealDegree * (3.14 / 180)) * Distance);
 	BulletLoc.x -= (int)(cos(RealDegree * (3.14 / 180)) * Distance);
 
 
-	// °Å¸®º¤ÅÍ
+	// ê±°ë¦¬ë²¡í„°
 	POINT Dist_vec = { BulletLoc.x - location.x, BulletLoc.y - location.y };
 
-	// ´ÜÀ§º¤ÅÍ ( ¹æÇâ )
+	// ë‹¨ìœ„ë²¡í„° ( ë°©í–¥ )
 	POINTF Unit_vec = { (float)Dist_vec.x / Distance, (float)Dist_vec.y / Distance };
 
-	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec);
+	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec, 1);
 	Bullet->SetSize(BulletSize, BulletSize);
 	result.Bullet = Bullet;
 

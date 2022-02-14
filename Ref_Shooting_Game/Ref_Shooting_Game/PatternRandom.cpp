@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #include "PatternRandom.h"
 #include "Bullet_Normal.h"
 #include <random>
@@ -16,7 +17,7 @@ PatternResult PatternRandom::Next(PatternParam Param)
 	RECT rect = Param.EntityRect;
 	int Distance = 50;
 
-	// ·£´ı ÁØºñ
+	// ëœë¤ ì¤€ë¹„
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 359);
@@ -25,24 +26,24 @@ PatternResult PatternRandom::Next(PatternParam Param)
 
 	result.Interval = BulletInterval;
 
-	// Áß¾Ó À§Ä¡
+	// ì¤‘ì•™ ìœ„ì¹˜
 	POINT location;
 	location.x = rect.left + (rect.right - rect.left) / 2 - BulletSize / 2;
 	location.y = rect.top + (rect.bottom - rect.top) / 2 - BulletSize / 2;
 
-	// ÃÑ¾Ë À§Ä¡
+	// ì´ì•Œ ìœ„ì¹˜
 	POINT BulletLoc = location;
 	BulletLoc.y -= (int)(sin(Degree * (3.14 / 180)) * Distance);
 	BulletLoc.x -= (int)(cos(Degree * (3.14 / 180)) * Distance);
 
 
-	// °Å¸®º¤ÅÍ
+	// ê±°ë¦¬ë²¡í„°
 	POINT Dist_vec = { BulletLoc.x - location.x, BulletLoc.y - location.y };
 
-	// ´ÜÀ§º¤ÅÍ ( ¹æÇâ )
+	// ë‹¨ìœ„ë²¡í„° ( ë°©í–¥ )
 	POINTF Unit_vec = { (float)Dist_vec.x / Distance, (float)Dist_vec.y / Distance };
 
-	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec);
+	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec,1);
 	Bullet->SetSize(BulletSize, BulletSize);
 	result.Bullet = Bullet;
 

@@ -1,5 +1,6 @@
 #include "Enemy_bird.h"
 #include "Bullet_Normal.h"
+#include "PatternNormal.h"
 
 Enemy_bird::Enemy_bird()
 {
@@ -7,7 +8,12 @@ Enemy_bird::Enemy_bird()
 	SetSize(50, 50);
 	SetLocation(POINT{ 700, 20});
 	test_sin = 45;
-	std::cout << Location.x << "  "<<Location.y << std::endl;
+	patternNormal = new PatternNormal(500, 7);
+}
+
+Enemy_bird::~Enemy_bird()
+{
+	delete patternNormal;
 }
 
 void Enemy_bird::DrawObject(HDC hdc)
@@ -29,23 +35,24 @@ bool Enemy_bird::MoveNext()
 
 	//std::cout << 400 + 0.03 * test_sin * test_sin << "  " << test_sin << "\n"<< std::endl;
 	//std::cout << Location.x << "  " << Location.y << std::endl;
-	if (10 > Location.y || Location.y > 690) return false;
-	else if (400 > Location.x || Location.x > 1000) return false;
+	RECT rect = GetRect();
+
+	if (rect.top < 11) return false;
+	else if (rect.bottom > 688) return false;
+	else if (rect.right > 998) return false;
+	else if (rect.left < 400) return false;
 	else return true;
 }
 
 
-BulletBase* Enemy_bird::Attack()
+
+
+
+PatternResult Enemy_bird::Attack(PatternParam Param)
 {
-	POINT location = GetLocation();
-
-	location.x += GetSize().x / 2 - 5 / 2;
-	location.y += GetSize().y / 2 - 5 / 2;
-
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 3 }, 1);
-	Bullet->SetSize(5, 5);
-	return Bullet;
+	/*
+	PatternResult result = Pattern->Next(Param);
+	*/
+	PatternResult result = patternNormal->Next(Param);
+	return result;
 }
-
-
-

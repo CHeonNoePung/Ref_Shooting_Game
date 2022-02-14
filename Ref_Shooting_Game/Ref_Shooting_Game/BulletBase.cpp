@@ -38,11 +38,16 @@ bool BulletBase::MoveNext()
 	LocationF = { LocationF.x + Velocity.x * Speed, LocationF.y + Velocity.y * Speed };
 	Location = {(LONG)LocationF.x , (LONG)LocationF.y };
 
-	if (Location.y < 0) return false;
-	// 화면 크기를 설정 안해서 임의로 비트맵에 설정된 좌표값으로 설정함
-	else if (Location.y > 690) return false;
+
+	RECT rect = GetRect();
+
+	if (rect.top < 11) return false;
+	else if (rect.bottom > 688) return false;
+	else if (rect.right > 998) return false;
+	else if (rect.left < 400) return false;
 	else return true;
 }
+
 
 void BulletBase::SetVelocity(POINTF pointf)
 {

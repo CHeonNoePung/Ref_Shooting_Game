@@ -1,15 +1,21 @@
 #include "Enemy_MiddleBoss.h"
 #include "Bullet_Normal.h"
+#include "PatternHurricane.h"
 #include <iostream>
 //움직이는거, 체력, 데미지
 Enemy_MiddleBoss::Enemy_MiddleBoss()
 {
-	SetHealth(100);
+	SetHealth(150);
 	SetSize(150, 150);
 	SetLocation(POINT{ 700,15 });
 	flag = true;
+	patternHurricane = new PatternHurricane(70, 15);
 }
 
+Enemy_MiddleBoss::~Enemy_MiddleBoss()
+{
+	delete patternHurricane;
+}
 bool Enemy_MiddleBoss::MoveNext()
 {
 	
@@ -28,23 +34,26 @@ bool Enemy_MiddleBoss::MoveNext()
 			flag = true;
 	}
 	// 맵밖으로 나가면 false 아닐경우 true 반환
-	if (10 > Location.y || Location.y > 690) return false;
-	else if (400 > Location.x || Location.x > 1000) return false;
+	RECT rect = GetRect();
+
+	if (rect.top < 11) return false;
+	else if (rect.bottom > 688) return false;
+	else if (rect.right > 998) return false;
+	else if (rect.left < 400) return false;
 	else return true;
 }
 
-BulletBase* Enemy_MiddleBoss::Attack()
+PatternResult Enemy_MiddleBoss::Attack(PatternParam Param)
 {
-	POINT location = GetLocation();
-
-	// 중앙에서 Bullet 발사
-	location.x += GetSize().x / 2 - 5 / 2;
-	location.y += GetSize().y / 2 - 5 / 2;
-
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0, 5 },1);		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 지정														//newLocation, newVelocity
-	Bullet->SetSize(10, 10);
-	return Bullet;
+	/*
+	PatternResult result = Pattern->Next(Param);
+	*/
+	
+	PatternResult result = patternHurricane->Next(Param);
+	
+	return result;
 }
+
 void Enemy_MiddleBoss::DrawObject(HDC hdc)
 {
 	RECT temp = GetRect();

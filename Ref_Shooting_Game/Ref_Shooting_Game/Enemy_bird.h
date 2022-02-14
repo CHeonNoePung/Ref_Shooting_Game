@@ -8,11 +8,12 @@ class Enemy_bird
 {
 public:
 	Enemy_bird();
+	~Enemy_bird();
 	bool MoveNext();
-	BulletBase* Attack();
+	PatternResult Attack(PatternParam Param);
 	void DrawObject(HDC hdc);
 	
 private:
-
+	class PatternNormal* patternNormal;
 };
 

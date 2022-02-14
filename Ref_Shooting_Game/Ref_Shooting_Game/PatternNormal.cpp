@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #include "PatternNormal.h"
 #include "Bullet_Normal.h"
 #include <math.h>
@@ -13,7 +14,7 @@ PatternResult PatternNormal::Next(PatternParam Param)
 
 	RECT rect = Param.EntityRect;
 	RECT playerRect = Param.PlayerRect;
-	// Á¤Áß¾Ó À§Ä¡ °è»ê
+	// ì •ì¤‘ì•™ ìœ„ì¹˜ ê³„ì‚°
 	POINT location;
 	location.x = rect.left + (rect.right - rect.left) / 2 - BulletSize / 2;
 	location.y = rect.top + (rect.bottom - rect.top) / 2 - BulletSize / 2;
@@ -21,17 +22,17 @@ PatternResult PatternNormal::Next(PatternParam Param)
 	BulletBase* Bullet;
 	if (bHomming == true)
 	{
-		POINT Dist_vec = { playerRect.left - location.x, playerRect.top - location.y };	// °Å¸®º¤ÅÍ ±¸ÇÔ
-		int Distance = (int)sqrt(pow(Dist_vec.x, 2) + pow(Dist_vec.y, 2));				// °Å¸®±¸ÇÔ
+		POINT Dist_vec = { playerRect.left - location.x, playerRect.top - location.y };	// ê±°ë¦¬ë²¡í„° êµ¬í•¨
+		int Distance = (int)sqrt(pow(Dist_vec.x, 2) + pow(Dist_vec.y, 2));				// ê±°ë¦¬êµ¬í•¨
 
 		POINTF Unit_vec;
-		Unit_vec.x = (float)Dist_vec.x / Distance;									// ´ÜÀ§º¤ÅÍ·Î º¯È¯
+		Unit_vec.x = (float)Dist_vec.x / Distance;									// ë‹¨ìœ„ë²¡í„°ë¡œ ë³€í™˜
 		Unit_vec.y = (float)Dist_vec.y / Distance;
 	
-		Bullet = new Bullet_Normal(location, Unit_vec);
+		Bullet = new Bullet_Normal(location, Unit_vec, 1);
 	}
 	else
-		Bullet = new Bullet_Normal(location, POINTF{ 0, 3 });		//GetLocation() Àº ÇöÀç À§Ä¡ x,y ÁÂÇ¥°ª, POINTF ´Â ÃÑ¾Ë ¼Óµµ ÁöÁ¤		
+		Bullet = new Bullet_Normal(location, POINTF{ 0, 3 }, 1);		//GetLocation() ì€ í˜„ì¬ ìœ„ì¹˜ x,y ì¢Œí‘œê°’, POINTF ëŠ” ì´ì•Œ ì†ë„ ì§€ì •		
 																	
 
 

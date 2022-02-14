@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #pragma once
 #include "PatternBase.h"
 class PatternHurricane :
@@ -7,7 +8,7 @@ public:
     PatternHurricane(int Interval, int size);
     PatternResult Next(PatternParam Param);
 private:
-    int degree;          // °¢µµ
+    int degree;          // ê°ë„
     bool flag;
 };
 

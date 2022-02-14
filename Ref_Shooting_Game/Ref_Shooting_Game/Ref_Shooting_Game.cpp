@@ -3,7 +3,7 @@
 
 // 인코딩 에러 표시 없앰
 // Ref_Shooting_Game에서 빌드해야 에러 안보임
-#pragma warning(disable: 4828)
+#pragma warning(disable:4828)
 
 #include "framework.h"
 #include "Ref_Shooting_Game.h"
@@ -229,6 +229,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		break;
 	}
+	case WM_RBUTTONDOWN:
+	{
+		int y = HIWORD(lParam);
+		int x = LOWORD(lParam);
+		cout << "Y : " << y << "    X : " << x << endl;
+	}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

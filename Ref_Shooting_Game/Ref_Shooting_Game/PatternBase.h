@@ -1,3 +1,4 @@
+#pragma warning(disable:4828)
 #pragma once
 
 #include "windows.h"
@@ -22,17 +23,17 @@ public:
 	PatternBase();
 	PatternBase(int Interval, int size);
 
-	// PatterResult¸¦ ¹İÈ¯ -> BulletBase¿Í ´ÙÀ½ Bullet±îÁö ¸îÃÊ ±â´Ù·Á¾ßµÇ´ÂÁö ¾Ë·ÁÁÜ / ¸Å°³º¯¼ö·Î Player ÁÂÇ¥ ÇÊ¿ä
+	// PatterResultë¥¼ ë°˜í™˜ -> BulletBaseì™€ ë‹¤ìŒ Bulletê¹Œì§€ ëª‡ì´ˆ ê¸°ë‹¤ë ¤ì•¼ë˜ëŠ”ì§€ ì•Œë ¤ì¤Œ / ë§¤ê°œë³€ìˆ˜ë¡œ Player ì¢Œí‘œ í•„ìš”
 	virtual PatternResult Next(PatternParam Param) = 0;
 
 	void SetBulletinterval(int newInterval);
 
 	void SetBulletSize(int newSize);
 protected:
-	// °ø°İ¼Óµµ
+	// ê³µê²©ì†ë„
 	int BulletInterval;
 
-	// BulletÅ©±â
+	// Bulletí¬ê¸°
 	int BulletSize;
 };
 

@@ -1,21 +1,23 @@
+#pragma warning(disable:4828)
 #include "Type0.h"
 #include "EnemyBase.h"
-
+#include "PatternNormal.h"
 Type0::Type0()
 {
 	SetHealth(5);
 	SetSize(15, 15);
 	test_sin = 0;
-	
+	patternNormal = new PatternNormal(500, 7);
 }
 
 Type0::~Type0()
 {
+	delete patternNormal;
 }
 
 bool Type0::MoveNext()
 {
-	//Rectangle(hdc, 400, 10, 1000, 690) È­¸é »çÀÌÁî
+	//Rectangle(hdc, 400, 10, 1000, 690) í™”ë©´ ì‚¬ì´ì¦ˆ
 	Location = POINT{ Location.x , Location.y };
 
 	Location.x = 500 + sin(test_sin) * 45;
@@ -23,8 +25,21 @@ bool Type0::MoveNext()
 	test_sin += 1;
 
 
-	// È­¸é ¹üÀ§ ³ª°¡¸é false ¾Æ´Ï¸é true
-	if (10 > Location.y || Location.y > 690) return false;
-	else if (400 > Location.x || Location.x > 1000) return false;
+	// í™”ë©´ ë²”ìœ„ ë‚˜ê°€ë©´ false ì•„ë‹ˆë©´ true
+	RECT rect = GetRect();
+
+	if (rect.top < 11) return false;
+	else if (rect.bottom > 688) return false;
+	else if (rect.right > 998) return false;
+	else if (rect.left < 400) return false;
 	else return true;
+}
+
+PatternResult Type0::Attack(PatternParam Param)
+{
+	/*
+	PatternResult result = Pattern->Next(Param);
+	*/
+	PatternResult result = patternNormal->Next(Param);
+	return result;
 }

@@ -25,7 +25,7 @@ void PlayerBase::DrawObject(HDC hdc)
 	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
-BulletBase* PlayerBase::Attack(int choose_num__)
+PatternResult PlayerBase::Attack(int choose_num__)
 {
 	
 	choose_num = choose_num__;
@@ -38,7 +38,7 @@ BulletBase* PlayerBase::Attack(int choose_num__)
 	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 
 																				//newLocation, newVelocity
 	
-	if (choose_num == 1)Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//일반형
+	if (choose_num == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//일반형
 	else if (choose_num == 2) {
 		//printf("%d------\n", Location.y);
 		Bullet = new Bullet_Normal(location, POINTF{ 0,-10 }, 2);//관통형

@@ -27,7 +27,7 @@ PatternResult EnemyBase::Attack(PatternParam Param)
 	/*
 	PatternResult result = Pattern->Next(Param);
 	*/
-	PatternResult result = {};
+	PatternResult result = { new Bullet_Normal({0,0},{0,0 },1),1 };
 	return result;
 }
 
@@ -37,8 +37,12 @@ bool EnemyBase::MoveNext()
 	//Location = POINT{ Location.x , Location.y + 5 };
 	
 
-	if (10 > Location.y || Location.y > 690) return false;
-	else if ( 400 > Location.x || Location.x > 1000 ) return false;
+	RECT rect = GetRect();
+
+	if (rect.top < 11) return false;
+	else if (rect.bottom > 688) return false;
+	else if (rect.right > 998) return false;
+	else if (rect.left < 400) return false;
 	else return true;
 	
 }
