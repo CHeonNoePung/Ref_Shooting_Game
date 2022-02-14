@@ -237,12 +237,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		break;
 	}
-	case WM_RBUTTONDOWN:
-	{
-		int y = HIWORD(lParam);
-		int x = LOWORD(lParam);
-		cout << "Y : " << y << "    X : " << x << endl;
-	}
 	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
