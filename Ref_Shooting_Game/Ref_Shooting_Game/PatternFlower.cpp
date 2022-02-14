@@ -61,7 +61,6 @@ PatternResult PatternFlower::Next(PatternParam Param)
 		result.Interval = 1;
 	}
 
-
 	return result;
 }
 

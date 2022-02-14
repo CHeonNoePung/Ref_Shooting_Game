@@ -153,6 +153,7 @@
     <ClInclude Include="PatternBase.h" />
     <ClInclude Include="PatternFlower.h" />
     <ClInclude Include="PatternHurricane.h" />
+    <ClInclude Include="PatternRain.h" />
     <ClInclude Include="PatternNormal.h" />
     <ClInclude Include="PatternRandom.h" />
     <ClInclude Include="PlayerBase.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="PatternBase.cpp" />
     <ClCompile Include="PatternFlower.cpp" />
     <ClCompile Include="PatternHurricane.cpp" />
+    <ClCompile Include="PatternRain.cpp" />
     <ClCompile Include="PatternNormal.cpp" />
     <ClCompile Include="PatternRandom.cpp" />
     <ClCompile Include="PlayerBase.cpp" />

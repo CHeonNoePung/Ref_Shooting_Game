@@ -8,7 +8,6 @@ private:
     static int g_KeyCode;
     int KeyCode;
     int EnemyScore;
-    class PatternBase* Pattern;
 public:
     EnemyBase();
     ~EnemyBase();

@@ -1,5 +1,6 @@
 #include "BulletBase.h"
 #include <iostream>
+#include "Timer.h"
 
 int BulletBase::g_KeyCode = 0;
 
@@ -10,7 +11,14 @@ BulletBase::BulletBase()
 	LocationF = POINTF{ 0,0 };
 	KeyCode = g_KeyCode++;
 	Speed = 1;
+	bMoveStop = false;
+	timer = nullptr;
 
+}
+
+BulletBase::~BulletBase()
+{
+	if (timer != nullptr) delete timer;
 }
 
 BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
@@ -20,11 +28,13 @@ BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
 	Velocity = newVelocity;
 	KeyCode = g_KeyCode++;
 	Speed = 1;
-
+	bMoveStop = false;
+	timer = nullptr;
 }
 
 bool BulletBase::MoveNext()
 {
+	if (bMoveStop) return true;
 	LocationF = { LocationF.x + Velocity.x * Speed, LocationF.y + Velocity.y * Speed };
 	Location = {(LONG)LocationF.x , (LONG)LocationF.y };
 
@@ -52,4 +62,17 @@ int BulletBase::GetKeyCode()
 void BulletBase::SetSpeed(int newSpeed)
 {
 	Speed = newSpeed;
+}
+
+void BulletBase::StopMoving(int second)
+{
+	bMoveStop = true;
+	if (timer == nullptr) timer = new Timer<BulletBase>();
+	timer->TimerStart(*this, second, &BulletBase::WakeUp);
+}
+
+void BulletBase::WakeUp()
+{
+	bMoveStop = false;
+	
 }
