@@ -8,6 +8,5 @@ public:
     PatternResult Next(PatternParam Param);
 
 private:
-    int num;
 };
 
