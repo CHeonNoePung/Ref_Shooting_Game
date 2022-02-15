@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BulletLaser.h" />
     <ClInclude Include="Enemy_bird.h" />
     <ClInclude Include="BulletBase.h" />
     <ClInclude Include="Bullet_Normal.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Type0.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BulletLaser.cpp" />
     <ClCompile Include="Enemy_bird.cpp" />
     <ClCompile Include="BulletBase.cpp" />
     <ClCompile Include="Bullet_Normal.cpp" />

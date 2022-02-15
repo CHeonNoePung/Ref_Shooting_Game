@@ -1,5 +1,6 @@
 #include "PlayerBase.h"
 #include "Bullet_Normal.h"
+#include "BulletLaser.h"
 #include "Timer.h"
 #include <iostream>
 
@@ -15,7 +16,6 @@ PlayerBase::PlayerBase()
 	inv_Invisible = false;
 	bDead = false;
 	timer = new Timer<PlayerBase>();
-	choose_num = 0;
 }
 
 void PlayerBase::DrawObject(HDC hdc)
@@ -28,20 +28,18 @@ void PlayerBase::DrawObject(HDC hdc)
 PatternResult PlayerBase::Attack(int choose_num__)
 {
 	
-	choose_num = choose_num__;
 	
 	POINT location = GetLocation();		
 	// 중앙에서 Bullet 발사
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//GetLocation() 은 현재 위치 x,y 좌표값, POINTF 는 총알 속도 
-																				//newLocation, newVelocity
-	
-	if (choose_num == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 }, 1);		//일반형
-	else if (choose_num == 2) {
+	BulletBase* Bullet = nullptr;
+	if (choose_num__ == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 });		//일반형
+	else 
+	{
 		//printf("%d------\n", Location.y);
-		Bullet = new Bullet_Normal(location, POINTF{ 0,-10 }, 2);//관통형
+		Bullet = new BulletLaser(location, POINTF{ 0,-10 });//관통형
 	}
 	
 

@@ -93,6 +93,9 @@
     <ClInclude Include="PageEnd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="BulletLaser.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ref_Shooting_Game.cpp">
@@ -162,6 +165,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PageEnd.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletLaser.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

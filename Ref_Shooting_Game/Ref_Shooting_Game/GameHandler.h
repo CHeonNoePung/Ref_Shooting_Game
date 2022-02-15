@@ -53,6 +53,8 @@ private:
 	map<int, class EnemyBase*> Enemys;
 
 	bool bGameover;
+	int choose_num;
+	bool TF;
 
 	class PlayerBase* player;
 	class PageStart* start;		//게임 시작

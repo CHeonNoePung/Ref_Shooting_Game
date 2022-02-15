@@ -9,19 +9,21 @@ class BulletBase :
     public Object
 {
 private:
-    POINTF Velocity;
-    POINTF LocationF;
-    float Speed;
+    
     static int g_KeyCode;
     int KeyCode;
     bool bMoveStop;
-    Timer<BulletBase>* timer;
     
+protected:
+    POINTF Velocity;
+    POINTF LocationF;
+    float Speed;
+    Timer<BulletBase>* timer;
 public:
     BulletBase();
     ~BulletBase();
     BulletBase(POINT newLocation, POINTF newVelocity);
-    bool MoveNext();                   
+    virtual bool MoveNext();                   
     void SetVelocity(POINTF pointf);
     POINTF GetVelocity();
     int GetKeyCode();

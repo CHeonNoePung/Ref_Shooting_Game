@@ -27,7 +27,7 @@ PatternResult EnemyBase::Attack(PatternParam Param)
 	/*
 	PatternResult result = Pattern->Next(Param);
 	*/
-	PatternResult result = { new Bullet_Normal({0,0},{0,0 },1),1 };
+	PatternResult result = { new Bullet_Normal({0,0},{0,0 })};
 	return result;
 }
 

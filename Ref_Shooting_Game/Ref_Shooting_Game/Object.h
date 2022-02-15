@@ -7,7 +7,7 @@ struct POINTF
 	float y;
 };
 
-static int choose_num;
+
 static int start_num;
 static int end_num;
 
@@ -22,7 +22,6 @@ public:
 	void SetSize(int width, int height);
 	POINT GetSize();
 	RECT GetRect();
-	RECT GetRect_a();
 	bool IsPlayer();
 	void SetPlayer();
 protected:

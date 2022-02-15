@@ -12,7 +12,6 @@ GameHandler* GameHandler::Instance = nullptr;
 HWND GameHandler::hWnd = NULL;
 HANDLE GameHandler::Instance_SemaHnd = NULL;
 
-bool TF;
 GameHandler::GameHandler()
 {
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
@@ -20,7 +19,9 @@ GameHandler::GameHandler()
 	//player = nullptr;
 	
 	bGameover = false;
-		
+	choose_num = 0;
+	TF = false;
+
 	start = new PageStart();
 	end = new PageEnd();
 	player_c = new  PlayerChoose();
@@ -151,7 +152,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	while (1)
 	{   
 		if (player->IsDead()) continue;
-		if (TF == true && choose_num == 2) { continue; }
+		if (Instance->TF == true && Instance->choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
 		if (GetKeyState(0x57) & 0x8000) //w
 		{
@@ -196,12 +197,15 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 	while (1)
 	{
 		if (player->IsDead()) continue;
-		if (TF == true && choose_num == 2) { continue; }
+		
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
-			BulletBase* Bullet = player->Attack(choose_num).Bullet;
+			if (play->TF == true && play->choose_num == 2) { continue; }
+			BulletBase* Bullet = player->Attack(play->choose_num).Bullet;
 			play->CreateBullet(Bullet);
+			play->TF = true;
 		}
+		else play->TF = false;
 		Sleep(100);
 
 	}
@@ -392,8 +396,6 @@ int GameHandler::BulletCollisionTestToEnemy(BulletBase* ColBullet) {
 		RECT HitBox;
 		RECT EnemyRect = (*it).second->GetRect();
 		RECT BulletRect = ColBullet->GetRect();
-		if (choose_num == 2)
-			RECT BulletRect = ColBullet->GetRect_a();
 		(*it).second->GetLocation();
 		if (IntersectRect(&HitBox, &EnemyRect, &BulletRect))
 		{
@@ -437,17 +439,21 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	{
 
 		bool result = Bullet->MoveNext();
-		
-		if (Bullet->IsPlayer())
-			TF = result;
 
 
 		if (result == false) break;
-
+		
 
 		// Bullet이 플레이어 소유일경우
 		if (Bullet->IsPlayer())
 		{
+
+			if (Instance->choose_num == 2)
+			{
+				if (Instance->TF == false || Instance->player->IsDead() == true) break;
+			}
+
+
 			// 모든 Enemy에 대해서 충돌검사를 한 뒤, 충돌난 Enemy의 KeyCode 반환 / 없을경우 -1 반환
 			int colKeyCode = Instance->BulletCollisionTestToEnemy(Bullet);
 			if (colKeyCode != -1)
@@ -465,7 +471,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 					// 1데미지를 준 뒤, 죽었으면 true  아니면 false 반환
 					
-					if (choose_num == 2)
+					if (Instance->choose_num == 2)
 						bDead = Enemy->GetDamages(5);
 					else
 						bDead = Enemy->GetDamages(1);
@@ -476,9 +482,10 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 				// Enemy가 죽었을경우 Delete함		/      위 코드와 분리한 이유는 Delete 안에도 세마포가 있어서 중복이됨
 				if (bDead == true)
 				{
+					Instance->TF = false;
 					Instance->DeleteEnemy(colKeyCode);
 				}
-				if (choose_num != 2)
+				if (Instance->choose_num != 2)
 					break;
 			}
 
@@ -491,11 +498,12 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			if (colResult == true)
 			{	
 				bool ck;
-				ck = Instance->player->GetDamages(15);
+				ck = Instance->player->GetDamages(1);
 				
 				if (ck == true)
 				{
 					Instance->bGameover = true;
+					Instance->TF = false;
 				}
 				break;
 			}

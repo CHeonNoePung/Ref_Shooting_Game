@@ -47,7 +47,7 @@ PatternResult PatternRain::Next(PatternParam Param)
 	Unit_vec.x = (float)Dist_vec.x / Distance;									// 단위벡터로 변환
 	Unit_vec.y = (float)Dist_vec.y / Distance;
 
-	Bullet = new Bullet_Normal(location, Unit_vec, 1);
+	Bullet = new Bullet_Normal(location, Unit_vec);
 
 
 	Bullet->SetSize(BulletSize, BulletSize);

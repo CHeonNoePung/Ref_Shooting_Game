@@ -43,7 +43,7 @@ PatternResult PatternRandom::Next(PatternParam Param)
 	// 단위벡터 ( 방향 )
 	POINTF Unit_vec = { (float)Dist_vec.x / Distance, (float)Dist_vec.y / Distance };
 
-	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec,1);
+	BulletBase* Bullet = new Bullet_Normal(BulletLoc, Unit_vec);
 	Bullet->SetSize(BulletSize, BulletSize);
 	result.Bullet = Bullet;
 
