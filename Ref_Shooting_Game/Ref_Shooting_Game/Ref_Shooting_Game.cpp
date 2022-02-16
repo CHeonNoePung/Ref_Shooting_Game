@@ -212,7 +212,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
 			SelectObject(hdc2, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 150, 220, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+			BitBlt(hdc, 1025, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+
+			HBITMAP MyBitmap3;
+
+			MyBitmap3 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
+			SelectObject(hdc2, MyBitmap3); //메모리DC에 비트맵오브젝트를 넣는다.
+			BitBlt(hdc, 1075, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트2
+
+			HBITMAP MyBitmap4;
+
+			MyBitmap4 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
+			SelectObject(hdc2, MyBitmap4); //메모리DC에 비트맵오브젝트를 넣는다.
+			BitBlt(hdc, 1125, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트3
 
 
 			SelectObject(hdc2, OldBitmap);
