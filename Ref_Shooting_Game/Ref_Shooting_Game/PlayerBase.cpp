@@ -18,11 +18,21 @@ PlayerBase::PlayerBase()
 	timer = new Timer<PlayerBase>();
 }
 
+
+
+
 void PlayerBase::DrawObject(HDC hdc)
 {
+
 	if (inv_Invisible == true || bDead == true) return;
 	RECT temp = GetRect();
 	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
+
+	HBRUSH red_brush = CreateSolidBrush(RGB(255, 0, 0));
+	RECT health_rect = { 1030, 180, 1050 + (GetHealth() * 50) , 210 };
+	FillRect(hdc, &health_rect, red_brush);
+	SelectObject(hdc, red_brush);
+	DeleteObject(red_brush);
 }
 
 PatternResult PlayerBase::Attack(int choose_num__)
