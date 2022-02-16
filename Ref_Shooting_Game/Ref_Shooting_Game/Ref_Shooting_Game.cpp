@@ -185,27 +185,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		Rectangle(hdc, 220, 300, 270, 350);// 아이템2
 		Rectangle(hdc, 290, 300, 340, 350);// 아이템3
 
+		
+		
 		GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
 		hdc = CreateCompatibleDC(MemDC);                                            // 화면에 출력하지 않는 DC를 가져옴
 		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);   // MemDC와 호환되는 Bitmap을 만듬 == 메인 화면의 정보와 똑같은 그림판을 만듬
 		oldBackBit = (HBITMAP)SelectObject(hdc, BackBit);                           // 그림판과 hdc를 연결 == hdc로 그림을 그려도 출력되지 않고 BackBit에 그려짐
 		PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
 
+		
+		
+	
+		
+
 		/////////
 		if ((GHnd->S_Bit()) == 3)
 		{
 			HBITMAP MyBitmap, OldBitmap;
-
+		
 			MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
 			OldBitmap = (HBITMAP)SelectObject(hdc, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
 			BitBlt(MemDC, 0, 0, 740, 416, MemDC, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
 			SelectObject(MemDC, OldBitmap);
-			DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
+			DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다
 		}
-
+		
 		//
 
 		GHnd->OnPaint(hdc);
+
+		// 여기부터 
+		HBITMAP MyBitmap2, OldBitmap2;
+		static HDC MemDC2 = BeginPaint(hWnd, &ps);
+
+		MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
+		OldBitmap2 = (HBITMAP)SelectObject(hdc, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
+		BitBlt(MemDC2, 150, 220, 50, 50, MemDC2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+		SelectObject(MemDC2, OldBitmap2);
+		DeleteObject(MyBitmap2); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
+		// 여기까지가 하트에 필한코드
 
 		// 더블버퍼링 끝
 		GetClientRect(hWnd, &bufferRT);                                             // hWnd RECT를 가져옴
@@ -234,8 +252,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);
 		
 		CreateThread(NULL, 0, DrawGame, (LPVOID)hWnd, 0, NULL);
-		
-		break;
+		//
 	}
 	break;
 	case WM_DESTROY:
