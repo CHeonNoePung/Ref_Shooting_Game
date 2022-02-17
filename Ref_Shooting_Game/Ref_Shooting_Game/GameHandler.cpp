@@ -17,33 +17,58 @@ GameHandler::GameHandler()
 	Bullet_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	Enemy_SemaHnd = CreateSemaphore(NULL, 1, 1, NULL);
 	//player = nullptr;
-	
+
+	start_num = 0;
+
 	bGameover = false;
 	choose_num = 0;
 	TF = false;
 
+	stage = new Stage();
 	start = new PageStart();
 	end = new PageEnd();
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
-	
+
 }
 
 void GameHandler::GameStart()
 {
+	cout << "게임스타트" << endl;
 	if (choose_num == 0)
 		return;
 
 	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)NULL, 0, NULL);
 
-	//CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            // 플레이어 이동 스레드
-	//CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);			// 플레이어 공격 스레드
+	CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            // 플레이어 이동 스레드
+	CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);			// 플레이어 공격 스레드
 
+}
+
+void GameHandler::GameOver()
+{
+	bGameover = true;
+}
+void GameHandler::ResetGame()
+{
+	start_num = 0;
+	bGameover = false;
+	TF = false;
+	bGameover = false;
+	choose_num = 0;
+	player->Reset();
 }
 
 GameHandler::~GameHandler()
 {
-	if (player != nullptr) delete player;
+	delete player;
+
+	delete stage;
+	delete start;
+	delete end;
+	delete player_c;
+	delete player;
+
 	CloseHandle(Bullet_SemaHnd);
 	CloseHandle(Enemy_SemaHnd);
 }
@@ -54,11 +79,12 @@ void GameHandler::OnPaint(HDC hdc)
 	if (start_num != 3) {
 		start->DrawStart(hdc);
 		return;
-	}else if (!choose_num) {
+	}
+	else if (!choose_num) {
 		player_c->DrawChoose(hdc);
 		return;
 	}
-	
+
 	if (bGameover == true)
 	{
 		end->DrawEnd(hdc);
@@ -84,10 +110,10 @@ void GameHandler::OnPaint(HDC hdc)
 
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
-	
-	if (start_num != 3) {
+
+	if (start_num != 3) {		//
 		start_num = start->start_choose(wParam);
-		if(start_num==4)
+		if (start_num == 4)
 			ExitProcess(0);
 	}
 	else if (choose_num == 0) {
@@ -101,13 +127,13 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 		x = end->end_choose(wParam);
 
 		// 1이 게임 재시작, 2: 시작 화면 이동, 3: 게임 종료
-		if (x == 1) 
+		if (x == 1)
 		{
-			
+
 		}
 		else if (x == 2)
 		{
-			
+			ResetGame();
 		}
 		else if (x == 3)
 		{
@@ -147,10 +173,11 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	GameHandler* Instance = GetInstance();
 	PlayerBase* player = Instance->player;
 
-	
+
 
 	while (1)
-	{   
+	{
+		if (Instance->bGameover == true) break;
 		if (player->IsDead()) continue;
 		if (Instance->TF == true && Instance->choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
@@ -196,8 +223,9 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 	while (1)
 	{
+		if (Instance->bGameover == true) break;
 		if (player->IsDead()) continue;
-		
+
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
 			if (play->TF == true && play->choose_num == 2) { continue; }
@@ -228,6 +256,7 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 
 	while (1)
 	{
+		if (Instance->bGameover == true) break;
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
 
 		// 먼저 받았던 킷값을 가진 Enemy가 배열에 없으면 나감
@@ -249,7 +278,7 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 		Instance->CreateBullet(Bullet);
 
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-		Sleep(Interval);	
+		Sleep(Interval);
 	}
 	return 0;
 }
@@ -272,6 +301,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 
 	while (1)
 	{
+		if (Instance->bGameover == true) break;
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
 
 
@@ -376,7 +406,9 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 
 
 //충돌판정
-bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
+bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy)
+{
+
 	if (player->IsDead()) return false;
 	RECT HitBox;
 	RECT EnemyRect = ColEnemy->GetRect();
@@ -387,7 +419,8 @@ bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
 		return false;
 }
 
-int GameHandler::BulletCollisionTestToEnemy(BulletBase* ColBullet) {
+int GameHandler::BulletCollisionTestToEnemy(BulletBase* ColBullet)
+{
 
 	int resultKey = -1;
 	WaitForSingleObject(Enemy_SemaHnd, INFINITE);
@@ -426,6 +459,7 @@ bool GameHandler::BulletCollisionTestToPlayer(BulletBase* ColBullet)
 //
 DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 {
+
 	GameHandler* Instance = GetInstance();
 
 
@@ -437,12 +471,13 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 	while (1)
 	{
+		if (Instance->bGameover == true) break;
 
 		bool result = Bullet->MoveNext();
 
 
 		if (result == false) break;
-		
+
 
 		// Bullet이 플레이어 소유일경우
 		if (Bullet->IsPlayer())
@@ -470,7 +505,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 					Enemy = Instance->Enemys.at(colKeyCode);
 
 					// 1데미지를 준 뒤, 죽었으면 true  아니면 false 반환
-					
+
 					if (Instance->choose_num == 2)
 						bDead = Enemy->GetDamages(5);
 					else
@@ -496,10 +531,10 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			// 플레이어와 충돌검사를 한 뒤, 충돌시 true 아니면 false 반환
 			bool colResult = Instance->BulletCollisionTestToPlayer(Bullet);
 			if (colResult == true)
-			{	
+			{
 				bool ck;
-				ck = Instance->player->GetDamages(1);
-				
+				ck = Instance->player->GetDamages(15);
+
 				if (ck == true)
 				{
 					Instance->bGameover = true;
@@ -517,10 +552,11 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 DWORD WINAPI GameHandler::StageTR(LPVOID param)
 {
 	Stage* stage = new Stage();
-	
+
 	while (1)
 	{
-		EnemyBase* Enemy  = stage->getMonsterBase();
+		if (Instance->bGameover == true) break;
+		EnemyBase* Enemy = stage->getMonsterBase();
 		if (Enemy != nullptr)
 		{
 			GameHandler::GetInstance()->CreateEnemy(Enemy);
@@ -529,6 +565,7 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 		{
 			break;
 		}
+
 	}
 
 	return 0;
@@ -538,9 +575,4 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 int GameHandler::S_Bit()
 {
 	return start_num;
-}
-
-int GameHandler::End_Bit()
-{
-	return end_num;
 }

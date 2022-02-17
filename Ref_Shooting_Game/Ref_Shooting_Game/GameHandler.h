@@ -26,6 +26,8 @@ public:
 	static DWORD WINAPI StageTR(LPVOID param);
 
 	void GameStart();
+	void GameOver();
+	void ResetGame();
 	bool EnemyCollisionTest(class EnemyBase* ColEnemy);
 
 	int BulletCollisionTestToEnemy(BulletBase* ColBullet);
@@ -38,7 +40,6 @@ public:
 
 
 	int S_Bit();
-	int End_Bit();
 
 private:
 	GameHandler();
@@ -56,6 +57,7 @@ private:
 	int choose_num;
 	bool TF;
 
+	class Stage* stage;
 	class PlayerBase* player;
 	class PageStart* start;		//게임 시작
 	class PageEnd* end;			// 게임 종료
