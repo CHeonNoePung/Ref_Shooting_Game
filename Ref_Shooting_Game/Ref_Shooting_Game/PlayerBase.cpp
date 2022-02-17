@@ -7,8 +7,8 @@
 PlayerBase::PlayerBase()
 {
 	SetLocation(POINT{ 700,500 });
-	SetHealth(1);// 체력 5
-	Life = 1;
+	SetHealth(5);// 체력 5
+	Life = 3;
 	PowerCount = 3;
 	SetSize(10, 10);
 	SetPlayer();
@@ -22,7 +22,7 @@ void PlayerBase::DrawObject(HDC hdc)
 {
 	if (inv_Invisible == true || bDead == true) return;
 	RECT temp = GetRect();
-	Rectangle(hdc, temp.left, temp.top, temp.right, temp.bottom);
+	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
 PatternResult PlayerBase::Attack(int choose_num__)
