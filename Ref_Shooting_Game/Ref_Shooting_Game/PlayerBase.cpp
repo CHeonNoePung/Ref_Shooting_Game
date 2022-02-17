@@ -27,21 +27,21 @@ void PlayerBase::DrawObject(HDC hdc)
 
 PatternResult PlayerBase::Attack(int choose_num__)
 {
-	
-	
-	POINT location = GetLocation();		
+
+
+	POINT location = GetLocation();
 	// 중앙에서 Bullet 발사
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
 	BulletBase* Bullet = nullptr;
 	if (choose_num__ == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 });		//일반형
-	else 
+	else
 	{
 		//printf("%d------\n", Location.y);
 		Bullet = new BulletLaser(location, POINTF{ 0,-10 });//관통형
 	}
-	
+
 
 	Bullet->SetSize(5, 5);
 	Bullet->SetPlayer();		// 플레이어 소유로 변경
@@ -59,29 +59,29 @@ bool PlayerBase::GetDamages(int x)
 	{
 		return false;
 	}
-	int GetLife;
-	GetLife = GetHealth() - x;
-	if (GetLife < 1) 
+	int ChangedHP;
+	ChangedHP = GetHealth() - x;
+	if (ChangedHP < 1)
 	{
-		Life = Life - 1;
+		Life--;
+		if (Life < 1)
+		{
+			return true;
+		}
+
 		bDead = true;
 		cout << "죽음   남은 목숨 : " << Life << endl;
 		timer->TimerStart(*this, 2000, &PlayerBase::revive);
 	}
-	else 
+	else
 	{
 		inv_start(1000);
-		SetHealth(GetLife);
+		SetHealth(ChangedHP);
 		cout << "남은 체력 : " << GetHealth() << endl;
 	}
-	
-	if (Life == 0)
-	{
-		return true;
 
-	}
 	return false;
-	
+
 }
 
 
@@ -91,7 +91,7 @@ void PlayerBase::revive()
 	SetHealth(5);
 	bDead = false;
 	SetLocation(POINT{ 800,400 });
-	
+
 }
 
 
@@ -128,4 +128,15 @@ void PlayerBase::inv_start(int time)
 bool PlayerBase::IsDead()
 {
 	return bDead;
+}
+
+void PlayerBase::Reset()
+{
+	SetLocation(POINT{ 800,400 });
+	SetHealth(5);// 체력 5
+	Life = 3;
+	PowerCount = 3;
+	inv = false;
+	inv_Invisible = false;
+	bDead = false;
 }

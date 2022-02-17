@@ -262,10 +262,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		GHnd = GameHandler::GetInstance();                                          //GHnd : GameHandler를 객체를 받아옴
 		GHnd->SethWnd(hWnd);
-		GHnd->GameStart();
-		//GameHandler 도 hWnd를 사용할 수 있게 hWnd를 전달
-		CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            //Test, attack 스레드 생성
-		CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);
 		
 		CreateThread(NULL, 0, DrawGame, (LPVOID)hWnd, 0, NULL);
 		//

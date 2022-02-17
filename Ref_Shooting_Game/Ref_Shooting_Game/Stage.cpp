@@ -72,7 +72,6 @@ EnemyBase* Stage::getMonsterBase()
 	}
 	break;
 	default:
-		printf("Stage 클래스의 getMonsterBase 함수에서 비정상적인 작동 감지");
 		break;
 	}
 	Monster_Number++;

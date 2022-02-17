@@ -19,12 +19,11 @@ GameHandler::GameHandler()
 	//player = nullptr;
 
 	start_num = 0;
-
+	StageKey = 0;
 	bGameover = false;
 	choose_num = 0;
 	TF = false;
 
-	stage = new Stage();
 	start = new PageStart();
 	end = new PageEnd();
 	player_c = new  PlayerChoose();
@@ -34,11 +33,11 @@ GameHandler::GameHandler()
 
 void GameHandler::GameStart()
 {
-	cout << "게임스타트" << endl;
+	StageKey++;
 	if (choose_num == 0)
 		return;
 
-	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)NULL, 0, NULL);
+	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)(__int64)StageKey, 0, NULL);
 
 	CreateThread(NULL, 0, GameHandler::test, (LPVOID)NULL, 0, NULL);            // 플레이어 이동 스레드
 	CreateThread(NULL, 0, GameHandler::attack, (LPVOID)NULL, 0, NULL);			// 플레이어 공격 스레드
@@ -54,16 +53,20 @@ void GameHandler::ResetGame()
 	start_num = 0;
 	bGameover = false;
 	TF = false;
-	bGameover = false;
 	choose_num = 0;
 	player->Reset();
 }
-
+void GameHandler::RestartGame()
+{
+	TF = false;
+	bGameover = false;
+	player->Reset();
+	GameStart();
+}
 GameHandler::~GameHandler()
 {
 	delete player;
 
-	delete stage;
 	delete start;
 	delete end;
 	delete player_c;
@@ -129,7 +132,8 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 		// 1이 게임 재시작, 2: 시작 화면 이동, 3: 게임 종료
 		if (x == 1)
 		{
-
+			Sleep(300);		// 모든 스레드가 죽기를 기다림
+			RestartGame();
 		}
 		else if (x == 2)
 		{
@@ -250,7 +254,7 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 	int KeyCode = (int)(__int64)param;
 
 	// 킷값을 이용하여 Enemy를 얻음
-	EnemyBase* Enemy = Instance->Enemys.at(KeyCode);
+	EnemyBase* Enemy = nullptr;
 
 
 
@@ -265,6 +269,8 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 			break;
 		}
+
+		if (Enemy == nullptr) Enemy = Instance->Enemys.at(KeyCode);
 
 		// Enemy가 가진 패턴을 반환함
 		PatternParam Param;
@@ -294,7 +300,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 	int KeyCode = (int)(__int64)param;
 
 	// 킷값을 이용하여 Enemy를 얻음
-	EnemyBase* Enemy = Instance->Enemys.at(KeyCode);
+	EnemyBase* Enemy = nullptr;
 
 	// 플레이어 받아옴
 	PlayerBase* player = GetInstance()->player;
@@ -312,6 +318,7 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 			break;
 		}
 
+		if (Enemy == nullptr) Enemy = Instance->Enemys.at(KeyCode);
 
 		// Enemy를 다음 방향으로 이동시킴 / 맵밖에 나가면 false 반환
 		bool result = Enemy->MoveNext();
@@ -330,8 +337,10 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		// true(부딪히면) 플레이어 5데미지 입히고 스레드 종료
 		if (hitresult == true)
 		{
-			player->GetDamages(5);
+			bool bLifeZero = player->GetDamages(5);
 			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+
+			if (bLifeZero == true) Instance->GameOver();
 			break;
 		}
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
@@ -473,6 +482,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	{
 		if (Instance->bGameover == true) break;
 
+
 		bool result = Bullet->MoveNext();
 
 
@@ -517,7 +527,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 				// Enemy가 죽었을경우 Delete함		/      위 코드와 분리한 이유는 Delete 안에도 세마포가 있어서 중복이됨
 				if (bDead == true)
 				{
-					Instance->TF = false;
 					Instance->DeleteEnemy(colKeyCode);
 				}
 				if (Instance->choose_num != 2)
@@ -533,12 +542,11 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			if (colResult == true)
 			{
 				bool ck;
-				ck = Instance->player->GetDamages(15);
+				ck = Instance->player->GetDamages(1);
 
 				if (ck == true)
 				{
-					Instance->bGameover = true;
-					Instance->TF = false;
+					Instance->GameOver();
 				}
 				break;
 			}
@@ -551,12 +559,16 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 DWORD WINAPI GameHandler::StageTR(LPVOID param)
 {
+	int Key = (int)(__int64)param;
+
 	Stage* stage = new Stage();
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
-		EnemyBase* Enemy = stage->getMonsterBase();
+		if (Instance->bGameover == true || Instance->StageKey != Key) break;			// 게임이 종료 OR 현재 진행중인 스테이지와 다르면 종료
+		EnemyBase* Enemy = stage->getMonsterBase();										// Sleep이 호출됨
+		if (Instance->bGameover == true || Instance->StageKey != Key) break;			// Sleep중 게임이 종료될 수 있기때문에 한번더 검사함
+
 		if (Enemy != nullptr)
 		{
 			GameHandler::GetInstance()->CreateEnemy(Enemy);
@@ -567,7 +579,7 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 		}
 
 	}
-
+	delete stage;
 	return 0;
 }
 
