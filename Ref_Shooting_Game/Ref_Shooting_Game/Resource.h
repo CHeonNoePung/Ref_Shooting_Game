@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ì…ë‹ˆë‹¤.
-// Ref_Shooting_Game.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìˆìŠµë‹ˆë‹¤.
+// Microsoft Visual C++¿¡¼­ »ı¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
+// Ref_Shooting_Game.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
 //
 #define IDC_MYICON                      2
 #define IDD_REFSHOOTINGGAME_DIALOG      102
@@ -16,8 +16,10 @@
 #define IDB_BITMAP2                     130
 #define IDB_BITMAP3                     131
 #define IDB_PNG1                        132
+#define IDB_GAMEOVER                    132
 #define IDB_BITMAP4                     141
 #define IDB_BITMAP5                     142
+#define IDB_BITMAP6                     143
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -25,7 +27,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110

@@ -48,7 +48,7 @@ GameHandler::~GameHandler()
 	CloseHandle(Enemy_SemaHnd);
 }
 
-void GameHandler::OnPaint(HDC hdc)
+void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 {
 
 	if (start_num != 3) {
@@ -61,7 +61,7 @@ void GameHandler::OnPaint(HDC hdc)
 	
 	if (bGameover == true)
 	{
-		end->DrawEnd(hdc);
+		end->DrawEnd(hdc, hInst);
 		return;
 	}
 

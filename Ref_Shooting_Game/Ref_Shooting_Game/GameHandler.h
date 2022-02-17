@@ -10,7 +10,7 @@ class BulletBase;
 class GameHandler
 {
 public:
-	void OnPaint(HDC hdc);
+	void OnPaint(HDC hdc, HINSTANCE hInst);
 	void OnKeyDown(WPARAM wParam);
 
 	static GameHandler* GetInstance();

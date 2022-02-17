@@ -6,11 +6,11 @@
 
 PlayerBase::PlayerBase()
 {
-	SetLocation(POINT{ 800,400 });
-	SetHealth(5);// 체력 5
-	Life = 3;
+	SetLocation(POINT{ 700,500 });
+	SetHealth(1);// 체력 5
+	Life = 1;
 	PowerCount = 3;
-	SetSize(21, 21);
+	SetSize(10, 10);
 	SetPlayer();
 	inv = false;
 	inv_Invisible = false;
@@ -90,7 +90,7 @@ void PlayerBase::revive()
 	inv_start(3000);
 	SetHealth(5);
 	bDead = false;
-	SetLocation(POINT{ 800,400 });
+	SetLocation(POINT{ 700,500 });
 	
 }
 

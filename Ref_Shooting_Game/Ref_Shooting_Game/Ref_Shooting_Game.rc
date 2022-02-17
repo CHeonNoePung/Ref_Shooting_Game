@@ -140,6 +140,8 @@ IDB_BITMAP4             BITMAP                  "test.bmp"
 
 IDB_BITMAP5             BITMAP                  "life_1.bmp"
 
+IDB_GAMEOVER            BITMAP                  "GameOver.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

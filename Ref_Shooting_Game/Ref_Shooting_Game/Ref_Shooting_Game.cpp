@@ -235,7 +235,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		//
 
-		GHnd->OnPaint(hdc);
+		GHnd->OnPaint(hdc, hInst);
 
 		// 여기부터 
 		

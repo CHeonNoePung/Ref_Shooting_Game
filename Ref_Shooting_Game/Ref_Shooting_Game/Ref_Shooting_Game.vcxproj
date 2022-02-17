@@ -203,6 +203,7 @@
   <ItemGroup>
     <Image Include="C:\Users\User\Desktop\main.bmp" />
     <Image Include="ewq.png" />
+    <Image Include="GameOver.bmp" />
     <Image Include="LA_IMAGE.jpg" />
     <Image Include="life_1.bmp" />
     <Image Include="Ref_Shooting_Game.ico" />
