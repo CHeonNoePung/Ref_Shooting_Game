@@ -10,6 +10,7 @@ Enemy_turret::Enemy_turret()
 	SetLocation(POINT{ 700,20 });
 	patternNormal = new PatternNormal(500, 7);
 	patternNormal->SetHomming(true);
+	SetType(1);
 }
 
 Enemy_turret::~Enemy_turret()

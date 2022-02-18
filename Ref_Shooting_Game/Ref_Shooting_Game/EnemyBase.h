@@ -21,7 +21,5 @@ public:
     bool GetDamages(int x);
     int GetKeyCode();
  
-    
-    int type;
     float test_sin;
 };

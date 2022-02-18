@@ -16,6 +16,7 @@ PlayerBase::PlayerBase()
 	inv_Invisible = false;
 	bDead = false;
 	timer = new Timer<PlayerBase>();
+	SetType(0); // 0 == 플레이어
 }
 
 

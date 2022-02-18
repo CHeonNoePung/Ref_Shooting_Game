@@ -9,6 +9,7 @@ Enemy_bird::Enemy_bird()
 	SetLocation(POINT{ 700, 20});
 	test_sin = 45;
 	patternNormal = new PatternNormal(500, 7);
+	SetType(1);
 }
 
 Enemy_bird::~Enemy_bird()

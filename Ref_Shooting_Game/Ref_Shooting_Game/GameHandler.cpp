@@ -301,8 +301,12 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		if (hitresult == true)
 		{
 			player->GetDamages(5);
-			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-			break;
+			if (Enemy->GetType() == 1)
+			{
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+				break;
+			}
+			
 		}
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 
