@@ -373,11 +373,17 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		// true(부딪히면) 플레이어 5데미지 입히고 스레드 종료
 		if (hitresult == true)
 		{
+			
+			
 			bool bLifeZero = player->GetDamages(5);
-			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-
 			if (bLifeZero == true) Instance->GameOver();
-			break;
+			if (Enemy->GetType() == 1)
+			{
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+				break;
+			}
+			
+			
 		}
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 
@@ -447,6 +453,8 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 	CreateThread(NULL, 0, enemy_move, (LPVOID)(__int64)KeyCode, 0, NULL);
 	CreateThread(NULL, 0, enemy_attack, (LPVOID)(__int64)KeyCode, 0, NULL);
 }
+
+
 
 
 
@@ -623,4 +631,9 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 int GameHandler::S_Bit()
 {
 	return start_num;
+}
+
+int GameHandler::GetPlayerLife()
+{
+	return this->player->GetLife();
 }

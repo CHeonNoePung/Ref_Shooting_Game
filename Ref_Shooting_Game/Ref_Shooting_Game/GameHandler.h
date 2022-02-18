@@ -38,7 +38,7 @@ public:
 	void DeleteEnemy(int KeyCode);
 	void CreateBullet(BulletBase* newBullet);
 	void CreateEnemy(EnemyBase* newEnemy);
-
+	int GetPlayerLife();
 
 	int S_Bit();
 

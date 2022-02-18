@@ -138,7 +138,9 @@ END
 
 IDB_BITMAP4             BITMAP                  "test.bmp"
 
-IDB_BITMAP5             BITMAP                  "life_1.bmp"
+IDB_BITMAP5             BITMAP                  "harte.bmp"
+
+IDB_BITMAP6             BITMAP                  "harte1.bmp"
 
 IDB_GAMEOVER            BITMAP                  "GameOver.bmp"
 
