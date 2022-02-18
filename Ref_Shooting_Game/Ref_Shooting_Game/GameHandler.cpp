@@ -6,11 +6,10 @@
 #include "PageStart.h"
 #include "PageEnd.h"
 #include "Stage.h"
+#include "Resource.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
-HWND GameHandler::hWnd = NULL;
-HANDLE GameHandler::Instance_SemaHnd = NULL;
 
 GameHandler::GameHandler()
 {
@@ -29,6 +28,9 @@ GameHandler::GameHandler()
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 
+	BIT_Frame = NULL;
+	BIT_Heart = NULL;
+	BIT_NullHeart = NULL;
 }
 
 void GameHandler::GameStart()
@@ -72,12 +74,48 @@ GameHandler::~GameHandler()
 	delete player_c;
 	delete player;
 
+	DeleteObject(BIT_NullHeart);
+	DeleteObject(BIT_Heart);
+	DeleteObject(BIT_Frame);
+	
 	CloseHandle(Bullet_SemaHnd);
 	CloseHandle(Enemy_SemaHnd);
+
+	PageEnd::DeleteGameOverBit();
 }
 
 void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 {
+	HDC hdc2 = CreateCompatibleDC(hdc);
+
+	HBITMAP OldBitmap;
+
+	// 게임의 전체적인 틀
+	OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Frame); //메모리DC에 비트맵오브젝트를 넣는다.
+	BitBlt(hdc, 0, 0, 1425, 700, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+
+
+	POINT Life_XY = { 1025,100 };
+	for (int i = 0; i < GetPlayerLife(); i++) // 채워져있는 하트 그리기
+	{
+		SelectObject(hdc2, BIT_Heart); //메모리DC에 비트맵오브젝트를 넣는다.
+		BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+		Life_XY.x += 50;
+
+	}
+	if (GetPlayerLife() != 3) // 비워져있는 하트 그리기
+	{
+		for (int i = 0; i < 3 - GetPlayerLife(); i++)
+		{
+			
+			SelectObject(hdc2, BIT_NullHeart); //메모리DC에 비트맵오브젝트를 넣는다.
+			BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+			Life_XY.x += 50;
+		}
+	}
+
+	SelectObject(hdc2, OldBitmap);
+
 
 	if (start_num != 3) {
 		start->DrawStart(hdc);
@@ -109,6 +147,8 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 	}
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 
+
+	DeleteDC(hdc2);
 }
 
 void GameHandler::OnKeyDown(WPARAM wParam)
@@ -165,9 +205,15 @@ void GameHandler::DestroyInstance()
 	}
 }
 
-void GameHandler::SethWnd(HWND nhWnd)
+void GameHandler::InitBitmap(HINSTANCE hInst)
 {
-	hWnd = nhWnd;
+	this->hInst = hInst;
+	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
+	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
+	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
+	HBITMAP BIT_GameOver =  LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));
+
+	PageEnd::SetGameOverBit(BIT_GameOver);
 }
 
 // 움직이는거 쓰레드로 구현
@@ -337,11 +383,17 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		// true(부딪히면) 플레이어 5데미지 입히고 스레드 종료
 		if (hitresult == true)
 		{
+			
+			
 			bool bLifeZero = player->GetDamages(5);
-			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
-
 			if (bLifeZero == true) Instance->GameOver();
-			break;
+			if (Enemy->GetType() == 1)
+			{
+				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+				break;
+			}
+			
+			
 		}
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
 
@@ -411,6 +463,8 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 	CreateThread(NULL, 0, enemy_move, (LPVOID)(__int64)KeyCode, 0, NULL);
 	CreateThread(NULL, 0, enemy_attack, (LPVOID)(__int64)KeyCode, 0, NULL);
 }
+
+
 
 
 
@@ -587,4 +641,9 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 int GameHandler::S_Bit()
 {
 	return start_num;
+}
+
+int GameHandler::GetPlayerLife()
+{
+	return this->player->GetLife();
 }
