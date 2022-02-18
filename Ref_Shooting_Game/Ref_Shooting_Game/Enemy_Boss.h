@@ -6,7 +6,6 @@ class Enemy_Boss :
 public:
     Enemy_Boss();
     ~Enemy_Boss();
-    bool MoveNext();
     PatternResult Attack(PatternParam Param);
     void DrawObject(HDC hdc);
 private:
