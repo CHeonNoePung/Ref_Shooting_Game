@@ -201,10 +201,10 @@
     <ResourceCompile Include="Ref_Shooting_Game.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap6.bmp" />
     <Image Include="C:\Users\User\Desktop\main.bmp" />
-    <Image Include="ewq.png" />
-    <Image Include="LA_IMAGE.jpg" />
-    <Image Include="life_1.bmp" />
+    <Image Include="harte.bmp" />
+    <Image Include="harte1.bmp" />
     <Image Include="Ref_Shooting_Game.ico" />
     <Image Include="small.ico" />
     <Image Include="test.bmp" />

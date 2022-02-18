@@ -196,11 +196,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 		HDC hdc2 = CreateCompatibleDC(MemDC);
 
+
+
 		if ((GHnd->S_Bit()) == 3)
 		{
 			HBITMAP OldBitmap;
-
-
 			HBITMAP MyBitmap;
 
 			MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
@@ -208,29 +208,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			BitBlt(hdc, 0, 0, 1425, 700, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
 			
 
-			HBITMAP MyBitmap2;
+			
+			HBITMAP MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
+			POINT Life_XY = { 1025,100 };
+			for (int i = 0; i < GHnd->GetPlayerLife(); i++) // 채워져있는 하트 그리기
+			{
+				//비트맵 리소스를 받아온다.
+				SelectObject(hdc2, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
+				BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+				Life_XY.x += 50;
 
-			MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1025, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
-
-			HBITMAP MyBitmap3;
-
-			MyBitmap3 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap3); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1075, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트2
-
-			HBITMAP MyBitmap4;
-
-			MyBitmap4 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap4); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1125, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트3
-
+			}
+			if (GHnd->GetPlayerLife() != 3) // 비워져있는 하트 그리기
+			{
+				for (int i = 0; i < 3 - GHnd->GetPlayerLife(); i++) 
+				{
+					MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
+					SelectObject(hdc2, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
+					BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+					Life_XY.x += 50;
+				}
+			}
 
 			SelectObject(hdc2, OldBitmap);
 			DeleteObject(MyBitmap2); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
 			DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다
-
+			
 		}
 		
 		//

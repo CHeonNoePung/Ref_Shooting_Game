@@ -23,6 +23,8 @@ bool Type0::MoveNext()
 	//Rectangle(hdc, 400, 10, 1000, 690) 화면 사이즈
 	Location = POINT{ Location.x , Location.y };
 
+
+
 	Location.x = 500 + sin(test_sin) * 45;
 	Location.y += 5;
 	test_sin += 1;

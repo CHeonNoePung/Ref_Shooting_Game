@@ -379,6 +379,8 @@ void GameHandler::CreateEnemy(EnemyBase* newEnemy)
 
 
 
+
+
 //충돌판정
 bool GameHandler::EnemyCollisionTest(EnemyBase* ColEnemy) {
 	if (player->IsDead()) return false;
@@ -547,4 +549,9 @@ int GameHandler::S_Bit()
 int GameHandler::End_Bit()
 {
 	return end_num;
+}
+
+int GameHandler::GetPlayerLife()
+{
+	return this->player->GetLife();
 }

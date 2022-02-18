@@ -95,6 +95,11 @@ bool PlayerBase::GetDamages(int x)
 	
 }
 
+int PlayerBase::GetLife()
+{
+	return this->Life;
+}
+
 
 void PlayerBase::revive()
 {
