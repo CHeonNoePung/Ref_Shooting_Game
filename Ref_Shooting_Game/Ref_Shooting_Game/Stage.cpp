@@ -4,6 +4,7 @@
 #include "Enemy_bird.h"
 #include "Enemy_turret.h"
 #include "Enemy_MiddleBoss.h"
+#include "Enemy_Boss.h"
 
 /*
  Rectangle(hdc, 400, 10, 1000, 690)// 게임 배경
@@ -71,6 +72,13 @@ EnemyBase* Stage::getMonsterBase()
 	
 	}
 	break;
+	case 4: {
+		Sleep(5000);
+		Enemy = new Enemy_Boss(); // 생성
+		//Enemy->SetLocation(POINT{ 700,70 }); // 좌표 설정
+
+	}
+		  break;
 	default:
 		break;
 	}

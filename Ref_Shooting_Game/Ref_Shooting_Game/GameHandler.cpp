@@ -53,7 +53,7 @@ void GameHandler::ResetGame()
 	start_num = 0;
 	bGameover = false;
 	TF = false;
-	choose_num = 0;
+	choose_num =0 ;
 	player->Reset();
 }
 void GameHandler::RestartGame()
