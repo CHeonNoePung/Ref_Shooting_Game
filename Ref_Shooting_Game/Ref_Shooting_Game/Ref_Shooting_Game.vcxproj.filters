@@ -192,16 +192,16 @@
     <Image Include="C:\Users\User\Desktop\main.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="LA_IMAGE.jpg">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="test.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="ewq.png">
+    <Image Include="bitmap6.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="life_1.bmp">
+    <Image Include="harte.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="harte1.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="GameOver.bmp">

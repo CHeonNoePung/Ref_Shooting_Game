@@ -2,19 +2,33 @@
 #include "resource.h"
 #pragma comment(lib, "Msimg32.lib")
 
+HBITMAP PageEnd::BIT_GameOver = NULL;
+
 PageEnd::PageEnd()
 {
 	end = 1;
+}
+
+void PageEnd::SetGameOverBit(HBITMAP BITMAP)
+{
+	BIT_GameOver = BITMAP;
+}
+
+void PageEnd::DeleteGameOverBit()
+{
+	if (BIT_GameOver != NULL) DeleteObject(BIT_GameOver);
 }
 
 void PageEnd::DrawEnd(HDC hdc, HINSTANCE hInst)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
-	HBITMAP MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));//비트맵 리소스를 받아온다.
-	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
-//	BitBlt(hdc, 590, 100, 700, 200, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_GameOver); //메모리DC에 비트맵오브젝트를 넣는다.
+
+	//투명화  /   화이트( 255, 255, 255 ) 색은 무시한다.
+	// hdc, 그려질 x, 그려질 y, 가로, 세로, hdc2, 0, 0, 가로, 세로, 무시할 색상 )
 	TransparentBlt(hdc, 580, 125, 236, 236, hdc2, 0, 0, 236, 236, RGB(255, 255, 255));
+
 
 	WCHAR buf[100] = { 0, }; //문자열 버퍼
 	int x = 640;
@@ -46,6 +60,7 @@ void PageEnd::DrawEnd(HDC hdc, HINSTANCE hInst)
 	wsprintfW(buf, L"EXIT GAME");
 	TextOut(hdc, x + 25, y + 70, buf, lstrlenW(buf));
 
+	DeleteDC(hdc2);
 }
 
 int PageEnd::end_choose(WPARAM wParam)

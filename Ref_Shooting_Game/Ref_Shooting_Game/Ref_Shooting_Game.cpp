@@ -127,10 +127,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	return TRUE;
 }
 
-HDC g_hBackBuffer;
-HDC g_hMemDC;
-HBITMAP g_hBackBitmap, g_hBGA;
-HBITMAP oldbitmap;
+
 
 
 //
@@ -194,44 +191,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PatBlt(hdc, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);              // 흰바탕 그림
 
 		
-		HDC hdc2 = CreateCompatibleDC(MemDC);
-
-		if ((GHnd->S_Bit()) == 3)
-		{
-			HBITMAP OldBitmap;
 
 
-			HBITMAP MyBitmap;
-
-			MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));//비트맵 리소스를 받아온다.
-			OldBitmap = (HBITMAP)SelectObject(hdc2, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 0, 0, 1425, 700, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
-			
-
-			HBITMAP MyBitmap2;
-
-			MyBitmap2 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap2); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1025, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
-
-			HBITMAP MyBitmap3;
-
-			MyBitmap3 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap3); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1075, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트2
-
-			HBITMAP MyBitmap4;
-
-			MyBitmap4 = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));//비트맵 리소스를 받아온다.
-			SelectObject(hdc2, MyBitmap4); //메모리DC에 비트맵오브젝트를 넣는다.
-			BitBlt(hdc, 1125, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트3
-
-
-			SelectObject(hdc2, OldBitmap);
-			DeleteObject(MyBitmap2); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다.
-			DeleteObject(MyBitmap); // 비트맵은 GDI 오브젝트이므로 DeleteObject로 지운다
-
-		}
+		
 		
 		//
 
@@ -261,7 +223,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 	{
 		GHnd = GameHandler::GetInstance();                                          //GHnd : GameHandler를 객체를 받아옴
-		GHnd->SethWnd(hWnd);
+		GHnd->InitBitmap(hInst);
 		
 		CreateThread(NULL, 0, DrawGame, (LPVOID)hWnd, 0, NULL);
 		//

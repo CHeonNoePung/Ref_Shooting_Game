@@ -15,7 +15,7 @@ public:
 
 	static GameHandler* GetInstance();
 	static void DestroyInstance();
-	static void SethWnd(HWND hWnd);
+	void InitBitmap(HINSTANCE hInst);
 
 	//
 	static DWORD WINAPI test(LPVOID param);
@@ -38,7 +38,7 @@ public:
 	void DeleteEnemy(int KeyCode);
 	void CreateBullet(BulletBase* newBullet);
 	void CreateEnemy(EnemyBase* newEnemy);
-
+	int GetPlayerLife();
 
 	int S_Bit();
 
@@ -46,8 +46,7 @@ private:
 	GameHandler();
 	~GameHandler();
 	static GameHandler* Instance;
-	static HWND hWnd;
-	static HANDLE Instance_SemaHnd;
+	HINSTANCE hInst;
 	HANDLE Bullet_SemaHnd;
 	HANDLE Enemy_SemaHnd;
 
@@ -60,6 +59,9 @@ private:
 
 	int StageKey;
 
+	HBITMAP BIT_Frame;
+	HBITMAP BIT_Heart;
+	HBITMAP BIT_NullHeart;
 	class PlayerBase* player;
 	class PageStart* start;
 	class PageEnd* end;

@@ -21,6 +21,7 @@ public:
     void DrawObject(HDC hdc);
     PatternResult Attack(int choose_num__);
     bool GetDamages(int x);
+    int GetLife();
 
 	
 private:

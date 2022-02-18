@@ -10,6 +10,7 @@ Enemy_MiddleBoss::Enemy_MiddleBoss()
 	SetLocation(POINT{ 700,15 });
 	flag = true;
 	patternHurricane = new PatternHurricane(70, 15);
+	SetType(2);
 }
 
 Enemy_MiddleBoss::~Enemy_MiddleBoss()
