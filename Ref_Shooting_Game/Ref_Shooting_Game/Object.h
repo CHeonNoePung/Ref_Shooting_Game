@@ -24,6 +24,7 @@ public:
 	RECT GetRect();
 	bool IsPlayer();
 	void SetPlayer();
+
 protected:
 	POINT Location;
 	int width;
