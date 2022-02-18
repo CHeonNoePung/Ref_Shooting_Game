@@ -30,6 +30,7 @@ GameHandler::GameHandler()
 
 	BIT_Frame = NULL;
 	BIT_Heart = NULL;
+	BIT_NullHeart = NULL;
 }
 
 void GameHandler::GameStart()
@@ -73,9 +74,10 @@ GameHandler::~GameHandler()
 	delete player_c;
 	delete player;
 
+	DeleteObject(BIT_NullHeart);
 	DeleteObject(BIT_Heart);
 	DeleteObject(BIT_Frame);
-
+	
 	CloseHandle(Bullet_SemaHnd);
 	CloseHandle(Enemy_SemaHnd);
 
@@ -93,17 +95,24 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 	BitBlt(hdc, 0, 0, 1425, 700, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
 
 
-	//하트 1
-	SelectObject(hdc2, BIT_Heart);
-	BitBlt(hdc, 1025, 100, 50, 50, hdc2, 0, 0, SRCCOPY);
+	POINT Life_XY = { 1025,100 };
+	for (int i = 0; i < GetPlayerLife(); i++) // 채워져있는 하트 그리기
+	{
+		SelectObject(hdc2, BIT_Heart); //메모리DC에 비트맵오브젝트를 넣는다.
+		BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+		Life_XY.x += 50;
 
-	//하트 2
-	SelectObject(hdc2, BIT_Heart); 
-	BitBlt(hdc, 1075, 100, 50, 50, hdc2, 0, 0, SRCCOPY);
-
-	//하트 3
-	SelectObject(hdc2, BIT_Heart); //메모리DC에 비트맵오브젝트를 넣는다.
-	BitBlt(hdc, 1125, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트3
+	}
+	if (GetPlayerLife() != 3) // 비워져있는 하트 그리기
+	{
+		for (int i = 0; i < 3 - GetPlayerLife(); i++)
+		{
+			
+			SelectObject(hdc2, BIT_NullHeart); //메모리DC에 비트맵오브젝트를 넣는다.
+			BitBlt(hdc, Life_XY.x, Life_XY.y, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.    //하트1
+			Life_XY.x += 50;
+		}
+	}
 
 	SelectObject(hdc2, OldBitmap);
 
@@ -201,6 +210,7 @@ void GameHandler::InitBitmap(HINSTANCE hInst)
 	this->hInst = hInst;
 	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
 	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
+	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
 	HBITMAP BIT_GameOver =  LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));
 
 	PageEnd::SetGameOverBit(BIT_GameOver);
@@ -586,7 +596,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			if (colResult == true)
 			{
 				bool ck;
-				ck = Instance->player->GetDamages(15);
+				ck = Instance->player->GetDamages(1);
 
 				if (ck == true)
 				{
