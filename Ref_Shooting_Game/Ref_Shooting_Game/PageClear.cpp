@@ -3,6 +3,7 @@
 
 PageClear::PageClear()
 {
+
 	end = 1;
 }
 
@@ -10,12 +11,12 @@ void PageClear::DrawClear(HDC hdc)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
-	//HBITMAP MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));//비트맵 리소스를 받아온다.
-	//HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
-//	BitBlt(hdc, 590, 100, 700, 200, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+	//HBITMAP MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));//��Ʈ�� ���ҽ��� �޾ƿ´�.
+	//HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, MyBitmap); //�޸�DC�� ��Ʈ�ʿ�����Ʈ�� �ִ´�.
+//	BitBlt(hdc, 590, 100, 700, 200, hdc2, 0, 0, SRCCOPY); // DC�� ����(SRCCOPY)�Ѵ�.
 	TransparentBlt(hdc, 580, 125, 236, 236, hdc2, 0, 0, 236, 236, RGB(255, 255, 255));
 
-	WCHAR buf[100] = { 0, }; //문자열 버퍼
+	WCHAR buf[100] = { 0, }; //���ڿ� ����
 	int x = 640;
 	int y = 400;
 
@@ -45,12 +46,12 @@ int PageClear::end_choose(WPARAM wParam)
 	int x = 0;
 	switch (wParam)
 	{
-	case 0x26:  // 위쪽
+	case 0x26:  // ����
 		end--;
 		if (end == 0)
 			end = 3;
 		break;
-	case 0x28:  // 아래쪽
+	case 0x28:  // �Ʒ���
 		end++;
 		if (end == 4)
 			end = 1;

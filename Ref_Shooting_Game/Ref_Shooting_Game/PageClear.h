@@ -8,6 +8,7 @@ public:
 	PageClear();
 	void DrawClear(HDC hdc);
 	int end_choose(WPARAM Wparam);
+
 private:
 	int end;
 };
