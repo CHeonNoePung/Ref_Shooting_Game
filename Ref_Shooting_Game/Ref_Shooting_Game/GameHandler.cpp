@@ -6,11 +6,10 @@
 #include "PageStart.h"
 #include "PageEnd.h"
 #include "Stage.h"
+#include "Resource.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
-HWND GameHandler::hWnd = NULL;
-HANDLE GameHandler::Instance_SemaHnd = NULL;
 
 GameHandler::GameHandler()
 {
@@ -29,6 +28,8 @@ GameHandler::GameHandler()
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 
+	BIT_Frame = NULL;
+	BIT_Heart = NULL;
 }
 
 void GameHandler::GameStart()
@@ -72,12 +73,40 @@ GameHandler::~GameHandler()
 	delete player_c;
 	delete player;
 
+	DeleteObject(BIT_Heart);
+	DeleteObject(BIT_Frame);
+
 	CloseHandle(Bullet_SemaHnd);
 	CloseHandle(Enemy_SemaHnd);
+
+	PageEnd::DeleteGameOverBit();
 }
 
 void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 {
+	HDC hdc2 = CreateCompatibleDC(hdc);
+
+	HBITMAP OldBitmap;
+
+	// 게임의 전체적인 틀
+	OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Frame); //메모리DC에 비트맵오브젝트를 넣는다.
+	BitBlt(hdc, 0, 0, 1425, 700, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다.
+
+
+	//하트 1
+	SelectObject(hdc2, BIT_Heart);
+	BitBlt(hdc, 1025, 100, 50, 50, hdc2, 0, 0, SRCCOPY);
+
+	//하트 2
+	SelectObject(hdc2, BIT_Heart); 
+	BitBlt(hdc, 1075, 100, 50, 50, hdc2, 0, 0, SRCCOPY);
+
+	//하트 3
+	SelectObject(hdc2, BIT_Heart); //메모리DC에 비트맵오브젝트를 넣는다.
+	BitBlt(hdc, 1125, 100, 50, 50, hdc2, 0, 0, SRCCOPY); // DC로 복사(SRCCOPY)한다    //하트3
+
+	SelectObject(hdc2, OldBitmap);
+
 
 	if (start_num != 3) {
 		start->DrawStart(hdc);
@@ -109,6 +138,8 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 	}
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 
+
+	DeleteDC(hdc2);
 }
 
 void GameHandler::OnKeyDown(WPARAM wParam)
@@ -165,9 +196,14 @@ void GameHandler::DestroyInstance()
 	}
 }
 
-void GameHandler::SethWnd(HWND nhWnd)
+void GameHandler::InitBitmap(HINSTANCE hInst)
 {
-	hWnd = nhWnd;
+	this->hInst = hInst;
+	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
+	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
+	HBITMAP BIT_GameOver =  LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));
+
+	PageEnd::SetGameOverBit(BIT_GameOver);
 }
 
 // 움직이는거 쓰레드로 구현
@@ -542,7 +578,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 			if (colResult == true)
 			{
 				bool ck;
-				ck = Instance->player->GetDamages(1);
+				ck = Instance->player->GetDamages(15);
 
 				if (ck == true)
 				{
