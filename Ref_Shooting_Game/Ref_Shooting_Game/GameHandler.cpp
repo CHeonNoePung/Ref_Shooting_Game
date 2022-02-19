@@ -5,6 +5,7 @@
 #include "PlayerChoose.h"
 #include "PageStart.h"
 #include "PageEnd.h"
+#include "PageClear.h"
 #include "Stage.h"
 #include "Resource.h"
 #include <iostream>
@@ -20,11 +21,13 @@ GameHandler::GameHandler()
 	start_num = 0;
 	StageKey = 0;
 	bGameover = false;
+	bGameclear = false;
 	choose_num = 0;
 	TF = false;
 
 	start = new PageStart();
 	end = new PageEnd();
+	clear = new PageClear();
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 
@@ -50,6 +53,12 @@ void GameHandler::GameOver()
 {
 	bGameover = true;
 }
+
+void GameHandler::GameClear()
+{
+	bGameclear = true;
+}
+
 void GameHandler::ResetGame()
 {
 	start_num = 0;
@@ -400,13 +409,12 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		Sleep(80);
 
 	}
-
+	
 	Instance->DeleteEnemy(KeyCode);
-
+	
 
 	return 0;
 }
-
 void GameHandler::DeleteBullet(int KeyCode)
 {
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
