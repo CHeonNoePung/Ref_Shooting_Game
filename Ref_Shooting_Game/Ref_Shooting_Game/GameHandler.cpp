@@ -84,7 +84,7 @@ GameHandler::~GameHandler()
 	PageEnd::DeleteGameOverBit();
 }
 
-void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
+void GameHandler::OnPaint(HDC hdc)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
@@ -115,8 +115,8 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 	}
 
 	SelectObject(hdc2, OldBitmap);
-
-
+	
+	DeleteDC(hdc2);
 	if (start_num != 3) {
 		start->DrawStart(hdc);
 		return;
@@ -128,7 +128,7 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 
 	if (bGameover == true)
 	{
-		end->DrawEnd(hdc, hInst);
+		end->DrawEnd(hdc);
 		return;
 	}
 
@@ -148,7 +148,7 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 	ReleaseSemaphore(Enemy_SemaHnd, 1, NULL);
 
 
-	DeleteDC(hdc2);
+	
 }
 
 void GameHandler::OnKeyDown(WPARAM wParam)

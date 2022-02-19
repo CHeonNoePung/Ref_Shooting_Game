@@ -19,7 +19,7 @@ void PageEnd::DeleteGameOverBit()
 	if (BIT_GameOver != NULL) DeleteObject(BIT_GameOver);
 }
 
-void PageEnd::DrawEnd(HDC hdc, HINSTANCE hInst)
+void PageEnd::DrawEnd(HDC hdc)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
