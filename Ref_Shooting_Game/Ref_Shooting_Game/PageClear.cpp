@@ -23,21 +23,21 @@ void PageClear::DrawClear(HDC hdc)
 	if (end == 1)
 	{
 
-		Rectangle(hdc, 665, 415, 735, 440);
+		Rectangle(hdc, 650, 415, 750, 440);
 
 	}
 	else if (end == 2)
 	{
-		Rectangle(hdc, 650, 440, 750, 465);
+		Rectangle(hdc, 660, 440, 740, 465);
 
 	}
 
 	//wsprintfW(buf, L"RESTART");
 	//TextOut(hdc, x + 30, y + 20, buf, lstrlenW(buf));
 	wsprintfW(buf, L"GO TO START");
-	TextOut(hdc, x + 15, y + 45, buf, lstrlenW(buf));
+	TextOut(hdc, x + 15, y + 20, buf, lstrlenW(buf));
 	wsprintfW(buf, L"EXIT GAME");
-	TextOut(hdc, x + 25, y + 70, buf, lstrlenW(buf));
+	TextOut(hdc, x + 25, y + 45, buf, lstrlenW(buf));
 }
 
 int PageClear::end_choose(WPARAM wParam)

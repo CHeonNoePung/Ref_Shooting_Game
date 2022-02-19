@@ -597,6 +597,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 				EnemyBase* Enemy = nullptr;
 				bool bDead = false;
+				bool bBoss = false;				//Enemy 보스 확인
 
 				// 해당 키코드가 Enemys에 존재하는지 검사
 				if (Instance->Enemys.count(colKeyCode) > 0)
@@ -610,6 +611,13 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 						bDead = Enemy->GetDamages(5);
 					else
 						bDead = Enemy->GetDamages(1);
+
+					if (Enemy->GetType() == 3)
+					{
+						bBoss = true;
+
+					}
+
 				}
 
 				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
@@ -618,6 +626,10 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 				if (bDead == true)
 				{
 					Instance->DeleteEnemy(colKeyCode);
+					if (bBoss == true)
+					{
+						Instance->GameClear();
+					}
 				}
 				if (Instance->choose_num != 2)
 					break;
