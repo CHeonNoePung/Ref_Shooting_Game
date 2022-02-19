@@ -266,32 +266,38 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 		if (player->IsDead()) continue;
 		if (Instance->TF == true && Instance->choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
+		int MoveSpeed = 5;
+		if (GetKeyState(VK_SHIFT) & 0x8000) //shift
+		{
+			MoveSpeed = 1;
+		}
+
 		if (GetKeyState(0x57) & 0x8000) //w
 		{
 			if (player->GetLocation().y >= 14)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - 5 });
+				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - MoveSpeed });
 			}
 		}
 		if (GetKeyState(0x41) & 0x8000) //a
 		{
 			if (player->GetLocation().x >= 401)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x - 5, player->GetLocation().y });
+				player->SetLocation(POINT{ player->GetLocation().x - MoveSpeed, player->GetLocation().y });
 			}
 		}
 		if (GetKeyState(0x53) & 0x8000) //s
 		{
 			if (player->GetLocation().y <= 665) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + 5 });
+				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + MoveSpeed });
 			}
 		}
 		if (GetKeyState(0x44) & 0x8000) //d
 		{
 			if (player->GetLocation().x <= 970) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x + 5, player->GetLocation().y });
+				player->SetLocation(POINT{ player->GetLocation().x + MoveSpeed, player->GetLocation().y });
 			}
 		}
 		Sleep(15);
