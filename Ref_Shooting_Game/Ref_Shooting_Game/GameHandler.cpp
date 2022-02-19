@@ -5,6 +5,7 @@
 #include "PlayerChoose.h"
 #include "PageStart.h"
 #include "PageEnd.h"
+#include "PageClear.h"
 #include "Stage.h"
 #include "Resource.h"
 #include <iostream>
@@ -20,11 +21,14 @@ GameHandler::GameHandler()
 	start_num = 0;
 	StageKey = 0;
 	bGameover = false;
+	bGameclear = false;
+	bGameend = false;		//게임 클리어, 종료 공용 변수
 	choose_num = 0;
 	TF = false;
 
 	start = new PageStart();
 	end = new PageEnd();
+	clear = new PageClear();
 	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 
@@ -49,11 +53,20 @@ void GameHandler::GameStart()
 void GameHandler::GameOver()
 {
 	bGameover = true;
+	bGameend = true;
 }
+
+void GameHandler::GameClear()
+{
+	bGameclear = true;
+	bGameend = true;
+}
+
 void GameHandler::ResetGame()
 {
 	start_num = 0;
 	bGameover = false;
+	bGameclear = false;
 	TF = false;
 	choose_num =0 ;
 	player->Reset();
@@ -62,6 +75,7 @@ void GameHandler::RestartGame()
 {
 	TF = false;
 	bGameover = false;
+	bGameclear = false;
 	player->Reset();
 	GameStart();
 }
@@ -132,6 +146,12 @@ void GameHandler::OnPaint(HDC hdc, HINSTANCE hInst)
 		return;
 	}
 
+	if (bGameclear == true)
+	{
+		clear->DrawClear(hdc);
+		return;
+	}
+
 	player->DrawObject(hdc);
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
 	for (auto it = Bullets.begin(); it != Bullets.end(); it++)
@@ -184,6 +204,21 @@ void GameHandler::OnKeyDown(WPARAM wParam)
 			ExitProcess(0);
 		}
 	}
+
+	if (bGameclear == true)
+	{
+		int clear_x;
+		clear_x = clear->end_choose(wParam);
+
+		if (clear_x == 1)
+		{
+			ResetGame();
+		}
+		else if (clear_x == 2)
+		{
+			ExitProcess(0);
+		}
+	}
 	return;
 
 }
@@ -227,7 +262,7 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
+		if (Instance->bGameend == true) break;
 		if (player->IsDead()) continue;
 		if (Instance->TF == true && Instance->choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
@@ -273,7 +308,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
+		if (Instance->bGameend == true) break;
 		if (player->IsDead()) continue;
 
 		if (GetKeyState(0x48) & 0x8000) //d
@@ -306,7 +341,7 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
+		if (Instance->bGameend == true) break;
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
 
 		// 먼저 받았던 킷값을 가진 Enemy가 배열에 없으면 나감
@@ -353,7 +388,8 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
+		if (Instance->bGameend == true) break;
+		
 		WaitForSingleObject(Instance->Enemy_SemaHnd, INFINITE);
 
 
@@ -400,13 +436,12 @@ DWORD WINAPI GameHandler::enemy_move(LPVOID param)
 		Sleep(80);
 
 	}
-
+	
 	Instance->DeleteEnemy(KeyCode);
-
+	
 
 	return 0;
 }
-
 void GameHandler::DeleteBullet(int KeyCode)
 {
 	WaitForSingleObject(Bullet_SemaHnd, INFINITE);
@@ -534,7 +569,8 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 	while (1)
 	{
-		if (Instance->bGameover == true) break;
+		if (Instance->bGameend == true) break;
+		
 
 
 		bool result = Bullet->MoveNext();
@@ -561,6 +597,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 
 				EnemyBase* Enemy = nullptr;
 				bool bDead = false;
+				bool bBoss = false;				//Enemy 보스 확인
 
 				// 해당 키코드가 Enemys에 존재하는지 검사
 				if (Instance->Enemys.count(colKeyCode) > 0)
@@ -574,6 +611,13 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 						bDead = Enemy->GetDamages(5);
 					else
 						bDead = Enemy->GetDamages(1);
+
+					if (Enemy->GetType() == 3)
+					{
+						bBoss = true;
+
+					}
+
 				}
 
 				ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
@@ -582,6 +626,10 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 				if (bDead == true)
 				{
 					Instance->DeleteEnemy(colKeyCode);
+					if (bBoss == true)
+					{
+						Instance->GameClear();
+					}
 				}
 				if (Instance->choose_num != 2)
 					break;
@@ -619,9 +667,9 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 
 	while (1)
 	{
-		if (Instance->bGameover == true || Instance->StageKey != Key) break;			// 게임이 종료 OR 현재 진행중인 스테이지와 다르면 종료
+		if (Instance->bGameend == true || Instance->StageKey != Key) break;			// 게임이 종료 OR 현재 진행중인 스테이지와 다르면 종료
 		EnemyBase* Enemy = stage->getMonsterBase();										// Sleep이 호출됨
-		if (Instance->bGameover == true || Instance->StageKey != Key) break;			// Sleep중 게임이 종료될 수 있기때문에 한번더 검사함
+		if (Instance->bGameend == true || Instance->StageKey != Key) break;			// Sleep중 게임이 종료될 수 있기때문에 한번더 검사함
 
 		if (Enemy != nullptr)
 		{
