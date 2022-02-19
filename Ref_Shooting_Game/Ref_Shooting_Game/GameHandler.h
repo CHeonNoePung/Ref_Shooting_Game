@@ -27,6 +27,7 @@ public:
 
 	void GameStart();
 	void GameOver();
+	void GameClear();
 	void ResetGame();
 	void RestartGame();
 	bool EnemyCollisionTest(class EnemyBase* ColEnemy);
@@ -54,6 +55,7 @@ private:
 	map<int, class EnemyBase*> Enemys;
 
 	bool bGameover;
+	bool bGameclear;
 	int choose_num;
 	bool TF;
 
@@ -65,6 +67,7 @@ private:
 	class PlayerBase* player;
 	class PageStart* start;
 	class PageEnd* end;
+	class PageClear* clear;
 	class PlayerChoose* player_c;
 };
 
