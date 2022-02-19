@@ -147,6 +147,7 @@
     <ClInclude Include="Enemy_bird.h" />
     <ClInclude Include="BulletBase.h" />
     <ClInclude Include="Bullet_Normal.h" />
+    <ClInclude Include="Enemy_Boss.h" />
     <ClInclude Include="Enemy_MiddleBoss.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Entity.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Enemy_bird.cpp" />
     <ClCompile Include="BulletBase.cpp" />
     <ClCompile Include="Bullet_Normal.cpp" />
+    <ClCompile Include="Enemy_Boss.cpp" />
     <ClCompile Include="Enemy_MiddleBoss.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Entity.cpp" />
