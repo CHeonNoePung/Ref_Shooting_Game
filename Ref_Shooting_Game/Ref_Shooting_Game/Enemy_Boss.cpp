@@ -6,8 +6,10 @@ Enemy_Boss::Enemy_Boss()
 	SetHealth(300);
 	SetSize(200, 200);
 	SetLocation(POINT{ 475,15 });
+	SetType(3);
 	flag = true;
 	patternFlower = new PatternFlower(70, 15);
+	
 }
 
 Enemy_Boss::~Enemy_Boss()
