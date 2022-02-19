@@ -57,6 +57,7 @@ private:
 
 	bool bGameover;
 	bool bGameclear;
+	bool bGameend;
 	int choose_num;
 	bool TF;
 
