@@ -14,6 +14,7 @@ public:
 
 private:
 	int end;
+	int end;
 	static HBITMAP BIT_GameOver;
 };
 
