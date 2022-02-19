@@ -9,7 +9,7 @@ public:
 	PageEnd();
 	static void SetGameOverBit(HBITMAP BITMAP);
 	static void DeleteGameOverBit();
-	void DrawEnd(HDC hdc, HINSTANCE hInst);
+	void DrawEnd(HDC hdc);
 	int end_choose(WPARAM wparam);
 
 private:
