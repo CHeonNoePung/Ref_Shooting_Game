@@ -2,7 +2,7 @@
 
 #include "framework.h"
 #include <iostream>
-static int end;
+
 class PageEnd
 {
 public: 
@@ -11,6 +11,6 @@ public:
 	int end_choose(WPARAM wparam);
 
 private:
-	
+	int end;
 };
 
