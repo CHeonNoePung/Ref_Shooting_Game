@@ -18,6 +18,7 @@ public:
     void revive(); // 라이프 소모 후 부활 시 호출
     void flicker(); // 무적중 깜박임
     PlayerBase();
+    static void SetCharacterBit(HINSTANCE hInst);
     void DrawObject(HDC hdc);
     PatternResult Attack();
     bool GetDamages(int x);

@@ -144,6 +144,8 @@ IDB_BITMAP6             BITMAP                  "harte1.bmp"
 
 IDB_GAMEOVER            BITMAP                  "GameOver.bmp"
 
+IDB_Player              BITMAP                  "top.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

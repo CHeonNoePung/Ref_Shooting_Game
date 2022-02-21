@@ -216,5 +216,11 @@
     <Image Include="GameOver.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="bitmap7.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma warning(disable:4828)
 #include "Stage.h"
 #include "Type0.h"
+#include "Enemy_mage.h"
 #include "Enemy_bird.h"
 #include "Enemy_bird2.h"
 #include "Enemy_turret.h"
@@ -47,7 +48,7 @@ EnemyBase* Stage::getMonsterBase()
 	{		
 		Enemy = new Enemy_bird(); // 생성
 		Enemy->SetLocation(POINT{ 700,10 }); // 좌표 설정
-		Enemy->SetHealth(100);
+		Enemy->SetHealth(2);
 	}
 	break;
 	case 1:
@@ -225,7 +226,7 @@ EnemyBase* Stage::getMonsterBase()
 ///////////////////////////////////////////////////////////////////////
 
 	case 24: {
-		Sleep(20000);
+		Sleep(50000);
 		Enemy = new Type0();
 		Enemy->SetLocation(POINT{ 600,50 });
 		Enemy->SetHealth(1);
@@ -234,7 +235,7 @@ EnemyBase* Stage::getMonsterBase()
 	case 25: {
 		Sleep(500);
 		Enemy = new Type0();
-		Enemy->SetLocation(POINT{ 400,50 });
+		Enemy->SetLocation(POINT{ 450,50 });
 		Enemy->SetHealth(1);
 	}
 	break;
@@ -274,22 +275,15 @@ EnemyBase* Stage::getMonsterBase()
 	}
 	break;
 	case 31: {
-		Sleep(500);
-		Enemy = new Type0();
-		Enemy->SetLocation(POINT{ 875,50 });
-		Enemy->SetHealth(1);
+		
 	}
 	 break;
 	case 32: {
-		Enemy = new Type0();
-		Enemy->SetLocation(POINT{ 750,50 });
-		Enemy->SetHealth(1);
+		
 	}
 	break;
 	case 33: {
-		Enemy = new Type0();
-		Enemy->SetLocation(POINT{ 650,50 });
-		Enemy->SetHealth(1);
+		
 	}
 	break;
 

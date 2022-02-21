@@ -19,9 +19,25 @@ PlayerBase::PlayerBase()
 	SetType(0); // 0 == 플레이어
 }
 
+void PlayerBase::SetCharacterBit(HINSTANCE hInst)
+{
+	BIT_Character = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_Player));
+}
 
+void PlayerBase::DrawObject(HDC hdc)
+{
+	HDC hdc2 = CreateCompatibleDC(hdc);
 
+	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Character); //메모리DC에 비트맵오브젝트를 넣는다.
 
+//	BitBlt(hdc, Location.x, Location.y, 50, 50, hdc2, 0, 0, SRCCOPY);
+	TransparentBlt(hdc, Location.x, Location.y, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
+
+	SelectObject(hdc2, OldBitmap);
+	DeleteDC(hdc2);
+}
+
+/*
 void PlayerBase::DrawObject(HDC hdc)
 {
 
@@ -36,6 +52,7 @@ void PlayerBase::DrawObject(HDC hdc)
 	DeleteObject(red_brush);
 	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
+*/
 
 PatternResult PlayerBase::Attack()
 {

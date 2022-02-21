@@ -2,7 +2,7 @@
 #include "EnemyBase.h"
 #include <iostream>
 class Enemy_mage :
-    public Entity
+    public EnemyBase
 {
 public:
     Enemy_mage();
@@ -12,5 +12,6 @@ public:
     void DrawObject(HDC hdc);
 private:
     class PatternNormal* patternNormal;
+    int Count;
 };
 

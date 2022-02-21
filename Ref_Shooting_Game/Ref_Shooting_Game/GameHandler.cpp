@@ -90,6 +90,7 @@ GameHandler::~GameHandler()
 	CloseHandle(Enemy_SemaHnd);
 
 	PageEnd::DeleteGameOverBit();
+	PlayerBase::DeleteCharacterBit();
 }
 
 void GameHandler::OnPaint(HDC hdc)
@@ -232,10 +233,11 @@ void GameHandler::InitBitmap(HINSTANCE hInst)
 	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
 	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
 	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
-
+	BIT_Player = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_Player));
+	BIT_BirdLeft = LoadBitmap(hInst, MAKEINTRESOURCE)
 	Type0::SetCharacterBit(hInst);
 	PageEnd::SetGameOverBit(hInst);
-
+	PlayerBase::SetCharacterBit(hInst);
 }
 
 // 움직이는거 쓰레드로 구현
@@ -352,6 +354,10 @@ DWORD WINAPI GameHandler::enemy_attack(LPVOID param) // 적의 공격 스레드(
 
 		BulletBase* Bullet = result.Bullet;
 		int Interval = result.Interval;
+		if (Bullet == nullptr) {
+			ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
+			break;
+		}
 		Instance->CreateBullet(Bullet);
 
 		ReleaseSemaphore(Instance->Enemy_SemaHnd, 1, NULL);
