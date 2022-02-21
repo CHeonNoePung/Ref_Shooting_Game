@@ -7,7 +7,7 @@ class PageEnd
 {
 public: 
 	PageEnd();
-	static void SetGameOverBit(HBITMAP BITMAP);
+	static void SetGameOverBit(HINSTANCE hInst);
 	static void DeleteGameOverBit();
 	void DrawEnd(HDC hdc);
 	int end_choose(WPARAM wparam);

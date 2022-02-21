@@ -2,6 +2,7 @@
 #include "Type0.h"
 #include "EnemyBase.h"
 #include "PatternNormal.h"
+#pragma comment(lib, "Msimg32.lib")
 
 Type0::Type0()
 {
@@ -13,9 +14,29 @@ Type0::Type0()
 	SetType(1);
 }
 
+
 Type0::~Type0()
 {
 	delete patternNormal;
+}
+
+
+void Type0::SetCharacterBit(HINSTANCE hInst)
+{
+	BIT_Character = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));
+}
+
+void Type0::DrawObject(HDC hdc)
+{
+	HDC hdc2 = CreateCompatibleDC(hdc);
+
+	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Character); //메모리DC에 비트맵오브젝트를 넣는다.
+
+	BitBlt(hdc, Location.x,Location.y, 50, 50, hdc2, 0, 0, SRCCOPY);
+	//TransparentBlt(hdc, Location.x, Location.y, 50, 50, hdc2, 0, 0, 50,50, RGB(255, 255, 255));
+
+	SelectObject(hdc2, OldBitmap);
+	DeleteDC(hdc2);
 }
 
 bool Type0::MoveNext()

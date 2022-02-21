@@ -7,6 +7,7 @@
 #include "PageClear.h"
 #include "Stage.h"
 #include "Resource.h"
+#include "Type0.h"
 #include <iostream>
 
 GameHandler* GameHandler::Instance = nullptr;
@@ -231,9 +232,10 @@ void GameHandler::InitBitmap(HINSTANCE hInst)
 	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
 	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
 	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
-	HBITMAP BIT_GameOver =  LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));
 
-	PageEnd::SetGameOverBit(BIT_GameOver);
+	Type0::SetCharacterBit(hInst);
+	PageEnd::SetGameOverBit(hInst);
+
 }
 
 // 움직이는거 쓰레드로 구현
