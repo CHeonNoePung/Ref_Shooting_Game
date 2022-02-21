@@ -5,8 +5,9 @@
 
 Type0::Type0()
 {
-	SetHealth(5);
+	SetHealth(1);
 	SetSize(15, 15);
+	SetLocation(POINT{700,50});
 	test_sin = 0;
 	patternNormal = new PatternNormal(500, 7); // (빈도, 총알사이즈)
 	// 탄막 속도는 setspeed로 설정
@@ -24,8 +25,7 @@ bool Type0::MoveNext()
 	Location = POINT{ Location.x , Location.y };
 
 
-
-	Location.x = 500 + sin(test_sin) * 45;
+	Location.x = Location.x + sin(test_sin) * 45;
 	Location.y += 5;
 	test_sin += 1;
 

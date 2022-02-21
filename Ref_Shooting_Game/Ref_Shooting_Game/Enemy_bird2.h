@@ -1,15 +1,18 @@
 #pragma once
 #include "EnemyBase.h"
+#include <iostream>
 
-class Type0 : public EnemyBase
+class Enemy_bird2
+	: public EnemyBase
 {
 public:
-	Type0();
-	~Type0();
+	Enemy_bird2();
+	~Enemy_bird2();
 	bool MoveNext();
-private:	
 	PatternResult Attack(PatternParam Param);
+	void DrawObject(HDC hdc);
 
+private:
 	class PatternNormal* patternNormal;
 };
 

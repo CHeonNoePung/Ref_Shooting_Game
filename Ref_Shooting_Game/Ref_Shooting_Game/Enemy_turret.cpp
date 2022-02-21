@@ -5,7 +5,7 @@
 //움직이는거, 체력, 데미지
 Enemy_turret::Enemy_turret()
 {
-	SetHealth(10);
+	SetHealth(30);
 	SetSize(40, 40);
 	SetLocation(POINT{ 700,20 });
 	patternNormal = new PatternNormal(500, 7);
@@ -20,7 +20,7 @@ Enemy_turret::~Enemy_turret()
 bool Enemy_turret::MoveNext()
 {
 	Location = POINT{ Location.x , Location.y };
-	Location.y += 1;
+	Location.y += 1.5;
 	// 맵밖으로 나가면 false 아닐경우 true 반환
 	RECT rect = GetRect();
 

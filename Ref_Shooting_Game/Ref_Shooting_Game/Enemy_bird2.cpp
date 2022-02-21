@@ -1,38 +1,38 @@
-#include "Enemy_bird.h"
+#include "Enemy_bird2.h"
 #include "Bullet_Normal.h"
 #include "PatternNormal.h"
 
-Enemy_bird::Enemy_bird()
+Enemy_bird2::Enemy_bird2()
 {
 	SetHealth(3);
 	SetSize(50, 50);
-	SetLocation(POINT{ 400, 10});
+	SetLocation(POINT{ 400, 10 });
 	test_sin = 45;
 	patternNormal = new PatternNormal(500, 7);
 	SetType(1);
 }
 
-Enemy_bird::~Enemy_bird()
+Enemy_bird2::~Enemy_bird2()
 {
 	delete patternNormal;
 }
 
-void Enemy_bird::DrawObject(HDC hdc)
+void Enemy_bird2::DrawObject(HDC hdc)
 {
 	RECT temp = GetRect();
 	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
-bool Enemy_bird::MoveNext() 
+bool Enemy_bird2::MoveNext()
 {
 	//Rectangle(hdc, 400, 10, 1000, 690) 화면 사이즈
 	Location = POINT{ Location.x , Location.y };
 
-	
-		Location.x = 400 + 0.03 * test_sin * test_sin ;
-		Location.y += 10;
-		test_sin -= 4;
-	
+
+	Location.x = 900 - 0.03 * test_sin * test_sin;
+	Location.y += 10;
+	test_sin -= 4;
+
 
 	//std::cout << 400 + 0.03 * test_sin * test_sin << "  " << test_sin << "\n"<< std::endl;
 	//std::cout << Location.x << "  " << Location.y << std::endl;
@@ -49,7 +49,7 @@ bool Enemy_bird::MoveNext()
 
 
 
-PatternResult Enemy_bird::Attack(PatternParam Param)
+PatternResult Enemy_bird2::Attack(PatternParam Param)
 {
 	/*
 	PatternResult result = Pattern->Next(Param);

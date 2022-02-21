@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include "Type0.h"
 #include "Enemy_bird.h"
+#include "Enemy_bird2.h"
 #include "Enemy_turret.h"
 #include "Enemy_MiddleBoss.h"
 #include "Enemy_Boss.h"
@@ -43,44 +44,262 @@ EnemyBase* Stage::getMonsterBase()
 	switch(Monster_Number)
 	{
 	case 0:
-	{
-		//new 슬라임;
-		Enemy = new Enemy_bird();
-		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
+	{		
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 700,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
 	}
 	break;
 	case 1:
 	{
-		Sleep(500);
-		//new 초록버섯;
-		Enemy = new Enemy_turret();
-		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 700,10 }); // 좌표 설정
+		Enemy->SetHealth(100);		
 	}
 	break;
 	case 2: 
 	{
 		Sleep(500);
-		//new 주니어발록 
-		Enemy = new Type0(); // 생성
-		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
 	}
 	break;
-	case 3: {
-		Sleep(500);
-		Enemy = new Enemy_MiddleBoss(); // 생성
-		//Enemy->SetLocation(POINT{ 700,70 }); // 좌표 설정
-	
+	case 3: {		
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
 	}
 	break;
 	case 4: {
-		Sleep(5000);
-		Enemy = new Enemy_Boss(); // 생성
-		//Enemy->SetLocation(POINT{ 700,70 }); // 좌표 설정
-
+		Sleep(500);
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
 	}
-		  break;
+	break;
+	case 5: {
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 6: {
+		Sleep(500);
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 7: {
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 8: {
+		Sleep(500);
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 9: {
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 10: {
+		Sleep(500);
+		Enemy = new Enemy_bird(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+	case 11: {
+		Sleep(0);
+		Enemy = new Enemy_bird2(); // 생성
+		Enemy->SetLocation(POINT{ 400,10 }); // 좌표 설정
+		Enemy->SetHealth(100);
+	}
+	break;
+
+/////////////////////////////////////////////////////////////////////// 
+	case 12: {
+		Sleep(1500);
+		//new 초록버섯;
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 900,50 }); // 좌표 설정
+		Enemy->SetHealth(10);
+	}
+	break;
+	case 13: {
+		Sleep(0);
+		//new 초록버섯;
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 450,50 }); // 좌표 설정
+		Enemy->SetHealth(10);
+	}
+		   break;
+	case 14: {
+		Sleep(1000);
+		Enemy = new Enemy_MiddleBoss(); // 생성
+		Enemy->SetLocation(POINT{ 400,50 }); // 좌표 설정	
+		Enemy->SetHealth(15);
+		Enemy->SetSize(50, 50);
+	}
+	break;
+
+	case 15: {
+		Sleep(0);
+		Enemy = new Enemy_MiddleBoss(); // 생성
+		Enemy->SetLocation(POINT{ 900,50 }); // 좌표 설정	
+		Enemy->SetHealth(15);
+		Enemy->SetSize(50, 50);
+	}
+	break;
+/////////////////////////////////////////////////////////////////////// 터렛을 마름모꼴로 배치하여 탄환을 피하는 구간
+	case 16: {
+		Sleep(20000);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 675,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);		
+	}
+	break;
+	case 17: {
+		Sleep(5000);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 550,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+	}
+	break;
+	case 18: {
+		Sleep(0);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 800,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);	
+	}
+	break;
+	case 19: {
+		Sleep(5000);		
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 900,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+	}
+	break;
+	case 20: {
+		Sleep(0);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 450,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+	}
+	break;
+	case 21: {
+		Sleep(5000);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 550,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+	}
+	break;
+	case 22: {
+		Sleep(0);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 800,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+	}
+	break;
+	case 23: {
+		Sleep(5000);
+		Enemy = new Enemy_turret();
+		Enemy->SetLocation(POINT{ 675,50 }); // 좌표 설정
+		Enemy->SetHealth(1000);
+		
+	}
+	break;
+///////////////////////////////////////////////////////////////////////
+
+	case 24: {
+		Sleep(20000);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 600,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 25: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 400,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 26: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 800,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 27: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 900,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 28: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 700,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 29: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 350,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 30: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 675,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 31: {
+		Sleep(500);
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 875,50 });
+		Enemy->SetHealth(1);
+	}
+	 break;
+	case 32: {
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 750,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+	case 33: {
+		Enemy = new Type0();
+		Enemy->SetLocation(POINT{ 650,50 });
+		Enemy->SetHealth(1);
+	}
+	break;
+
+	case 34: {
+		
+	}
+	break;
+
 	default:
-		break;
+	break;
 	}
 	Monster_Number++;
 

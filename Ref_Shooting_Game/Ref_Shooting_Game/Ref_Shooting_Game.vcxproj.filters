@@ -102,6 +102,12 @@
     <ClInclude Include="Enemy_Boss.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_bird2.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_mage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ref_Shooting_Game.cpp">
@@ -182,6 +188,12 @@
     <ClCompile Include="Enemy_Boss.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_bird2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_mage.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc">
@@ -199,9 +211,6 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="test.bmp">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="bitmap6.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="harte.bmp">

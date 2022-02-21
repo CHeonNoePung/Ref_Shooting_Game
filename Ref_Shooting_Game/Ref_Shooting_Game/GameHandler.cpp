@@ -272,28 +272,28 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 			MoveSpeed = 1;
 		}
 
-		if (GetKeyState(0x57) & 0x8000) //w
+		if (GetKeyState(VK_UP) & 0x8000) //up
 		{
 			if (player->GetLocation().y >= 14)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - MoveSpeed });
 			}
 		}
-		if (GetKeyState(0x41) & 0x8000) //a
+		if (GetKeyState(VK_LEFT) & 0x8000) //left
 		{
 			if (player->GetLocation().x >= 401)
 			{
 				player->SetLocation(POINT{ player->GetLocation().x - MoveSpeed, player->GetLocation().y });
 			}
 		}
-		if (GetKeyState(0x53) & 0x8000) //s
+		if (GetKeyState(VK_DOWN) & 0x8000) //down
 		{
 			if (player->GetLocation().y <= 665) // 여기다가 하면 됨
 			{
 				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + MoveSpeed });
 			}
 		}
-		if (GetKeyState(0x44) & 0x8000) //d
+		if (GetKeyState(VK_RIGHT) & 0x8000) //right
 		{
 			if (player->GetLocation().x <= 970) // 여기다가 하면 됨
 			{
@@ -317,7 +317,7 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 		if (Instance->bGameend == true) break;
 		if (player->IsDead()) continue;
 
-		if (GetKeyState(0x48) & 0x8000) //d
+		if (GetKeyState(0x5A) & 0x8000) //z
 		{
 			if (play->TF == true && play->choose_num == 2) { continue; }
 			BulletBase* Bullet = player->Attack(play->choose_num).Bullet;

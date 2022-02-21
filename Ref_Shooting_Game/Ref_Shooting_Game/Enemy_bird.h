@@ -1,5 +1,4 @@
 #pragma once
-
 #include "EnemyBase.h"
 #include <iostream>
 
