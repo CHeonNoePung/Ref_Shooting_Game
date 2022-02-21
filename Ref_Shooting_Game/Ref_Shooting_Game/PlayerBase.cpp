@@ -44,7 +44,7 @@ void PlayerBase::DrawObject(HDC hdc)
 
 	//비트맵
 //	BitBlt(hdc, Location.x, Location.y, 50, 50, hdc2, 0, 0, SRCCOPY);
-	TransparentBlt(hdc, Location.x-12, Location.y-10, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
+	TransparentBlt(hdc, Location.x-12, Location.y-13, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
 
 	// 충돌판정
 	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
