@@ -6,6 +6,11 @@ class Type0 : public EnemyBase
 public:
 	Type0();
 	~Type0();
+
+
+	static void SetCharacterBit(HINSTANCE hInst);
+
+	void DrawObject(HDC hdc);
 	
 private:
 	bool MoveNext();
