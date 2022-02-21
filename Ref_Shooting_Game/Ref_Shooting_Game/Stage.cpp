@@ -61,7 +61,7 @@ EnemyBase* Stage::getMonsterBase()
 		Sleep(500);
 		//new 주니어발록 
 		Enemy = new Type0(); // 생성
-		Enemy->SetLocation(POINT{ 750,70 }); // 좌표 설정
+		Enemy->SetLocation(POINT{ 700,20 }); // 좌표 설정
 	}
 	break;
 	case 3: {

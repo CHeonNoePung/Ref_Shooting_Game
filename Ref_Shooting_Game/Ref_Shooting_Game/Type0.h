@@ -1,5 +1,5 @@
 #pragma once
-#include "EnemyBase.h"dsaewq
+#include "EnemyBase.h"
 
 /*
 오브젝트 클래스에 있는 드로우 오브젝트를 사용하고
