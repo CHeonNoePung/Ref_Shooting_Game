@@ -41,13 +41,13 @@ IDI_SMALL               ICON                    "small.ico"
 
 IDC_REFSHOOTINGGAME MENU
 BEGIN
-    POPUP "?åÏùº(&F)"
+    POPUP "∏ﬁ¥∫"
     BEGIN
-        MENUITEM "?ùÎÇ¥Í∏?&X)",                    IDM_EXIT
+        MENUITEM "¡æ∑·",                    IDM_EXIT
     END
-    POPUP "?ÑÏ?Îß?&H)"
+    POPUP "¡§∫∏"
     BEGIN
-        MENUITEM "?ïÎ≥¥(&A)...",                  IDM_ABOUT
+        MENUITEM "»Æ¿Œ",                  IDM_ABOUT
     END
 END
 
@@ -71,13 +71,13 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "?ïÎ≥¥ Ref_Shooting_Game"
+CAPTION "Ref_Shooting_Game"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "Ref_Shooting_Game, Î≤ÑÏ†Ñ 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2022",IDC_STATIC,42,26,114,8
-    DEFPUSHBUTTON   "?ïÏù∏",IDOK,113,41,50,14,WS_GROUP
+    LTEXT           "Ref_Shooting_Game",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "∑π∆€∑±Ω∫",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "»Æ¿Œ",IDOK,113,41,50,14,WS_GROUP
 END
 
 
