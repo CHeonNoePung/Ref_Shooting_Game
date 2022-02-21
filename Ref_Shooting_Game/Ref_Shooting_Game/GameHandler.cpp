@@ -2,7 +2,6 @@
 #include "PlayerBase.h"
 #include "enemyBase.h"
 #include "Bullet_Normal.h"
-#include "PlayerChoose.h"
 #include "PageStart.h"
 #include "PageEnd.h"
 #include "PageClear.h"
@@ -23,13 +22,10 @@ GameHandler::GameHandler()
 	bGameover = false;
 	bGameclear = false;
 	bGameend = false;		//게임 클리어, 종료 공용 변수
-	choose_num = 0;
-	TF = false;
 
 	start = new PageStart();
 	end = new PageEnd();
 	clear = new PageClear();
-	player_c = new  PlayerChoose();
 	player = new  PlayerBase();
 
 	BIT_Frame = NULL;
@@ -40,7 +36,7 @@ GameHandler::GameHandler()
 void GameHandler::GameStart()
 {
 	StageKey++;
-	if (choose_num == 0)
+	if (start_num != 1)
 		return;
 
 	CreateThread(NULL, 0, GameHandler::StageTR, (LPVOID)(__int64)StageKey, 0, NULL);
@@ -65,15 +61,14 @@ void GameHandler::GameClear()
 void GameHandler::ResetGame()
 {
 	start_num = 0;
+	bGameend = false;
 	bGameover = false;
 	bGameclear = false;
-	TF = false;
-	choose_num =0 ;
 	player->Reset();
 }
 void GameHandler::RestartGame()
 {
-	TF = false;
+	bGameend = false;
 	bGameover = false;
 	bGameclear = false;
 	player->Reset();
@@ -82,10 +77,8 @@ void GameHandler::RestartGame()
 GameHandler::~GameHandler()
 {
 	delete player;
-
 	delete start;
 	delete end;
-	delete player_c;
 	delete player;
 
 	DeleteObject(BIT_NullHeart);
@@ -131,12 +124,8 @@ void GameHandler::OnPaint(HDC hdc)
 	SelectObject(hdc2, OldBitmap);
 	
 	DeleteDC(hdc2);
-	if (start_num != 3) {
+	if (start_num != 1) {
 		start->DrawStart(hdc);
-		return;
-	}
-	else if (!choose_num) {
-		player_c->DrawChoose(hdc);
 		return;
 	}
 
@@ -174,14 +163,10 @@ void GameHandler::OnPaint(HDC hdc)
 void GameHandler::OnKeyDown(WPARAM wParam)
 {
 
-	if (start_num != 3) {		//
+	if (start_num != 1) {		//
 		start_num = start->start_choose(wParam);
-		if (start_num == 4)
-			ExitProcess(0);
-	}
-	else if (choose_num == 0) {
-		choose_num = player_c->player_choose(wParam);
-		if (choose_num != 0) GameStart();
+		if (start_num == 1) GameStart();
+		if (start_num == 2)ExitProcess(0);
 	}
 
 	if (bGameover == true)
@@ -264,7 +249,6 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 	{
 		if (Instance->bGameend == true) break;
 		if (player->IsDead()) continue;
-		if (Instance->TF == true && Instance->choose_num == 2) { continue; }
 		// 해당 키가 눌리면 0x8000을 반환함 해당 키들을 계속 확인하면서 키가 눌렸는지 확인함
 		int MoveSpeed = 5;
 		if (GetKeyState(VK_SHIFT) & 0x8000) //shift
@@ -319,12 +303,10 @@ DWORD WINAPI GameHandler::attack(LPVOID param)
 
 		if (GetKeyState(0x48) & 0x8000) //d
 		{
-			if (play->TF == true && play->choose_num == 2) { continue; }
-			BulletBase* Bullet = player->Attack(play->choose_num).Bullet;
+
+			BulletBase* Bullet = player->Attack().Bullet;
 			play->CreateBullet(Bullet);
-			play->TF = true;
 		}
-		else play->TF = false;
 		Sleep(100);
 
 	}
@@ -589,10 +571,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 		if (Bullet->IsPlayer())
 		{
 
-			if (Instance->choose_num == 2)
-			{
-				if (Instance->TF == false || Instance->player->IsDead() == true) break;
-			}
 
 
 			// 모든 Enemy에 대해서 충돌검사를 한 뒤, 충돌난 Enemy의 KeyCode 반환 / 없을경우 -1 반환
@@ -611,11 +589,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 					// 키코드에 해당하는 Enemy를 가져옴
 					Enemy = Instance->Enemys.at(colKeyCode);
 
-					// 1데미지를 준 뒤, 죽었으면 true  아니면 false 반환
-
-					if (Instance->choose_num == 2)
-						bDead = Enemy->GetDamages(5);
-					else
+					// 1데미지를 준 뒤, 죽었으면 true  아니면 false 반환					
 						bDead = Enemy->GetDamages(1);
 
 					if (Enemy->GetType() == 3)
@@ -637,7 +611,6 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 						Instance->GameClear();
 					}
 				}
-				if (Instance->choose_num != 2)
 					break;
 			}
 
@@ -689,12 +662,6 @@ DWORD WINAPI GameHandler::StageTR(LPVOID param)
 	}
 	delete stage;
 	return 0;
-}
-
-
-int GameHandler::S_Bit()
-{
-	return start_num;
 }
 
 int GameHandler::GetPlayerLife()

@@ -164,7 +164,6 @@
     <ClInclude Include="PatternNormal.h" />
     <ClInclude Include="PatternRandom.h" />
     <ClInclude Include="PlayerBase.h" />
-    <ClInclude Include="PlayerChoose.h" />
     <ClInclude Include="Ref_Shooting_Game.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Stage.h" />
@@ -194,7 +193,6 @@
     <ClCompile Include="PatternNormal.cpp" />
     <ClCompile Include="PatternRandom.cpp" />
     <ClCompile Include="PlayerBase.cpp" />
-    <ClCompile Include="PlayerChoose.cpp" />
     <ClCompile Include="Ref_Shooting_Game.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -209,7 +207,6 @@
     <Image Include="harte.bmp" />
     <Image Include="harte1.bmp" />
     <Image Include="GameOver.bmp" />
-
     <Image Include="Ref_Shooting_Game.ico" />
     <Image Include="small.ico" />
     <Image Include="test.bmp" />

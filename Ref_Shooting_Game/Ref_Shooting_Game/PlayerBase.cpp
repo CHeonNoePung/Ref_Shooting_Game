@@ -37,7 +37,7 @@ void PlayerBase::DrawObject(HDC hdc)
 	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
 }
 
-PatternResult PlayerBase::Attack(int choose_num__)
+PatternResult PlayerBase::Attack()
 {
 
 
@@ -46,13 +46,8 @@ PatternResult PlayerBase::Attack(int choose_num__)
 	location.x += GetSize().x / 2 - 5 / 2;
 	location.y += GetSize().y / 2 - 5 / 2;
 
-	BulletBase* Bullet = nullptr;
-	if (choose_num__ == 1) Bullet = new Bullet_Normal(location, POINTF{ 0,-5 });		//일반형
-	else
-	{
-		//printf("%d------\n", Location.y);
-		Bullet = new BulletLaser(location, POINTF{ 0,-10 });//관통형
-	}
+	BulletBase* Bullet = new Bullet_Normal(location, POINTF{ 0,-5 });		//일반형
+
 
 
 	Bullet->SetSize(5, 5);
