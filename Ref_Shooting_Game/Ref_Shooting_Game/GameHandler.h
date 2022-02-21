@@ -64,8 +64,7 @@ private:
 	HBITMAP BIT_Frame;
 	HBITMAP BIT_Heart;
 	HBITMAP BIT_NullHeart;
-	HBITMAP BIT_Player;
-	HBITMAP BIT_Light;
+
 	class PlayerBase* player;
 	class PageStart* start;
 	class PageEnd* end;

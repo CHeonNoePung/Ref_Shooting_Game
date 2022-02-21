@@ -8,7 +8,7 @@ Enemy_bird2::Enemy_bird2()
 	SetSize(50, 50);
 	SetLocation(POINT{ 400, 10 });
 	test_sin = 45;
-	patternNormal = new PatternNormal(500, 7);
+	patternNormal = new PatternNormal(500, 10);
 	SetType(1);
 }
 
