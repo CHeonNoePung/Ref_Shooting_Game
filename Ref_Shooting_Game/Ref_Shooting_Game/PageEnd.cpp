@@ -19,7 +19,7 @@ void PageEnd::DeleteGameOverBit()
 	if (BIT_GameOver != NULL) DeleteObject(BIT_GameOver);
 }
 
-void PageEnd::DrawEnd(HDC hdc, HINSTANCE hInst)
+void PageEnd::DrawEnd(HDC hdc)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
@@ -34,22 +34,22 @@ void PageEnd::DrawEnd(HDC hdc, HINSTANCE hInst)
 	int x = 640;
 	int y = 400;
 
-	Rectangle(hdc, 645, 405, 755, 500);
+	Rectangle(hdc, 645, 405, 755, 500); // width 110 height 95
 	if (end == 1)
 	{
 
-		Rectangle(hdc, 665, 415, 735, 440);
+		Rectangle(hdc, 665, 415, 735, 440); //70 25
 
 	}
 	else if (end == 2)
 	{
-		Rectangle(hdc, 650, 440, 750, 465);
+		Rectangle(hdc, 650, 440, 750, 465); // 100 25
 
 	}
 
 	else if (end == 3)
 	{
-		Rectangle(hdc, 660, 465, 740, 490);
+		Rectangle(hdc, 660, 465, 740, 490); // 80 25
 
 	}
 

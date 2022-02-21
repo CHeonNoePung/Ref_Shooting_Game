@@ -2,17 +2,18 @@
 
 #include "framework.h"
 #include <iostream>
-static int end;
+
 class PageEnd
 {
 public: 
 	PageEnd();
 	static void SetGameOverBit(HBITMAP BITMAP);
 	static void DeleteGameOverBit();
-	void DrawEnd(HDC hdc, HINSTANCE hInst);
+	void DrawEnd(HDC hdc);
 	int end_choose(WPARAM wparam);
 
 private:
+	int end;
 	static HBITMAP BIT_GameOver;
 };
 
