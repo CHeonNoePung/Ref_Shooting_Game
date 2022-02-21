@@ -10,7 +10,7 @@ PlayerBase::PlayerBase()
 	SetHealth(5);// 체력 5
 	Life = 3;
 	PowerCount = 3;
-	SetSize(10, 10);
+	SetSize(8, 8);
 	SetPlayer();
 	inv = false;
 	inv_Invisible = false;
@@ -26,12 +26,29 @@ void PlayerBase::SetCharacterBit(HINSTANCE hInst)
 
 void PlayerBase::DrawObject(HDC hdc)
 {
+	if (inv_Invisible == true || bDead == true) return;
+
 	HDC hdc2 = CreateCompatibleDC(hdc);
+
+	
+	// 빨간 체력바
+	RECT temp = GetRect();
+
+	HBRUSH red_brush = CreateSolidBrush(RGB(255, 0, 0));
+	RECT health_rect = { 1030, 180, 1050 + (GetHealth() * 50) , 210 };
+	FillRect(hdc, &health_rect, red_brush);
+	DeleteObject(red_brush);
+
 
 	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Character); //메모리DC에 비트맵오브젝트를 넣는다.
 
+	//비트맵
 //	BitBlt(hdc, Location.x, Location.y, 50, 50, hdc2, 0, 0, SRCCOPY);
-	TransparentBlt(hdc, Location.x, Location.y, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
+	TransparentBlt(hdc, Location.x-12, Location.y-10, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
+
+	// 충돌판정
+	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
+
 
 	SelectObject(hdc2, OldBitmap);
 	DeleteDC(hdc2);
@@ -67,7 +84,7 @@ PatternResult PlayerBase::Attack()
 
 
 
-	Bullet->SetSize(5, 5);
+	Bullet->SetSize(8, 8);
 	Bullet->SetPlayer();		// 플레이어 소유로 변경
 
 	PatternResult result;

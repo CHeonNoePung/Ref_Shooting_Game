@@ -8,7 +8,7 @@ Enemy_turret::Enemy_turret()
 	SetHealth(30);
 	SetSize(40, 40);
 	SetLocation(POINT{ 700,20 });
-	patternNormal = new PatternNormal(500, 7);
+	patternNormal = new PatternNormal(500, 10);
 	patternNormal->SetHomming(true);
 	SetType(1);
 }

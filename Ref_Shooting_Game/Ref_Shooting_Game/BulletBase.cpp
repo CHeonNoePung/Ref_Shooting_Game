@@ -30,6 +30,7 @@ BulletBase::BulletBase(POINT newLocation, POINTF newVelocity)
 	Speed = 1;
 	bMoveStop = false;
 	timer = nullptr;
+	cout << "////" << KeyCode << endl;
 }
 
 bool BulletBase::MoveNext()

@@ -91,6 +91,7 @@ GameHandler::~GameHandler()
 
 	PageEnd::DeleteGameOverBit();
 	PlayerBase::DeleteCharacterBit();
+	Type0::DeleteCharacterBit();
 }
 
 void GameHandler::OnPaint(HDC hdc)
@@ -233,8 +234,7 @@ void GameHandler::InitBitmap(HINSTANCE hInst)
 	BIT_Frame = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP4));
 	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
 	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
-	BIT_Player = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_Player));
-	BIT_BirdLeft = LoadBitmap(hInst, MAKEINTRESOURCE)
+
 	Type0::SetCharacterBit(hInst);
 	PageEnd::SetGameOverBit(hInst);
 	PlayerBase::SetCharacterBit(hInst);
@@ -262,30 +262,34 @@ DWORD __stdcall GameHandler::test(LPVOID param)
 
 		if (GetKeyState(VK_UP) & 0x8000) //up
 		{
-			if (player->GetLocation().y >= 14)
+			player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - MoveSpeed });
+			if (player->GetLocation().y <= 17)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y - MoveSpeed });
+				player->SetLocation(POINT{ player->GetLocation().x, 17 });
 			}
 		}
 		if (GetKeyState(VK_LEFT) & 0x8000) //left
 		{
-			if (player->GetLocation().x >= 401)
+			player->SetLocation(POINT{ player->GetLocation().x - MoveSpeed, player->GetLocation().y });
+			if (player->GetLocation().x <= 407)
 			{
-				player->SetLocation(POINT{ player->GetLocation().x - MoveSpeed, player->GetLocation().y });
+				player->SetLocation(POINT{407, player->GetLocation().y });
 			}
 		}
 		if (GetKeyState(VK_DOWN) & 0x8000) //down
 		{
-			if (player->GetLocation().y <= 665) // 여기다가 하면 됨
+			player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + MoveSpeed });
+			if (player->GetLocation().y >= 668) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x, player->GetLocation().y + MoveSpeed });
+				player->SetLocation(POINT{ player->GetLocation().x, 668 });
 			}
 		}
 		if (GetKeyState(VK_RIGHT) & 0x8000) //right
 		{
-			if (player->GetLocation().x <= 970) // 여기다가 하면 됨
+			player->SetLocation(POINT{ player->GetLocation().x + MoveSpeed, player->GetLocation().y });
+			if (player->GetLocation().x >= 980) // 여기다가 하면 됨
 			{
-				player->SetLocation(POINT{ player->GetLocation().x + MoveSpeed, player->GetLocation().y });
+				player->SetLocation(POINT{ 980, player->GetLocation().y });
 			}
 		}
 		Sleep(15);
@@ -566,7 +570,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 	while (1)
 	{
 		if (Instance->bGameend == true) break;
-		
+
 
 
 		bool result = Bullet->MoveNext();
@@ -598,7 +602,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 					Enemy = Instance->Enemys.at(colKeyCode);
 
 					// 1데미지를 준 뒤, 죽었으면 true  아니면 false 반환					
-						bDead = Enemy->GetDamages(1);
+					bDead = Enemy->GetDamages(1);
 
 					if (Enemy->GetType() == 3)
 					{
@@ -619,7 +623,7 @@ DWORD WINAPI GameHandler::BulletTR(LPVOID param)
 						Instance->GameClear();
 					}
 				}
-					break;
+				break;
 			}
 
 		}
