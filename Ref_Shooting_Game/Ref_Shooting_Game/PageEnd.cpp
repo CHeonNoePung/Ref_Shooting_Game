@@ -9,9 +9,9 @@ PageEnd::PageEnd()
 	end = 1;
 }
 
-void PageEnd::SetGameOverBit(HBITMAP BITMAP)
+void PageEnd::SetGameOverBit(HINSTANCE hInst)
 {
-	BIT_GameOver = BITMAP;
+	BIT_GameOver = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));
 }
 
 void PageEnd::DeleteGameOverBit()
@@ -60,6 +60,7 @@ void PageEnd::DrawEnd(HDC hdc)
 	wsprintfW(buf, L"EXIT GAME");
 	TextOut(hdc, x + 25, y + 70, buf, lstrlenW(buf));
 
+	SelectObject(hdc2, OldBitmap);
 	DeleteDC(hdc2);
 }
 

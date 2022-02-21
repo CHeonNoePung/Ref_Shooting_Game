@@ -19,7 +19,7 @@ public:
     void flicker(); // 무적중 깜박임
     PlayerBase();
     void DrawObject(HDC hdc);
-    PatternResult Attack(int choose_num__);
+    PatternResult Attack();
     bool GetDamages(int x);
     int GetLife();
 

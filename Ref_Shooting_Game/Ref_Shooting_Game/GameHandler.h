@@ -41,7 +41,7 @@ public:
 	void CreateEnemy(EnemyBase* newEnemy);
 	int GetPlayerLife();
 
-	int S_Bit();
+
 
 private:
 	GameHandler();
@@ -57,8 +57,7 @@ private:
 	bool bGameover;
 	bool bGameclear;
 	bool bGameend;
-	int choose_num;
-	bool TF;
+
 
 	int StageKey;
 
@@ -69,6 +68,6 @@ private:
 	class PageStart* start;
 	class PageEnd* end;
 	class PageClear* clear;
-	class PlayerChoose* player_c;
+
 };
 

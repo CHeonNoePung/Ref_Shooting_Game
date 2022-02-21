@@ -66,9 +66,6 @@
     <ClInclude Include="Enemy_bird.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerChoose.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PageStart.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_bird.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerChoose.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PageStart.cpp">
