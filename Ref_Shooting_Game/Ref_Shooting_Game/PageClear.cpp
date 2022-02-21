@@ -8,7 +8,7 @@ PageClear::PageClear()
 
 void PageClear::DrawClear(HDC hdc)
 {
-	HDC hdc2 = CreateCompatibleDC(hdc);
+	//HDC hdc2 = CreateCompatibleDC(hdc);
 
 	//HBITMAP MyBitmap = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_GAMEOVER));//비트맵 리소스를 받아온다.
 	//HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, MyBitmap); //메모리DC에 비트맵오브젝트를 넣는다.
