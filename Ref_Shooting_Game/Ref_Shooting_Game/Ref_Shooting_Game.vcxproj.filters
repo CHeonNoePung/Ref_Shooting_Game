@@ -105,6 +105,9 @@
     <ClInclude Include="Enemy_mage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_BossTurret.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ref_Shooting_Game.cpp">
@@ -188,6 +191,9 @@
     <ClCompile Include="Enemy_mage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_BossTurret.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Ref_Shooting_Game.rc">
@@ -220,6 +226,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="light.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

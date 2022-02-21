@@ -29,7 +29,7 @@ bool Enemy_bird2::MoveNext()
 	Location = POINT{ Location.x , Location.y };
 
 
-	Location.x = 900 - 0.03 * test_sin * test_sin;
+	Location.x = 925 - 0.03 * test_sin * test_sin;
 	Location.y += 10;
 	test_sin -= 4;
 

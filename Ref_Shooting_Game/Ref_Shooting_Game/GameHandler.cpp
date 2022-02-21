@@ -234,7 +234,7 @@ void GameHandler::InitBitmap(HINSTANCE hInst)
 	BIT_Heart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP5));
 	BIT_NullHeart = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP6));//비트맵 리소스를 받아온다.
 	BIT_Player = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_Player));
-	BIT_BirdLeft = LoadBitmap(hInst, MAKEINTRESOURCE)
+	BIT_Light = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_Light));
 	Type0::SetCharacterBit(hInst);
 	PageEnd::SetGameOverBit(hInst);
 	PlayerBase::SetCharacterBit(hInst);

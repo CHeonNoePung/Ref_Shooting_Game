@@ -1,26 +1,26 @@
-#include "Enemy_turret.h"
+#include "Enemy_BossTurret.h"
 #include "Bullet_Normal.h"
 #include "PatternNormal.h"
 
 //움직이는거, 체력, 데미지
-Enemy_turret::Enemy_turret()
+Enemy_BossTurret::Enemy_BossTurret()
 {
-	SetHealth(30);
-	SetSize(40, 40);
+	SetHealth(75);
+	SetSize(50, 50);
 	SetLocation(POINT{ 700,20 });
 	patternNormal = new PatternNormal(500, 7);
 	patternNormal->SetHomming(true);
-	SetType(1);
+	SetType(2);
 }
 
-Enemy_turret::~Enemy_turret()
+Enemy_BossTurret::~Enemy_BossTurret()
 {
 	delete patternNormal;
 }
-bool Enemy_turret::MoveNext()
+bool Enemy_BossTurret::MoveNext()
 {
 	Location = POINT{ Location.x , Location.y };
-	Location.y += 2;
+
 	// 맵밖으로 나가면 false 아닐경우 true 반환
 	RECT rect = GetRect();
 
@@ -31,7 +31,7 @@ bool Enemy_turret::MoveNext()
 	else return true;
 }
 
-PatternResult Enemy_turret::Attack(PatternParam Param)
+PatternResult Enemy_BossTurret::Attack(PatternParam Param)
 {
 	/*
 	PatternResult result = Pattern->Next(Param);
@@ -39,9 +39,9 @@ PatternResult Enemy_turret::Attack(PatternParam Param)
 	PatternResult result = patternNormal->Next(Param);
 	return result;
 
-	result.Bullet->SetSpeed(2);
+	result.Bullet->SetSpeed(5);
 }
-void Enemy_turret::DrawObject(HDC hdc)
+void Enemy_BossTurret::DrawObject(HDC hdc)
 {
 	RECT temp = GetRect();
 	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);

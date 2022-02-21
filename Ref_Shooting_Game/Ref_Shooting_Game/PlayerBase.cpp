@@ -28,10 +28,13 @@ void PlayerBase::DrawObject(HDC hdc)
 {
 	HDC hdc2 = CreateCompatibleDC(hdc);
 
+	RECT temp = GetRect();
+	Ellipse(hdc, temp.left, temp.top, temp.right, temp.bottom);
+
 	HBITMAP OldBitmap = (HBITMAP)SelectObject(hdc2, BIT_Character); //메모리DC에 비트맵오브젝트를 넣는다.
 
 //	BitBlt(hdc, Location.x, Location.y, 50, 50, hdc2, 0, 0, SRCCOPY);
-	TransparentBlt(hdc, Location.x, Location.y, 32, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
+	TransparentBlt(hdc, Location.x-7, Location.y, 25, 32, hdc2, 0, 0, 32, 32, RGB(255, 255, 255));
 
 	SelectObject(hdc2, OldBitmap);
 	DeleteDC(hdc2);
